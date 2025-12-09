@@ -1,190 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>AU-JRC Online Enrollment</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h4 class="center">AU-JRC Online Enrollment (FUNCTIONALITY DEMO)</h4>
-<header>
-  <nav>
-    <button data-target="home-page">Home</button>
-    <button data-target="facilities-page">Facilities</button>
-    <button data-target="about-page">About Us</button>
-    <button data-target="privacy-page">Enroll</button>
-    <button data-target="admin-login-page">Admin</button>
-  </nav>
-</header>
 
-<main>
-  <!-- HOME -->
-  <section id="home-page" class="page active">
-    <h2 class="center">Home Page</h2>
-    <p>Select an option:</p>
-    <ul>
-      <li><button data-target="privacy-page">Enroll as new SHS student</button></li>
-      <li><button data-target="facilities-page">View facilities</button></li>
-      <li><button data-target="about-page">Read about the campus</button></li>
-      <li><button data-target="admin-login-page">Admin login</button></li>
-    </ul>
-  </section>
+    <head>
+        <meta charset="UTF-8">
+        <title>AU-JRC Online Enrollment</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-  <!-- FACILITIES (PUBLIC) -->
-  <section id="facilities-page" class="page center">
-    <h2>Facilities</h2>
-    <ul id="public-facilities-list">
-      <!-- filled by JS -->
-    </ul>
-  </section>
+    <body>
+        <h4 class="center">AU-JRC Online Enrollment (FUNCTIONALITY DEMO)</h4>
+        <header>
+            <nav>
+                <button data-target="home-page">Home</button>
+                <button data-target="facilities-page">Facilities</button>
+                <button data-target="about-page">About Us</button>
+                <button data-target="privacy-page">Enroll</button>
+                <button data-target="admin-login-page">Admin</button>
+            </nav>
+        </header>
 
-  <!-- ABOUT (PUBLIC) -->
-  <section id="about-page" class="page center">
-    <h2>About Us</h2>
-    <div id="public-about-text" class="justify"></div>
-  </section>
+        <main>
+            <!-- HOME -->
+            <section id="home-page" class="page active">
+                <h2 class="center">Home Page</h2>
+                <p>Select an option:</p>
+                <ul>
+                    <li><button data-target="privacy-page">Enroll as new SHS student</button></li>
+                    <li><button data-target="facilities-page">View facilities</button></li>
+                    <li><button data-target="about-page">Read about the campus</button></li>
+                    <li><button data-target="admin-login-page">Admin login</button></li>
+                </ul>
+            </section>
 
-  <!-- PRIVACY NOTICE -->
-  <section id="privacy-page" class="page center">
-    <h2>Privacy Notice</h2>
-    <div id="public-privacy-text" class="justify"></div>
-    <p>
-      <button data-target="home-page">Back to home</button>
-      <button id="agree-privacy-btn" class="btn-success">I agree, proceed to enrollment</button>
-    </p>
-  </section>
+            <!-- FACILITIES (PUBLIC) -->
+            <section id="facilities-page" class="page center">
+                <h2>Facilities</h2>
+                <ul id="public-facilities-list">
+                    <!-- filled by JS -->
+                </ul>
+            </section>
 
-  <!-- ENROLLMENT -->
-  <section id="enrollment-page" class="page">
-    <h2 class="center">Enrollment Form</h2>
-    <form id="enrollment-form">
-      <p><label>Full Name
-        <input name="fullName" required>
-      </label></p>
+            <!-- ABOUT (PUBLIC) -->
+            <section id="about-page" class="page center">
+                <h2>About Us</h2>
+                <div id="public-about-text" class="justify"></div>
+            </section>
 
-      <p><label>LRN
-        <input name="lrn" required>
-      </label></p>
+            <!-- PRIVACY NOTICE -->
+            <section id="privacy-page" class="page center">
+                <h2>Privacy Notice</h2>
+                <div id="public-privacy-text" class="justify"></div>
+                <p>
+                    <button data-target="home-page">Back to home</button>
+                    <button id="agree-privacy-btn" class="btn-success">I agree, proceed to enrollment</button>
+                </p>
+            </section>
 
-      <p><label>Date of Birth
-        <input type="date" name="dob" required>
-      </label></p>
+            <!-- ENROLLMENT -->
+            <section id="enrollment-page" class="page">
+                <h2 class="center">Enrollment Form</h2>
+                <form id="enrollment-form">
+                    <p class="form-row">
+                        <label>Full Name</label>
+                        <input name="fullName" required>
+                    </p>
 
-      <p><label>Place of Birth
-        <input name="pob" required>
-      </label></p>
+                    <p class="form-row">
+                        <label>LRN</label>
+                        <input name="lrn" required>
+                    </p>
 
-      <p><label>Full Address
-        <input name="address" required>
-      </label></p>
+                    <p class="form-row">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob" required>
+                    </p>
 
-      <p><label>Email
-        <input type="email" name="email" required>
-      </label></p>
+                    <p class="form-row">
+                        <label>Place of Birth</label>
+                        <input name="pob" required>
+                    </p>
 
-      <p><label>Contact Number
-        <input name="contact" required>
-      </label></p>
+                    <p class="form-row">
+                        <label>Full Address</label>
+                        <input name="address" required>
+                    </p>
 
-      <p><label>Parent/Guardian Contact
-        <input name="guardianContact" required>
-      </label></p>
+                    <p class="form-row">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </p>
 
-      <p><label>Grade Level
-        <select name="gradeLevel" required>
-          <option value="">Select</option>
-          <option value="11">Grade 11</option>
-          <option value="12">Grade 12</option>
-        </select>
-      </label></p>
+                    <p class="form-row">
+                        <label>Contact Number</label>
+                        <input name="contact" required>
+                    </p>
 
-      <p><label>Strand
-        <select name="strand" required>
-          <option value="">Select</option>
-          <option>ABM</option>
-          <option>STEM</option>
-          <option>HUMSS</option>
-          <option>GAS</option>
-          <option>TVL</option>
-        </select>
-      </label></p>
+                    <p class="form-row">
+                        <label>Parent/Guardian Contact</label>
+                        <input name="guardianContact" required>
+                    </p>
 
-      <p><label>Documents submitted
-        <textarea name="documents" rows="3" required></textarea>
-      </label></p>
+                    <p class="form-row">
+                        <label>Grade Level</label>
+                        <select name="gradeLevel" required>
+                            <option value="">Select</option>
+                            <option value="11">Grade 11</option>
+                            <option value="12">Grade 12</option>
+                        </select>
+                    </p>
 
-      <p class="center">
-        <button type="submit" class="btn-success">Submit</button>
-        <button type="reset">Clear</button>
-      </p>
-    </form>
-    <p id="enrollment-message"></p>
-  </section>
+                    <p class="form-row">
+                        <label>Strand </label>
+                        <select name="strand" required>
+                            <option value="">Select</option>
+                            <option>ABM</option>
+                            <option>STEM</option>
+                            <option>HUMSS</option>
+                            <option>GAS</option>
+                            <option>TVL</option>
+                        </select>
+                    </p>
 
-  <!-- ADMIN LOGIN -->
-  <section id="admin-login-page" class="page center">
-    <h2>Admin Login</h2>
-    <form id="admin-login-form">
-      <p><label>Username
-        <input id="admin-username" required>
-      </label></p>
-      <p><label>Password
-        <input type="password" id="admin-password" required>
-      </label></p>
-      <p><button type="submit">Login</button></p>
-      <p>Demo account: <strong>admin / admin123</strong></p>
-    </form>
-    <p id="admin-login-message"></p>
-  </section>
+                    <p class="form-row">
+                        <label>Documents submitted</label>
+                        <textarea name="documents" rows="3" required></textarea>
+                    </p>
 
-  <!-- ADMIN DASHBOARD -->
-  <section id="admin-dashboard-page" class="page">
-    <h2>Admin Dashboard</h2>
-    <p><button id="logout-btn">Log out</button></p>
+                    <p class="center">
+                        <button type="submit" class="btn-success">Submit</button>
+                        <button type="reset">Clear</button>
+                    </p>
+                </form>
+                <p id="enrollment-message"></p>
+            </section>
 
-    <h3>1. Enrollees (Manage enrollees)</h3>
-    <p>
-      Month:
-      <select id="filter-month"><option value="">All</option></select>
-      Year:
-      <select id="filter-year"><option value="">All</option></select>
-      <button id="filter-enrollees-btn">Filter</button>
-    </p>
-    <table border="1" width="100%" id="enrollees-table">
-      <thead>
-      <tr>
-        <th>Date</th><th>Full name</th><th>Grade</th><th>Strand</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+            <!-- ADMIN LOGIN -->
+            <section id="admin-login-page" class="page center">
+                <h2>Admin Login</h2>
+                <form id="admin-login-form">
+                    <p><label>Username
+                            <input id="admin-username" required>
+                        </label></p>
+                    <p><label>Password
+                            <input type="password" id="admin-password" required>
+                        </label></p>
+                    <p><button type="submit" class="login-btn">Login</button></p>
+                    <p>Demo account: <strong>admin / admin123</strong></p>
+                </form>
+                <p id="admin-login-message"></p>
+            </section>
 
-    <h3>2. Facilities (Add facility)</h3>
-    <form id="facility-form">
-      <p><label>Name
-        <input name="facilityName" required>
-      </label></p>
-      <p><label>Purpose
-        <input name="facilityPurpose" required>
-      </label></p>
-      <p><label>Description
-        <textarea name="facilityDescription" rows="2" required></textarea>
-      </label></p>
-      <p><button type="submit">Add facility</button></p>
-    </form>
-    <ul id="admin-facilities-list"></ul>
+            <!-- ADMIN DASHBOARD -->
+            <section id="admin-dashboard-page" class="page">
+                <h2>Admin Dashboard</h2>
+                <p><button id="logout-btn">Log out</button></p>
 
-    <h3>3. Content (Edit pages: About Us and Privacy Notice)</h3>
-    <p>About Us content:</p>
-    <textarea id="about-editor" rows="4"></textarea><br>
-    <button id="save-about-btn">Save About Us</button>
+                <h3>1. Enrollees (Manage enrollees)</h3>
+                <p>
+                    Month:
+                    <select id="filter-month">
+                        <option value="">All</option>
+                    </select>
+                    Year:
+                    <select id="filter-year">
+                        <option value="">All</option>
+                    </select>
+                    <button id="filter-enrollees-btn">Filter</button>
+                </p>
+                <table border="1" width="100%" id="enrollees-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Full name</th>
+                            <th>Grade</th>
+                            <th>Strand</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
 
-    <p>Privacy Notice content:</p>
-    <textarea id="privacy-editor" rows="4"></textarea><br>
-    <button id="save-privacy-btn">Save Privacy Notice</button>
-  </section>
-</main>
+                <h3>2. Facilities (Add facility)</h3>
+                <form id="facility-form">
+                    <p><label>Name
+                            <input name="facilityName" required>
+                        </label></p>
+                    <p><label>Purpose
+                            <input name="facilityPurpose" required>
+                        </label></p>
+                    <p><label>Description
+                            <textarea name="facilityDescription" rows="2" required></textarea>
+                        </label></p>
+                    <p><button type="submit">Add facility</button></p>
+                </form>
+                <ul id="admin-facilities-list"></ul>
 
-<script src="script.js"></script>
-</body>
+                <h3>3. Content (Edit pages: About Us and Privacy Notice)</h3>
+                <p>About Us content:</p>
+                <textarea id="about-editor" rows="4"></textarea><br>
+                <button id="save-about-btn">Save About Us</button>
+
+                <p>Privacy Notice content:</p>
+                <textarea id="privacy-editor" rows="4"></textarea><br>
+                <button id="save-privacy-btn">Save Privacy Notice</button>
+            </section>
+        </main>
+
+        <script src="script.js"></script>
+    </body>
+
 </html>

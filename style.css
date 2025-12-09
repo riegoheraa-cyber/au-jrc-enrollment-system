@@ -3,24 +3,24 @@ body {
     margin: 0;
     padding: 0;
     background: #f2f2f2;
-  }
+}
 
-  .center {
-      text-align: center;
-  }
-  
-  header {
+.center {
+    text-align: center;
+}
+
+header {
     background: #0b46a0;
     padding: 10px;
     color: #fff;
-  }
-  
-  header h1 {
+}
+
+header h1 {
     margin: 0 0 5px 0;
     font-size: 18px;
-  }
+}
 
-  button {
+button {
     margin-right: 5px;
     display: inline-block;
     font-weight: 400;
@@ -42,76 +42,89 @@ body {
     padding: .375rem .75rem;
     font-size: 1rem;
     border-radius: .25rem;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  }
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
 
-  button:hover {
+button:hover {
     color: #fff;
     background-color: #0b46a0;
     border-color: #0b46a0;
-  }
-  
-  nav button {
+}
+
+nav button {
     margin-right: 5px;
     color: #fff;
-  }
+}
 
-  nav button:hover {
+nav button:hover {
     background: #2f72da;
-  }
-  
-  main {
-    padding: 10px;
-  }
+}
 
-  main button {
+.login-btn {
+    min-width: 320px;
+    background: #0b46a0;
+    color: #fff;
+}
+
+.login-btn:hover {
+    background-color: #3872ca;
+    border-color: #3872ca;
+}
+
+main {
+    padding: 10px;
+}
+
+main button {
     border: 1px solid #ced4da;
     margin: 5px;
-  }
-  
-  .btn-success {
+}
+
+.btn-success {
     background: green;
     color: #fff;
-  }
+}
 
-  .btn-success:hover {
-    background:  #01ab01 !important;
-  }
+.btn-success:hover {
+    background: #01ab01 !important;
+}
 
-  section {
+section {
     background: #fff;
-    padding: 15px;
-  }
-  
-  .page {
+    padding: 20px;
+}
+
+.page {
     display: none;
     margin: 0 auto;
     width: 50%;
-  }
-  
-  .page.active {
-    display: block;
-  }
+}
 
-  #privacy-page {
+.page.active {
+    display: block;
+}
+
+#privacy-page {
     margin: 0 auto;
     width: 50%;
-  }
+}
 
-  .justify {
+.justify {
     text-align: justify;
-  }
-  
-  table {
-    border-collapse: collapse;
-  }
-  
-  td, th {
-    padding: 3px 5px;
-  }
-  
+}
 
-input, textarea {
+table {
+    border-collapse: collapse;
+}
+
+td,
+th {
+    padding: 3px 5px;
+}
+
+
+input,
+textarea {
     display: inline-block;
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -125,10 +138,11 @@ input, textarea {
     -moz-appearance: none;
     appearance: none;
     border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     vertical-align: middle;
-  }
-  select {
+}
+
+select {
     display: inline-block;
     padding: .375rem 2.25rem .375rem .75rem;
     -moz-padding-start: calc(0.75rem - 3px);
@@ -143,8 +157,22 @@ input, textarea {
     background-size: 16px 12px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-  }
+}
+
+.form-row label {
+    display: inline-block;
+    width: 300px; 
+}
+
+.form-row input, .form-row textarea, .form-row select {
+    margin-left: 15px; 
+}
+
+#enrollment-message {
+    text-align: center;
+    color: #008000;
+}
