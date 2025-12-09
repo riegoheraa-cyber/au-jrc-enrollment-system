@@ -25,8 +25,8 @@ function setStored(key, value) {
 }
 
 // ---------- DEFAULT CONTENT ----------
-const defaultAbout = "Default About Us text for AU-JRC.";
-const defaultPrivacy = "Default Privacy Notice. Data is used only for enrollment.";
+const defaultAbout = "Default About Us text for AU-JRC. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at posuere felis, a molestie lectus. Fusce id dapibus nisi. Nullam lacus nulla, dignissim a ullamcorper vel, accumsan non augue. Suspendisse potenti. Nam sed lorem sem. Cras ut sem porta, porta libero id, mattis lectus. Aliquam et porttitor lorem. Sed finibus tortor nec gravida euismod. Morbi quis odio in nisi sagittis maximus in sed eros. Vestibulum at orci metus. Nam ac neque ultricies, faucibus lacus eget, semper dolor. Nam nec mi neque. Etiam pretium blandit tempus. Nulla facilisi. Aenean mollis cursus pellentesque. ";
+const defaultPrivacy = "Default Privacy Notice. Data is used only for enrollment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at posuere felis, a molestie lectus. Fusce id dapibus nisi. Nullam lacus nulla, dignissim a ullamcorper vel, accumsan non augue. Suspendisse potenti. Nam sed lorem sem. Cras ut sem porta, porta libero id, mattis lectus. Aliquam et porttitor lorem. Sed finibus tortor nec gravida euismod. Morbi quis odio in nisi sagittis maximus in sed eros. Vestibulum at orci metus. Nam ac neque ultricies, faucibus lacus eget, semper dolor. Nam nec mi neque. Etiam pretium blandit tempus. Nulla facilisi. Aenean mollis cursus pellentesque. ";
 
 // show About + Privacy text on public pages and in admin editor
 function initContent() {

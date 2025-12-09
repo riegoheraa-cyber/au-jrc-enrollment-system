@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h4 class="center">AU-JRC Online Enrollment (FUNCTIONALITY DEMO)</h4>
 <header>
-  <h1>AU-JRC Online Enrollment (FUNCTIONALITY DEMO)</h1>
   <nav>
     <button data-target="home-page">Home</button>
     <button data-target="facilities-page">Facilities</button>
@@ -20,7 +20,7 @@
 <main>
   <!-- HOME -->
   <section id="home-page" class="page active">
-    <h2>Home Page</h2>
+    <h2 class="center">Home Page</h2>
     <p>Select an option:</p>
     <ul>
       <li><button data-target="privacy-page">Enroll as new SHS student</button></li>
@@ -31,7 +31,7 @@
   </section>
 
   <!-- FACILITIES (PUBLIC) -->
-  <section id="facilities-page" class="page">
+  <section id="facilities-page" class="page center">
     <h2>Facilities</h2>
     <ul id="public-facilities-list">
       <!-- filled by JS -->
@@ -39,24 +39,24 @@
   </section>
 
   <!-- ABOUT (PUBLIC) -->
-  <section id="about-page" class="page">
+  <section id="about-page" class="page center">
     <h2>About Us</h2>
-    <div id="public-about-text"></div>
+    <div id="public-about-text" class="justify"></div>
   </section>
 
   <!-- PRIVACY NOTICE -->
-  <section id="privacy-page" class="page">
+  <section id="privacy-page" class="page center">
     <h2>Privacy Notice</h2>
-    <div id="public-privacy-text"></div>
+    <div id="public-privacy-text" class="justify"></div>
     <p>
       <button data-target="home-page">Back to home</button>
-      <button id="agree-privacy-btn">I agree, proceed to enrollment</button>
+      <button id="agree-privacy-btn" class="btn-success">I agree, proceed to enrollment</button>
     </p>
   </section>
 
   <!-- ENROLLMENT -->
   <section id="enrollment-page" class="page">
-    <h2>Enrollment Form</h2>
+    <h2 class="center">Enrollment Form</h2>
     <form id="enrollment-form">
       <p><label>Full Name
         <input name="fullName" required>
@@ -113,8 +113,8 @@
         <textarea name="documents" rows="3" required></textarea>
       </label></p>
 
-      <p>
-        <button type="submit">Submit</button>
+      <p class="center">
+        <button type="submit" class="btn-success">Submit</button>
         <button type="reset">Clear</button>
       </p>
     </form>
@@ -122,7 +122,7 @@
   </section>
 
   <!-- ADMIN LOGIN -->
-  <section id="admin-login-page" class="page">
+  <section id="admin-login-page" class="page center">
     <h2>Admin Login</h2>
     <form id="admin-login-form">
       <p><label>Username
