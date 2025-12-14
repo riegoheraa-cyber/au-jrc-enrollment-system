@@ -3,18 +3,18 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>AU-JRC Online Enrollment</title>
+        <title>AU-JRC Online Reservation</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-        <h4 class="center">AU-JRC Online Enrollment (FUNCTIONALITY DEMO)</h4>
+        <h4 class="center">AU-JRC Online Reservation (FUNCTIONALITY DEMO)</h4>
         <header>
             <nav>
                 <button data-target="home-page">Home</button>
                 <button data-target="facilities-page">Facilities</button>
                 <button data-target="about-page">About Us</button>
-                <button data-target="privacy-page">Enroll</button>
+                <button data-target="privacy-page">Reservation</button>
                 <button data-target="admin-login-page">Admin</button>
             </nav>
         </header>
@@ -25,7 +25,7 @@
                 <h2 class="center">Home Page</h2>
                 <p>Select an option:</p>
                 <ul>
-                    <li><button data-target="privacy-page">Enroll as new SHS student</button></li>
+                    <li><button data-target="privacy-page">Reserve enrollment date</button></li>
                     <li><button data-target="facilities-page">View facilities</button></li>
                     <li><button data-target="about-page">Read about the campus</button></li>
                     <li><button data-target="admin-login-page">Admin login</button></li>
@@ -52,14 +52,14 @@
                 <div id="public-privacy-text" class="justify"></div>
                 <p>
                     <button data-target="home-page">Back to home</button>
-                    <button id="agree-privacy-btn" class="btn-success">I agree, proceed to enrollment</button>
+                    <button id="agree-privacy-btn" class="btn-success">I agree, proceed to reservation</button>
                 </p>
             </section>
 
             <!-- ENROLLMENT -->
-            <section id="enrollment-page" class="page">
-                <h2 class="center">Enrollment Form</h2>
-                <form id="enrollment-form">
+            <section id="Reservation-page" class="page">
+                <h2 class="center">Reservation Form</h2>
+                <form id="Reservation-form">
                     <p class="form-row">
                         <label>Full Name</label>
                         <input name="fullName" required>
@@ -131,7 +131,7 @@
                         <button type="reset">Clear</button>
                     </p>
                 </form>
-                <p id="enrollment-message"></p>
+                <p id="Reservation-message"></p>
             </section>
 
             <!-- ADMIN LOGIN -->
@@ -155,7 +155,7 @@
                 <h2>Admin Dashboard</h2>
                 <p><button id="logout-btn">Log out</button></p>
 
-                <h3>1. Enrollees (Manage enrollees)</h3>
+                <h3>1. Reservations (Manage Reservations)</h3>
                 <p>
                     Month:
                     <select id="filter-month">
@@ -165,9 +165,9 @@
                     <select id="filter-year">
                         <option value="">All</option>
                     </select>
-                    <button id="filter-enrollees-btn">Filter</button>
+                    <button id="filter-Reservations-btn">Filter</button>
                 </p>
-                <table border="1" width="100%" id="enrollees-table">
+                <table border="1" width="100%" id="Reservations-table">
                     <thead>
                         <tr>
                             <th>Date</th>
