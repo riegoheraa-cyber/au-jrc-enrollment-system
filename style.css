@@ -142,6 +142,10 @@ textarea {
     vertical-align: middle;
 }
 
+input[type="radio"] {
+    appearance: auto;
+}
+
 select {
     display: inline-block;
     padding: .375rem 2.25rem .375rem .75rem;
@@ -165,14 +169,16 @@ select {
 
 .form-row label {
     display: inline-block;
-    width: 300px; 
+    width: 300px;
 }
 
-.form-row input, .form-row textarea, .form-row select {
-    margin-left: 15px; 
+.form-row input,
+.form-row textarea,
+.form-row select {
+    margin-left: 15px;
 }
 
-#enrollment-message {
+#Reservation-message {
     text-align: center;
     color: #008000;
 }

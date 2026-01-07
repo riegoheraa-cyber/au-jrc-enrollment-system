@@ -54,7 +54,7 @@ ReservationForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const data = new FormData(ReservationForm);
-    const enrollee = {
+    const reservation = {
         fullName: data.get('fullName'),
         lrn: data.get('lrn'),
         dob: data.get('dob'),
@@ -65,12 +65,20 @@ ReservationForm.addEventListener('submit', function (e) {
         guardianContact: data.get('guardianContact'),
         gradeLevel: data.get('gradeLevel'),
         strand: data.get('strand'),
-        documents: data.get('documents'),
-        submittedAt: new Date().toISOString()
+    
+        requirements: {
+            card: data.get('card'),
+            psa: data.get('psa'),
+            pic: data.get('pic'),
+            form137: data.get('form137')
+        },
+    
+        reservedAt: new Date().toISOString()
     };
+    
 
     const Reservations = getStored('Reservations', []);
-    Reservations.push(enrollee);
+    Reservations.push(reservation);
     setStored('Reservations', Reservations);
 
     ReservationMsg.textContent = "Reservation submitted successfully.";
