@@ -1,3 +1,5 @@
+const API_BASE = "http://127.0.0.1:5000"; // backend URL
+
 // ---------- BASIC PAGE SWITCHING ----------
 const pages = document.querySelectorAll('.page');
 const navButtons = document.querySelectorAll('[data-target]');
@@ -50,7 +52,7 @@ document.getElementById('agree-privacy-btn')
 const ReservationForm = document.getElementById('Reservation-form');
 const ReservationMsg = document.getElementById('Reservation-message');
 
-ReservationForm.addEventListener('submit', function (e) {
+ReservationForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const data = new FormData(ReservationForm);
@@ -80,6 +82,25 @@ ReservationForm.addEventListener('submit', function (e) {
     const Reservations = getStored('Reservations', []);
     Reservations.push(reservation);
     setStored('Reservations', Reservations);
+
+    try {
+        const res = await fetch(`${API_BASE}/api/enroll`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reservation),
+        });
+    
+        const data = await res.json();
+    
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Submit failed");
+        }
+    
+        alert(`✅ Submitted! Application ID: ${data.application_id}`);
+        e.target.reset();
+      } catch (err) {
+        alert("❌ " + err.message);
+      }
 
     ReservationMsg.textContent = "Reservation submitted successfully.";
     ReservationForm.reset();
