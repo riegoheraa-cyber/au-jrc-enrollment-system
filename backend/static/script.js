@@ -96,10 +96,10 @@ ReservationForm.addEventListener('submit', async function (e) {
           throw new Error(data.error || "Submit failed");
         }
     
-        alert(`✅ Submitted! Application ID: ${data.application_id}`);
+        alert(`Submitted! Application ID: ${data.application_id}`);
         e.target.reset();
       } catch (err) {
-        alert("❌ " + err.message);
+        alert("Error: " + err.message);
       }
 
     ReservationMsg.textContent = "Reservation submitted successfully.";

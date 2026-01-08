@@ -1,9 +1,7 @@
 CREATE TABLE IF NOT EXISTS students (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   lrn TEXT UNIQUE NOT NULL,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  middle_name TEXT,
+  fullName TEXT NOT NULL,
   email TEXT,
   phone TEXT,
   address TEXT,
@@ -13,8 +11,7 @@ CREATE TABLE IF NOT EXISTS students (
 CREATE TABLE IF NOT EXISTS applications (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   student_id INTEGER NOT NULL,
-  school_year TEXT NOT NULL,
-  grade_level TEXT NOT NULL,
+  gradeLevel TEXT NOT NULL,
   strand TEXT,
   status TEXT NOT NULL DEFAULT 'submitted',
   submitted_at TEXT DEFAULT CURRENT_TIMESTAMP,

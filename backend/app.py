@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, render_template
-from db import get_conn, init_db
+from db import DB_PATH, get_conn, init_db
 
 app = Flask(__name__)
 init_db()
-
+print(">>> USING DB:", DB_PATH)
 @app.get("/")
 def home():
     return render_template("index.html")
@@ -17,21 +17,20 @@ def enroll():
     data = request.get_json(force=True)
 
     # Minimal required fields (adjust to your form)
-    required = ["lrn", "first_name", "last_name", "school_year", "grade_level"]
+    required = ["lrn", "fullName", "gradeLevel"]
     missing = [k for k in required if not str(data.get(k, "")).strip()]
     if missing:
         return jsonify({"ok": False, "error": f"Missing: {', '.join(missing)}"}), 400
 
     lrn = data["lrn"].strip()
-    first = data["first_name"].strip()
-    last = data["last_name"].strip()
-    middle = (data.get("middle_name") or "").strip() or None
+    fullName = data["fullName"].strip()
+
     email = (data.get("email") or "").strip() or None
     phone = (data.get("phone") or "").strip() or None
     address = (data.get("address") or "").strip() or None
 
-    school_year = data["school_year"].strip()
-    grade_level = data["grade_level"].strip()
+
+    gradeLevel = data["gradeLevel"].strip()
     strand = (data.get("strand") or "").strip() or None
 
     with get_conn() as conn:
@@ -39,24 +38,23 @@ def enroll():
         try:
             # Upsert student by LRN
             cur.execute("""
-                INSERT INTO students (lrn, first_name, last_name, middle_name, email, phone, address)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO students (lrn, fullName, email, phone, address)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(lrn) DO UPDATE SET
-                    first_name=excluded.first_name,
-                    last_name=excluded.last_name,
-                    middle_name=excluded.middle_name,
+                    fullName=excluded.fullName,
+                    
                     email=excluded.email,
                     phone=excluded.phone,
                     address=excluded.address
-            """, (lrn, first, last, middle, email, phone, address))
+            """, (lrn, fullName, email, phone, address))
 
             cur.execute("SELECT id FROM students WHERE lrn = ?", (lrn,))
             student_id = cur.fetchone()["id"]
 
             cur.execute("""
-                INSERT INTO applications (student_id, school_year, grade_level, strand, status)
-                VALUES (?, ?, ?, ?, 'submitted')
-            """, (student_id, school_year, grade_level, strand))
+                INSERT INTO applications (student_id, gradeLevel, strand, status)
+                VALUES (?, ?, ?,  'submitted')
+            """, (student_id, gradeLevel, strand))
 
             application_id = cur.lastrowid
             conn.commit()
@@ -71,8 +69,8 @@ def enroll():
 def list_applications():
     status = request.args.get("status")  # optional filter
     q = """
-      SELECT a.id, a.school_year, a.grade_level, a.strand, a.status, a.submitted_at,
-             s.lrn, s.first_name, s.last_name
+      SELECT a.id, a.gradeLevel, a.strand, a.status, a.submitted_at,
+             s.lrn, s.full name
       FROM applications a
       JOIN students s ON s.id = a.student_id
     """
