@@ -32,7 +32,10 @@ def enroll():
 
     gradeLevel = data["gradeLevel"].strip()
     strand = (data.get("strand") or "").strip() or None
+    tvlSpec = (data.get("tvlSpec") or "").strip()
 
+    if strand == "TVL" and not tvlSpec:
+        return jsonify(ok=False, error="TVL specialization is required"), 400
     with get_conn() as conn:
         cur = conn.cursor()
         try:
@@ -52,9 +55,9 @@ def enroll():
             student_id = cur.fetchone()["id"]
 
             cur.execute("""
-                INSERT INTO applications (student_id, gradeLevel, strand, status)
-                VALUES (?, ?, ?,  'submitted')
-            """, (student_id, gradeLevel, strand))
+                INSERT INTO applications (student_id, gradeLevel, strand, tvlSpec, status)
+                VALUES (?, ?, ?, ?, 'submitted')
+            """, (student_id, gradeLevel, strand, tvlSpec))
 
             application_id = cur.lastrowid
             conn.commit()
@@ -69,7 +72,7 @@ def enroll():
 def list_applications():
     status = request.args.get("status")  # optional filter
     q = """
-      SELECT a.id, a.gradeLevel, a.strand, a.status, a.submitted_at,
+      SELECT a.id, a.gradeLevel, a.strand, a.tvlSpec, a.status, a.submitted_at,
              s.lrn, s.full name
       FROM applications a
       JOIN students s ON s.id = a.student_id

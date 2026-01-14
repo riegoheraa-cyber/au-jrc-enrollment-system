@@ -18,6 +18,20 @@
             <button data-target="admin-login-page">Admin</button>
         </nav>
     </header>
+    <section class="hero">
+        <div class="hero-inner">
+            <h1>AU-JRC Online Enrollment</h1>
+            <p>
+                A modern enrollment system for Arellano University – Jose Rizal Campus.
+                Apply, track, and get updates online.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#apply" class="btn primary">Enroll Now</a>
+                <a href="#tracks" class="btn ghost">View Tracks</a>
+            </div>
+        </div>
+    </section>
 
     <main>
         <!-- HOME -->
@@ -115,7 +129,7 @@
 
                 <p class="form-row">
                     <label>Strand </label>
-                    <select name="strand" required>
+                    <select id="strand" name="strand" required>
                         <option value="">Select</option>
                         <option>ABM</option>
                         <option>STEM</option>
@@ -123,12 +137,15 @@
                         <option>GAS</option>
                         <option>TVL</option>
                     </select>
+                </p>
+                <p class="form-row">
                 <div id="tvlWrap" style="display:none; margin-top:10px;">
                     <label>TVL Specialization</label>
                     <select id="tvlSpec" name="tvlSpec">
                         <option value="" selected disabled>Select TVL specialization</option>
                     </select>
                 </div>
+                </p>
                 <h3>Requirements to Submit</h3>
 
                 <p>

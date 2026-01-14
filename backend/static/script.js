@@ -67,7 +67,8 @@ ReservationForm.addEventListener('submit', async function (e) {
         guardianContact: data.get('guardianContact'),
         gradeLevel: data.get('gradeLevel'),
         strand: data.get('strand'),
-    
+        tvlSpec: data.get('tvlSpec'),
+        
         requirements: {
             card: data.get('card'),
             psa: data.get('psa'),
@@ -230,7 +231,40 @@ facilityForm.addEventListener('submit', function (e) {
     facilityForm.reset();
     renderFacilities();
 });
+const tvlOptions = [
+  "ICT",
+  "Home Economics",
+  "Cookery",
+];
 
+const trackEl = document.getElementById("strand");
+const tvlWrap = document.getElementById("tvlWrap");
+const tvlSpec = document.getElementById("tvlSpec");
+
+function setTvlVisible(isVisible) {
+  tvlWrap.style.display = isVisible ? "block" : "none";
+  tvlSpec.required = isVisible;
+  if (!isVisible) tvlSpec.value = "";
+}
+
+function loadTvlOptions() {
+  tvlSpec.innerHTML = `<option value="" selected disabled>Select TVL specialization</option>`;
+  tvlOptions.forEach(opt => {
+    const o = document.createElement("option");
+    o.value = opt;
+    o.textContent = opt;
+    tvlSpec.appendChild(o);
+  });
+}
+
+trackEl.addEventListener("change", () => {
+  if (trackEl.value === "TVL") {
+    loadTvlOptions();
+    setTvlVisible(true);
+  } else {
+    setTvlVisible(false);
+  }
+});
 // ---------- CONTENT MANAGEMENT (ABOUT + PRIVACY) ----------
 document.getElementById('save-about-btn')
     .addEventListener('click', () => {
@@ -258,3 +292,4 @@ function initDashboard() {
 initContent();
 renderFacilities();
 showPage('home-page');
+ 

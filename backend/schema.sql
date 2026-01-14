@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS applications (
   student_id INTEGER NOT NULL,
   gradeLevel TEXT NOT NULL,
   strand TEXT,
+  tvlSpec TEXT,
   status TEXT NOT NULL DEFAULT 'submitted',
   submitted_at TEXT DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (student_id) REFERENCES students(id)
