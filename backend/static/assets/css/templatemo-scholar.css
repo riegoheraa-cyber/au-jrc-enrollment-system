@@ -1432,7 +1432,7 @@ Contact Style
   left: 0;
   z-index: -1;
   width: 65%;
-  height: 100%;
+  height: 580px;
   background-color: #8d9dff30;
   content: '';
   border-top-right-radius: 500px;
@@ -1634,6 +1634,93 @@ Contact Style
   font-size: 16px;
   font-weight: 400;
 }
+
+#Reservation-form label, #Reservation-page h2 {
+  color: #fff;
+}
+
+#Reservation-form input, #Reservation-form select {
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    background-color: rgba(249, 235, 255, 0.15);
+    border: none;
+    outline: none;
+    font-weight: 300;
+    padding: 0px 20px;
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 3;
+  }
+  
+  #Reservation-form input::placeholder {
+    color: #fff;
+  }
+  
+  #Reservation-form textarea {
+    width: 100%;
+    height: 120px;
+    border-radius: 25px;
+    background-color: rgba(249, 235, 255, 0.15);
+    border: none;
+    outline: none;
+    font-weight: 300;
+    padding: 20px;
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 3;
+  }
+  
+  #Reservation-form textarea::placeholder {
+    color: #fff;
+  }
+  
+  #Reservation-form button {
+    border: none;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #fff;
+    padding: 0px 25px;
+    border-radius: 25px;
+    color: #2d3d9d;
+    transition: all .4s;
+    position: relative;
+    z-index: 3;
+  }
+  
+  #Reservation-form button:hover {
+    opacity: 0.8;
+  }
+  
+  .contact-us-content .more-info {
+    text-align: center;
+    background: rgb(85,0,227);
+    background: linear-gradient(90deg, rgba(85,0,227,1) 0%, rgba(198,61,255,1) 100%);
+    border-radius: 0px 0px 23px 23px;
+    padding: 45px 30px 15px 30px;
+  }
+  
+  .contact-us-content .more-info .info-item {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .contact-us-content .more-info i {
+    font-size: 32px;
+    color: #fff;
+    margin-bottom: 15px;
+  }
+  
+  .contact-us-content .more-info h4 a {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+  }
 
 /* 
 ---------------------------------------------
@@ -2029,6 +2116,12 @@ body {
 
 .background-header .nav-item.dropdown.scroll-to-section {
   line-height: unset;
+}
+
+#Reservation-message {
+  padding-top: 20px ;
+    text-align: center;
+    color: #fff;
 }
 
 /* Hover behavior (desktop only) */

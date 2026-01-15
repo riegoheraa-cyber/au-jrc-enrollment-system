@@ -139,6 +139,7 @@
 	            scrollTop: (target.offset().top) - 79
 	        }, 500, 'swing', function () {
 	            window.location.hash = target;
+				console.log('target=', target);
 	            $(document).on("scroll", onScroll);
 	        });
 	    });

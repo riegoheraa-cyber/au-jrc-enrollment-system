@@ -45,8 +45,8 @@ function initContent() {
 }
 
 // ---------- PRIVACY -> Reservation ----------
-document.getElementById('agree-privacy-btn')
-    .addEventListener('click', () => showPage('Reservation-page'));
+// document.getElementById('agree-privacy-btn')
+//     .addEventListener('click', () => showPage('Reservation-page'));
 
 // ---------- Reservation FORM (SAVE ENROLLEE) ----------
 const ReservationForm = document.getElementById('Reservation-form');
@@ -111,25 +111,25 @@ ReservationForm.addEventListener('submit', async function (e) {
 });
 
 // ---------- ADMIN LOGIN ----------
-const adminLoginForm = document.getElementById('admin-login-form');
-const adminLoginMsg = document.getElementById('admin-login-message');
+// const adminLoginForm = document.getElementById('admin-login-form');
+// const adminLoginMsg = document.getElementById('admin-login-message');
 
-adminLoginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const user = document.getElementById('admin-username').value.trim();
-    const pass = document.getElementById('admin-password').value.trim();
+// adminLoginForm.addEventListener('submit', function (e) {
+//     e.preventDefault();
+//     const user = document.getElementById('admin-username').value.trim();
+//     const pass = document.getElementById('admin-password').value.trim();
 
-    if (user === "admin" && pass === "admin123") {
-        adminLoginMsg.textContent = "";
-        showPage('admin-dashboard-page');
-        initDashboard();
-    } else {
-        adminLoginMsg.textContent = "Invalid account.";
-    }
-});
+//     if (user === "admin" && pass === "admin123") {
+//         adminLoginMsg.textContent = "";
+//         showPage('admin-dashboard-page');
+//         initDashboard();
+//     } else {
+//         adminLoginMsg.textContent = "Invalid account.";
+//     }
+// });
 
-document.getElementById('logout-btn')
-    .addEventListener('click', () => showPage('home-page'));
+// document.getElementById('logout-btn')
+//     .addEventListener('click', () => showPage('home-page'));
 
 // ---------- MANAGE Reservations (TABLE + FILTER BY MONTH/YEAR) ----------
 const tableBody = document.querySelector('#Reservations-table tbody');
@@ -190,13 +190,13 @@ function renderReservationsTable() {
     });
 }
 
-document.getElementById('filter-Reservations-btn')
-    .addEventListener('click', renderReservationsTable);
+// document.getElementById('filter-Reservations-btn')
+//     .addEventListener('click', renderReservationsTable);
 
 // ---------- FACILITIES (ADD + DISPLAY) ----------
-const facilityForm = document.getElementById('facility-form');
-const adminFacilitiesList = document.getElementById('admin-facilities-list');
-const publicFacilitiesList = document.getElementById('public-facilities-list');
+// const facilityForm = document.getElementById('facility-form');
+// const adminFacilitiesList = document.getElementById('admin-facilities-list');
+// const publicFacilitiesList = document.getElementById('public-facilities-list');
 
 function renderFacilities() {
     const facilities = getStored('facilities', []);
@@ -214,23 +214,23 @@ function renderFacilities() {
     });
 }
 
-facilityForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+// facilityForm.addEventListener('submit', function (e) {
+//     e.preventDefault();
 
-    const data = new FormData(facilityForm);
-    const facility = {
-        name: data.get('facilityName'),
-        purpose: data.get('facilityPurpose'),
-        description: data.get('facilityDescription')
-    };
+//     const data = new FormData(facilityForm);
+//     const facility = {
+//         name: data.get('facilityName'),
+//         purpose: data.get('facilityPurpose'),
+//         description: data.get('facilityDescription')
+//     };
 
-    const facilities = getStored('facilities', []);
-    facilities.push(facility);
-    setStored('facilities', facilities);
+//     const facilities = getStored('facilities', []);
+//     facilities.push(facility);
+//     setStored('facilities', facilities);
 
-    facilityForm.reset();
-    renderFacilities();
-});
+//     facilityForm.reset();
+//     renderFacilities();
+// });
 const tvlOptions = [
   "ICT",
   "Home Economics",
@@ -266,30 +266,30 @@ trackEl.addEventListener("change", () => {
   }
 });
 // ---------- CONTENT MANAGEMENT (ABOUT + PRIVACY) ----------
-document.getElementById('save-about-btn')
-    .addEventListener('click', () => {
-        const txt = document.getElementById('about-editor').value.trim();
-        setStored('aboutText', txt || defaultAbout);
-        initContent();
-    });
+// document.getElementById('save-about-btn')
+//     .addEventListener('click', () => {
+//         const txt = document.getElementById('about-editor').value.trim();
+//         setStored('aboutText', txt || defaultAbout);
+//         initContent();
+//     });
 
-document.getElementById('save-privacy-btn')
-    .addEventListener('click', () => {
-        const txt = document.getElementById('privacy-editor').value.trim();
-        setStored('privacyText', txt || defaultPrivacy);
-        initContent();
-    });
+// document.getElementById('save-privacy-btn')
+//     .addEventListener('click', () => {
+//         const txt = document.getElementById('privacy-editor').value.trim();
+//         setStored('privacyText', txt || defaultPrivacy);
+//         initContent();
+//     });
 
 // ---------- ADMIN DASHBOARD INIT ----------
 function initDashboard() {
-    initContent();
-    loadFilterOptions();
-    renderReservationsTable();
-    renderFacilities();
+    // initContent();
+    // loadFilterOptions();
+    // renderReservationsTable();
+    // renderFacilities();
 }
 
 // ---------- INITIAL APP STATE ----------
-initContent();
-renderFacilities();
-showPage('home-page');
+// initContent();
+// renderFacilities();
+// showPage('home-page');
  
