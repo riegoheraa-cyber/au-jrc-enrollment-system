@@ -68,13 +68,8 @@ ReservationForm.addEventListener('submit', async function (e) {
         gradeLevel: data.get('gradeLevel'),
         strand: data.get('strand'),
         tvlSpec: data.get('tvlSpec'),
+        generalAve: data.get('generalAve'),
         
-        requirements: {
-            card: data.get('card'),
-            psa: data.get('psa'),
-            pic: data.get('pic'),
-            form137: data.get('form137')
-        },
     
         reservedAt: new Date().toISOString()
     };
