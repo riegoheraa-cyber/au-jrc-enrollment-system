@@ -56,23 +56,52 @@ ReservationForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const data = new FormData(ReservationForm);
+    console.log('data==', data);
     const reservation = {
+        // Student Information
         fullName: data.get('fullName'),
         lrn: data.get('lrn'),
         dob: data.get('dob'),
         pob: data.get('pob'),
         address: data.get('address'),
+        sex: data.get('sex'),
+        nationality: data.get('nationality'),
         email: data.get('email'),
         contact: data.get('contact'),
-        guardianContact: data.get('guardianContact'),
+      
+        // School History
+        jhsGraduated: data.get('jhsGraduated'),
+        dateGraduation: data.get('dateGraduation'),
+      
+        // Enrollment Details
         gradeLevel: data.get('gradeLevel'),
         strand: data.get('strand'),
-        tvlSpec: data.get('tvlSpec'),
+        tvlSpec: data.get('tvlSpec'), // null if not TVL
         generalAve: data.get('generalAve'),
-        
-    
-        reservedAt: new Date().toISOString()
+      
+        // Medical Information
+        medicalConditions: data.getAll('medical[]'), // ARRAY
+        medicalOther: data.get('medicalOther'),
+        howSupported: data.get('howSupported'),
+      
+        // Parent / Guardian
+        guardianName: data.get('guardianName'),
+        guardianCivilStatus: data.get('guardianCivilStatus'),
+        guardianEmployment: data.get('guardianEmployment'),
+        guardianOccupation: data.get('guardianOccupation'),
+        guardianRelationship: data.get('guardianRelationship'),
+        guardianTel: data.get('guardianTel'),
+        guardianContact: data.get('guardianContact'),
+      
+        // Credentials
+        credentialsSubmitted: data.get('credentialsSubmitted'),
+      
+        // Student Pledge
+        firstTimeAU: data.get('firstTimeAU'),
+        enrolledYear: data.get('enrolledYear'),
+        studentSignature: data.get('studentSignature')
     };
+      
     
 
     const Reservations = getStored('Reservations', []);
@@ -99,10 +128,7 @@ ReservationForm.addEventListener('submit', async function (e) {
       }
 
     ReservationMsg.textContent = "Reservation submitted successfully.";
-    ReservationForm.reset();
-
-    loadFilterOptions();
-    renderReservationsTable();
+    // ReservationForm.reset();
 });
 
 // ---------- ADMIN LOGIN ----------
@@ -232,34 +258,34 @@ const tvlOptions = [
   "Cookery",
 ];
 
-const trackEl = document.getElementById("strand");
-const tvlWrap = document.getElementById("tvlWrap");
-const tvlSpec = document.getElementById("tvlSpec");
+// const trackEl = document.getElementById("strand");
+// const tvlWrap = document.getElementById("tvlWrap");
+// const tvlSpec = document.getElementById("tvlSpec");
 
-function setTvlVisible(isVisible) {
-  tvlWrap.style.display = isVisible ? "block" : "none";
-  tvlSpec.required = isVisible;
-  if (!isVisible) tvlSpec.value = "";
-}
+// function setTvlVisible(isVisible) {
+//   tvlWrap.style.display = isVisible ? "block" : "none";
+//   tvlSpec.required = isVisible;
+//   if (!isVisible) tvlSpec.value = "";
+// }
 
-function loadTvlOptions() {
-  tvlSpec.innerHTML = `<option value="" selected disabled>Select TVL specialization</option>`;
-  tvlOptions.forEach(opt => {
-    const o = document.createElement("option");
-    o.value = opt;
-    o.textContent = opt;
-    tvlSpec.appendChild(o);
-  });
-}
+// function loadTvlOptions() {
+//   tvlSpec.innerHTML = `<option value="" selected disabled>Select TVL specialization</option>`;
+//   tvlOptions.forEach(opt => {
+//     const o = document.createElement("option");
+//     o.value = opt;
+//     o.textContent = opt;
+//     tvlSpec.appendChild(o);
+//   });
+// }
 
-trackEl.addEventListener("change", () => {
-  if (trackEl.value === "TVL") {
-    loadTvlOptions();
-    setTvlVisible(true);
-  } else {
-    setTvlVisible(false);
-  }
-});
+// trackEl.addEventListener("change", () => {
+//   if (trackEl.value === "TVL") {
+//     loadTvlOptions();
+//     setTvlVisible(true);
+//   } else {
+//     setTvlVisible(false);
+//   }
+// });
 // ---------- CONTENT MANAGEMENT (ABOUT + PRIVACY) ----------
 // document.getElementById('save-about-btn')
 //     .addEventListener('click', () => {

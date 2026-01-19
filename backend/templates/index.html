@@ -136,96 +136,342 @@ https://templatemo.com/tm-586-scholar
           <div class="contact-us-content">
             <!-- ENROLLMENT -->
             <section id="Reservation-page" class="page">
-              <h2 class="text-center mb-5">Enrollment Form</h2>
-              <form id="Reservation-form">
-                <p class="form-row">
-                  <label>Full Name</label>
-                  <input name="fullName" required minlength="8" maxlength="60" pattern="[A-Za-zÀ-ÿÑñ\s\.\-]+"
-                    title="Letters, spaces, and hyphen only (8–60 characters).">
-                </p>
-
-                <p class="form-row">
-                  <label>LRN</label>
-                  <input name="lrn" required inputmode="numeric" maxlength="12" pattern="\d{12}"
-                    title="LRN must be exactly 12 digits.">
-                </p>
-
-                <p class="form-row">
-                  <label>Date of Birth</label>
-                  <input type="date" name="dob" id="dob" required>
-                </p>
-
+                <h2 class="text-center mb-5">Enrollment Form</h2>
+              
+                <style>
+                  .form-group {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 8px;
+                    padding: 18px 20px 20px;
+                    margin-bottom: 24px;
+                  }
+              
+                  .form-group legend {
+                    padding: 0 10px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-decoration: underline;
+                  }
+              
+                  /* Optional: make checkbox/radio blocks look nicer */
+                  .inline-options {
+                    display: flex;
+                    gap: 14px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                  }
+              
+                  .check-grid {
+                    display: grid;
+                    gap: 8px;
+                    margin-bottom: 10px;
+                  }
+              
+                  /* Keep your existing layout if you already have these classes.
+                     If not, these are safe defaults. */
+                  #Reservation-page .form-row {
+                    display: grid;
+                    gap: 8px;
+                    margin: 12px 0;
+                  }
+              
+                  #Reservation-page .form-row input,
+                  #Reservation-page .form-row select {
+                    padding: 10px 12px;
+                    border: 1px solid #cfcfcf;
+                    border-radius: 6px;
+                    outline: none;
+                  }
+              
+                  #Reservation-page .center {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                    margin-top: 18px;
+                  }
+                </style>
+              
+                <form id="Reservation-form">
+              
+                  <!-- ===================== STUDENT INFO ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Student Information</legend>
+              
+                    <p class="form-row">
+                      <label>Full Name</label>
+                      <input name="fullName" required minlength="8" maxlength="60"
+                        pattern="[A-Za-zÀ-ÿÑñ\s\.\-]+"
+                        title="Letters, spaces, dot, and hyphen only (8–60 characters).">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>LRN</label>
+                      <input name="lrn" required inputmode="numeric" maxlength="12" pattern="\d{12}"
+                        title="LRN must be exactly 12 digits.">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Date of Birth</label>
+                      <input type="date" name="dob" id="dob" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Place of Birth</label>
+                      <input name="pob" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Present Address / Home Address</label>
+                      <input name="address" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Sex</label>
+                      <span class="inline-options">
+                        <label style="margin:0;">
+                          <input type="radio" name="sex" value="Male" required> Male
+                        </label>
+                        <label style="margin:0;">
+                          <input type="radio" name="sex" value="Female" required> Female
+                        </label>
+                      </span>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Nationality</label>
+                      <input name="nationality" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Email</label>
+                      <input type="email" name="email" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Contact Number</label>
+                      <input name="contact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
+                        title="Must start with 09 and be 11 digits (e.g., 09123456789).">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== SCHOOL HISTORY ===================== -->
+                  <fieldset class="form-group">
+                    <legend>School History</legend>
+              
+                    <p class="form-row">
+                      <label>Junior High School from which graduated</label>
+                      <input name="jhsGraduated" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Date of Graduation</label>
+                      <input type="date" name="dateGraduation" id="dateGraduation">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== ENROLLMENT DETAILS ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Enrollment Details</legend>
+              
+                    <p class="form-row">
+                      <label>Grade Level</label>
+                      <select name="gradeLevel" required>
+                        <option value="">Select</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                      </select>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Strand</label>
+                      <select id="strand" name="strand" required>
+                        <option value="">Select</option>
+                        <option>ABM</option>
+                        <option>STEM</option>
+                        <option>HUMSS</option>
+                        <option>GAS</option>
+                        <option>TVL</option>
+                      </select>
+                    </p>
+              
+                    <div id="tvlWrap" style="display:none; margin-top:10px;">
+                      <p class="form-row" style="margin:0;">
+                        <label>TVL Specialization</label>
+                        <select id="tvlSpec" name="tvlSpec">
+                          <option value="" selected disabled>Select TVL specialization</option>
+                          <option value="ICT">ICT</option>
+                          <option value="Cookery">Cookery</option>
+                          <option value="Home Economics">Home Economics</option>
+                        </select>
+                      </p>
+                    </div>
+              
+                    <p class="form-row">
+                      <label>General Ave</label>
+                      <input name="generalAve" required inputmode="numeric" maxlength="2" pattern="\d{2}"
+                        title="General Ave must only be 2 digits.">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== MEDICAL INFO ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Medical Information</legend>
+              
+                    <p class="form-row" style="margin-bottom:6px;">
+                      <label>Pre-existing medical condition</label>
+                    </p>
+              
+                    <div class="check-grid">
+                      <label style="margin:0;"><input type="checkbox" name="medical[]" value="Heart Ailment"> Heart Ailment</label>
+                      <label style="margin:0;"><input type="checkbox" name="medical[]" value="Hypertension"> Hypertension</label>
+                      <label style="margin:0;"><input type="checkbox" name="medical[]" value="Asthma"> Asthma</label>
+                      <label style="margin:0;">
+                        <input type="checkbox" id="medOtherChk" name="medical[]" value="Others"> Others (specify):
+                      </label>
+                    </div>
+              
+                    <p class="form-row">
+                      <label>Others, please specify</label>
+                      <input name="medicalOther" id="medicalOther" disabled placeholder="If Others is checked, type here">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>How supported</label>
+                      <input name="howSupported" placeholder="e.g., Parents, Scholarship, Working, etc.">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== PARENT / GUARDIAN ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Parent / Guardian Information</legend>
+              
+                    <p class="form-row">
+                      <label>Name of Parents or Guardian</label>
+                      <input name="guardianName" required>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Civil Status</label>
+                      <input name="guardianCivilStatus">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Employment Status</label>
+                      <span class="inline-options">
+                        <label style="margin:0;"><input type="radio" name="guardianEmployment" value="Employed"> Employed</label>
+                        <label style="margin:0;"><input type="radio" name="guardianEmployment" value="Unemployed"> Unemployed</label>
+                      </span>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Occupation</label>
+                      <input name="guardianOccupation">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Relationship</label>
+                      <input name="guardianRelationship" required placeholder="e.g., Mother/Father/Guardian">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Tel No.</label>
+                      <input name="guardianTel" inputmode="numeric" maxlength="10" placeholder="Optional landline">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Parent/Guardian Contact (Cellphone)</label>
+                      <input name="guardianContact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
+                        title="Must start with 09 and be 11 digits (e.g., 09123456789).">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== CREDENTIALS ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Credentials Submitted</legend>
+              
+                    <p class="form-row">
+                      <label>Date and Kind of credentials submitted</label>
+                      <input name="credentialsSubmitted" placeholder="e.g., Form 137, PSA Birth Cert, Good Moral, etc.">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== STUDENT PLEDGE ===================== -->
+                  <fieldset class="form-group">
+                    <legend>Student Pledge</legend>
+              
+                    <p class="form-row">
+                      <label>First time to enroll in AU?</label>
+                      <span class="inline-options">
+                        <label style="margin:0;"><input type="radio" name="firstTimeAU" value="Yes" required> Yes</label>
+                        <label style="margin:0;"><input type="radio" name="firstTimeAU" value="No" required> No </label>
+                      </span>
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Enrolled Year (if applicable)</label>
+                      <input name="enrolledYear" inputmode="numeric" maxlength="4" pattern="\d{4}"
+                        title="Use 4-digit year (e.g., 2026)." placeholder="e.g., 2026">
+                    </p>
+              
+                    <p class="form-row">
+                      <label>Student Signature / Typed Name</label>
+                      <input name="studentSignature" placeholder="Type your full name as signature">
+                    </p>
+                  </fieldset>
+              
+                  <!-- ===================== BUTTONS ===================== -->
+                  <p class="center">
+                    <button type="submit" class="btn-success">Submit</button>
+                    <button type="reset">Clear</button>
+                  </p>
+                </form>
+              
+                <p id="Reservation-message"></p>
+              
                 <script>
+                  // DOB max = today
                   document.getElementById('dob').max = new Date().toISOString().split("T")[0];
+              
+                  // Optional: Date graduation max = today
+                  const dg = document.getElementById('dateGraduation');
+                  if (dg) dg.max = new Date().toISOString().split("T")[0];
+              
+                  // TVL specialization show/hide
+                  const strand = document.getElementById('strand');
+                  const tvlWrap = document.getElementById('tvlWrap');
+                  const tvlSpec = document.getElementById('tvlSpec');
+              
+                  function updateTVL() {
+                    const isTVL = strand.value === 'TVL';
+                    tvlWrap.style.display = isTVL ? 'block' : 'none';
+              
+                    if (!isTVL) {
+                      tvlSpec.value = '';
+                      tvlSpec.removeAttribute('required');
+                    } else {
+                      tvlSpec.setAttribute('required', 'required');
+                    }
+                  }
+              
+                  strand.addEventListener('change', updateTVL);
+                  updateTVL();
+              
+                  // Medical "Others" enable/disable
+                  const medOtherChk = document.getElementById('medOtherChk');
+                  const medicalOther = document.getElementById('medicalOther');
+              
+                  function updateMedicalOther() {
+                    const enabled = medOtherChk.checked;
+                    medicalOther.disabled = !enabled;
+                    if (!enabled) medicalOther.value = '';
+                  }
+              
+                  medOtherChk.addEventListener('change', updateMedicalOther);
+                  updateMedicalOther();
                 </script>
-
-                <p class="form-row">
-                  <label>Place of Birth</label>
-                  <input name="pob" required>
-                </p>
-
-                <p class="form-row">
-                  <label>Full Address</label>
-                  <input name="address" required>
-                </p>
-
-                <p class="form-row">
-                  <label>Email</label>
-                  <input type="email" name="email" required>
-                </p>
-
-                <p class="form-row">
-                  <label>Contact Number</label>
-                  <input name="contact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
-                    title="Must start with 09 and be 11 digits (e.g., 09123456789).">
-                </p>
-
-                <p class="form-row">
-                  <label>Parent/Guardian Contact</label>
-                  <input name="guardianContact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
-                    title="Must start with 09 and be 11 digits (e.g., 09123456789).">
-                </p>
-
-                <p class="form-row">
-                  <label>Grade Level</label>
-                  <select name="gradeLevel" required>
-                    <option value="">Select</option>
-                    <option value="11">Grade 11</option>
-                    <option value="12">Grade 12</option>
-                  </select>
-                </p>
-
-                <p class="form-row">
-                  <label>Strand </label>
-                  <select id="strand" name="strand" required>
-                    <option value="">Select</option>
-                    <option>ABM</option>
-                    <option>STEM</option>
-                    <option>HUMSS</option>
-                    <option>GAS</option>
-                    <option>TVL</option>
-                  </select>
-                </p>
-                <p class="form-row">
-                <div id="tvlWrap" style="display:none; margin-top:10px;">
-                  <label>TVL Specialization</label>
-                  <select id="tvlSpec" name="tvlSpec">
-                    <option value="" selected disabled>Select TVL specialization</option>
-                  </select>
-                </div>
-                </p>
-                <p class="form-row">
-                  <label>General Ave</label>
-                  <input name="generalAve" required inputmode="numeric" maxlength="2" pattern="\d{2}"
-                    title="General Ave must only be 2 digits.">
-                </p>
-                <p class="center">
-                  <button type="submit" class="btn-success">Submit</button>
-                  <button type="reset">Clear</button>
-                </p>
-              </form>
-              <p id="Reservation-message"></p>
-            </section>
+              </section>
+              
             <!-- <form id="contact-form" action="" method="post">
               <div class="row">
                 <div class="col-lg-12">
