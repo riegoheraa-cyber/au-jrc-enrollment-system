@@ -12,7 +12,7 @@
 
 	$(window).scroll(function () {
 		var scroll = $(window).scrollTop();
-		var box = $('.header-text').height();
+		var box = 30;
 		var header = $('header').height();
 
 		if (scroll >= box - header) {
@@ -32,28 +32,28 @@
 		}
 	})
 
-	const elem = document.querySelector('.event_box');
-	const filtersElem = document.querySelector('.event_filter');
-	if (elem) {
-		const rdn_events_list = new Isotope(elem, {
-			itemSelector: '.event_outer',
-			layoutMode: 'masonry'
-		});
-		if (filtersElem) {
-			filtersElem.addEventListener('click', function (event) {
-				if (!matchesSelector(event.target, 'a')) {
-					return;
-				}
-				const filterValue = event.target.getAttribute('data-filter');
-				rdn_events_list.arrange({
-					filter: filterValue
-				});
-				filtersElem.querySelector('.is_active').classList.remove('is_active');
-				event.target.classList.add('is_active');
-				event.preventDefault();
-			});
-		}
-	}
+	// const elem = document.querySelector('.event_box');
+	// const filtersElem = document.querySelector('.event_filter');
+	// if (elem) {
+	// 	const rdn_events_list = new Isotope(elem, {
+	// 		itemSelector: '.event_outer',
+	// 		layoutMode: 'masonry'
+	// 	});
+	// 	if (filtersElem) {
+	// 		filtersElem.addEventListener('click', function (event) {
+	// 			if (!matchesSelector(event.target, 'a')) {
+	// 				return;
+	// 			}
+	// 			const filterValue = event.target.getAttribute('data-filter');
+	// 			rdn_events_list.arrange({
+	// 				filter: filterValue
+	// 			});
+	// 			filtersElem.querySelector('.is_active').classList.remove('is_active');
+	// 			event.target.classList.add('is_active');
+	// 			event.preventDefault();
+	// 		});
+	// 	}
+	// }
 
 
 	$('.owl-banner').owlCarousel({
@@ -77,22 +77,22 @@
 		}
 	});
 
-	$('.owl-testimonials').owlCarousel({
-		center: true,
-		items: 1,
-		loop: true,
-		nav: true,
-		navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>'],
-		margin: 30,
-		responsive: {
-			992: {
-				items: 1
-			},
-			1200: {
-				items: 1
-			}
-		}
-	});
+	// $('.owl-testimonials').owlCarousel({
+	// 	center: true,
+	// 	items: 1,
+	// 	loop: true,
+	// 	nav: true,
+	// 	navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+	// 	margin: 30,
+	// 	responsive: {
+	// 		992: {
+	// 			items: 1
+	// 		},
+	// 		1200: {
+	// 			items: 1
+	// 		}
+	// 	}
+	// });
 
 
 	// Menu Dropdown Toggle
