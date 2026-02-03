@@ -699,7 +699,7 @@ Banner Style
   border-radius: 25px;
   padding: 100px 100px;
   margin-left: 130px;
-  min-height: 555px;
+  min-height: 400px;
 }
 
 .item.item-2 {}
@@ -1449,11 +1449,9 @@ Contact Style
 }
 
 .contact-us  .section-heading p {
-  margin-top: 50px;
 }
 
 .contact-us .special-offer {
-  margin-top: 50px;
   background-color: #fff;
   border-radius: 25px;
   padding: 22px 120px;

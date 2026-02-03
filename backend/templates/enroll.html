@@ -98,7 +98,7 @@ https://templatemo.com/tm-586-scholar
   <div class="contact-us section" id="reserve">
     <div class="container">
       <div class="row">
-       
+
         <div class="col-lg-12">
           <div class="contact-us-content">
             <!-- ENROLLMENT -->
@@ -161,241 +161,666 @@ https://templatemo.com/tm-586-scholar
 
               <form id="Reservation-form">
 
-                <!-- ===================== STUDENT INFO ===================== -->
-                <fieldset class="form-group">
-                  <legend>Student Information</legend>
+                <style>
+                  .step {
+                    display: none;
+                  }
 
-                  <p class="form-row">
-                    <label>Full Name</label>
-                    <input name="fullName" required minlength="8" maxlength="60" pattern="[A-Za-zÀ-ÿÑñ\s\.\-]+"
-                      title="Letters, spaces, dot, and hyphen only (8–60 characters).">
-                  </p>
+                  .step.active {
+                    display: block;
+                  }
 
-                  <p class="form-row">
-                    <label>LRN</label>
-                    <input name="lrn" required inputmode="numeric" maxlength="12" pattern="\d{12}"
-                      title="LRN must be exactly 12 digits.">
-                  </p>
+                  .stepper {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                    margin-bottom: 18px;
+                    flex-wrap: wrap;
+                  }
 
-                  <p class="form-row">
-                    <label>Date of Birth</label>
-                    <input type="date" name="dob" id="dob" required>
-                  </p>
+                  .stepper .dot {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 999px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #cfcfcf;
+                    font-weight: 600;
+                    opacity: .6;
+                    background: rgba(255, 255, 255, .2);
+                  }
 
-                  <p class="form-row">
-                    <label>Place of Birth</label>
-                    <input name="pob" required>
-                  </p>
+                  .stepper .dot.active {
+                    opacity: 1;
+                    border-color: #fff;
+                    background: rgba(255, 255, 255, .35);
+                  }
 
-                  <p class="form-row">
-                    <label>Present Address / Home Address</label>
-                    <input name="address" required>
-                  </p>
+                  .stepper .dot.done {
+                    opacity: 1;
+                    border-color: #2ecc71;
+                    background: rgba(46, 204, 113, .18);
+                  }
 
-                  <p class="form-row">
-                    <label>Sex</label>
-                    <span class="inline-options">
-                      <label style="margin:0;">
-                        <input type="radio" name="sex" value="Male" required> Male
-                      </label>
-                      <label style="margin:0;">
-                        <input type="radio" name="sex" value="Female" required> Female
-                      </label>
-                    </span>
-                  </p>
+                  .btn-row {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                    margin-top: 18px;
+                  }
 
-                  <p class="form-row">
-                    <label>Nationality</label>
-                    <input name="nationality" required>
-                  </p>
+                  .form-group {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 8px;
+                    padding: 18px 20px 20px;
+                    margin-bottom: 24px;
+                  }
 
-                  <p class="form-row">
-                    <label>Email</label>
-                    <input type="email" name="email" required>
-                  </p>
+                  .form-group legend {
+                    padding: 0 10px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-decoration: underline;
+                  }
 
-                  <p class="form-row">
-                    <label>Contact Number</label>
-                    <input name="contact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
-                      title="Must start with 09 and be 11 digits (e.g., 09123456789).">
-                  </p>
-                </fieldset>
+                  .inline-options {
+                    display: flex;
+                    gap: 14px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                  }
 
-                <!-- ===================== SCHOOL HISTORY ===================== -->
-                <fieldset class="form-group">
-                  <legend>School History</legend>
+                  #Reservation-page .form-row {
+                    display: grid;
+                    gap: 8px;
+                    margin: 12px 0;
+                  }
 
-                  <p class="form-row">
-                    <label>Junior High School from which graduated</label>
-                    <input name="jhsGraduated" required>
-                  </p>
+                  #Reservation-page .form-row input,
+                  #Reservation-page .form-row select {
+                    padding: 10px 12px;
+                    border: 1px solid #cfcfcf;
+                    border-radius: 6px;
+                    outline: none;
+                    color: #000000;
+                    /* white text */
+                    background: #fff;
+                    /* white background */
+                  }
 
-                  <p class="form-row">
-                    <label>Date of Graduation</label>
-                    <input type="date" name="dateGraduation" id="dateGraduation">
-                  </p>
-                </fieldset>
+                  .review-box {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 10px;
+                    padding: 16px;
+                    background: rgba(255, 255, 255, .06);
+                  }
 
-                <!-- ===================== ENROLLMENT DETAILS ===================== -->
-                <fieldset class="form-group">
-                  <legend>Enrollment Details</legend>
+                  .review-item {
+                    display: grid;
+                    grid-template-columns: 220px 1fr;
+                    gap: 10px;
+                    padding: 8px 0;
+                    border-bottom: 1px dashed rgba(255, 255, 255, .2);
+                  }
 
-                  <p class="form-row">
-                    <label>Grade Level</label>
-                    <select name="gradeLevel" required>
-                      <option value="">Select</option>
-                      <option value="11">Grade 11</option>
-                      <option value="12">Grade 12</option>
-                    </select>
-                  </p>
+                  .review-item:last-child {
+                    border-bottom: 0;
+                  }
 
-                  <p class="form-row">
-                    <label>Strand</label>
-                    <select id="strand" name="strand" required>
-                      <option value="">Select</option>
-                      <option>ABM</option>
-                      <option>STEM</option>
-                      <option>HUMSS</option>
-                      <option>GAS</option>
-                      <option>TVL</option>
-                    </select>
-                  </p>
+                  .review-key {
+                    font-weight: 600;
+                    opacity: .9;
+                  }
 
-                  <div id="tvlWrap" style="display:none; margin-top:10px;">
-                    <p class="form-row" style="margin:0;">
-                      <label>TVL Specialization</label>
-                      <select id="tvlSpec" name="tvlSpec">
-                        <option value="" selected disabled>Select TVL specialization</option>
-                        <option value="ICT">ICT</option>
-                        <option value="Cookery">Cookery</option>
-                        <option value="Home Economics">Home Economics</option>
+                  .review-val {
+                    opacity: .95;
+                    word-break: break-word;
+                  }
+                </style>
+
+                <!-- Stepper -->
+                <div class="stepper">
+                  <div class="dot active" data-dot="0">1</div>
+                  <div class="dot" data-dot="1">2</div>
+                  <div class="dot" data-dot="2">3</div>
+                  <div class="dot" data-dot="3">4</div>
+                </div>
+
+                <!-- ===================== FIRST PAGE ===================== -->
+                <div class="step active" data-step="0">
+                  <fieldset class="form-group">
+                    <legend>Track / Strand</legend>
+
+                    <p class="form-row">
+                      <label>Track</label>
+                      <select id="track" name="track" required>
+                        <option value="">Select</option>
+                        <option value="Academic Track">Academic Track</option>
+                        <option value="TVL Track">Technical-Vocational-Livelihood (TVL) Track</option>
                       </select>
                     </p>
+
+                    <!-- Academic Track Options -->
+                    <div id="academicWrap" style="display:none;">
+                      <p class="form-row">
+                        <label>Academic Strand</label>
+                        <select id="academicStrand" name="academicStrand">
+                          <option value="">Select</option>
+                          <option value="STEM">Science, Technology, Engineering and Mathematics (STEM)</option>
+                          <option value="ABM">Accountancy, Business and Management (ABM)</option>
+                          <option value="HUMSS">Humanities and Social Sciences (HUMSS)</option>
+                          <option value="GAS">General Academic Strand (GAS)</option>
+                        </select>
+                      </p>
+                    </div>
+
+                    <!-- TVL Track Options -->
+                    <div id="tvlWrap" style="display:none;">
+                      <p class="form-row">
+                        <label>TVL Specialization</label>
+                        <select id="tvlSpec" name="tvlSpec">
+                          <option value="">Select</option>
+                          <option value="H.E">Home Economics (H.E)</option>
+                          <option value="ICT">Information and Communication Technology (ICT)</option>
+                        </select>
+                      </p>
+                    </div>
+
+                  </fieldset>
+
+                  <div class="btn-row">
+                    <button type="button" class="btn btn-success" data-next>NEXT STEP</button>
+                    <button type="reset" class="btn btn-light">Clear</button>
                   </div>
+                </div>
 
-                  <p class="form-row">
-                    <label>General Ave</label>
-                    <input name="generalAve" required inputmode="numeric" maxlength="2" pattern="\d{2}"
-                      title="General Ave must only be 2 digits.">
-                  </p>
-                </fieldset>
+                <!-- ===================== SECOND PAGE ===================== -->
+                <div class="step" data-step="1">
+                  <fieldset class="form-group">
+                    <legend>Student Information</legend>
 
-                <!-- ===================== MEDICAL INFO ===================== -->
-                <fieldset class="form-group">
-                  <legend>Medical Information</legend>
+                    <p class="form-row"><label>Surname</label><input name="surname" required></p>
+                    <p class="form-row"><label>Given name</label><input name="givenName" required></p>
+                    <p class="form-row"><label>Middle name</label><input name="middleName" required></p>
 
-                  <p class="form-row" style="margin-bottom:6px;">
-                    <label>Pre-existing medical condition</label>
-                  </p>
+                    <p class="form-row">
+                      <label>LRN No.</label>
+                      <input name="lrn" required inputmode="numeric" maxlength="12" pattern="\d{12}"
+                        title="LRN must be exactly 12 digits.">
+                    </p>
 
-                  <div class="check-grid">
-                    <label style="margin:0;"><input type="checkbox" name="medical[]" value="Heart Ailment"> Heart
-                      Ailment</label>
-                    <label style="margin:0;"><input type="checkbox" name="medical[]" value="Hypertension">
-                      Hypertension</label>
-                    <label style="margin:0;"><input type="checkbox" name="medical[]" value="Asthma"> Asthma</label>
-                    <label style="margin:0;">
-                      <input type="checkbox" id="medOtherChk" name="medical[]" value="Others"> Others (specify):
-                    </label>
+                    <p class="form-row">
+                      <label>Contact No.</label>
+                      <input name="contactNo" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
+                        title="Must start with 09 and be 11 digits (e.g., 09123456789).">
+                    </p>
+
+                    <p class="form-row"><label>School</label><input name="school" required></p>
+
+                    <p class="form-row">
+                      <label>Date of Registration</label>
+                      <input type="date" name="dateRegistration" id="dateRegistration" required>
+                    </p>
+
+                    <p class="form-row"><label>Present address/ Home address</label><input name="address" required></p>
+                    <p class="form-row"><label>Junior highschool from which graduated</label><input name="jhsGraduated"
+                        required></p>
+
+                    <p class="form-row">
+                      <label>Date of graduation</label>
+                      <input type="date" name="dateGraduation" id="dateGraduation">
+                    </p>
+
+                    <p class="form-row">
+                      <label>Sex</label>
+                      <span class="inline-options">
+                        <label style="margin:0;"><input type="radio" name="sex" value="Male" required> Male</label>
+                        <label style="margin:0;"><input type="radio" name="sex" value="Female" required> Female</label>
+                      </span>
+                    </p>
+
+                    <p class="form-row"><label>Nationality</label><input name="nationality" required></p>
+                    <p class="form-row"><label>Civil Status</label><input name="civilStatus" required></p>
+
+                    <p class="form-row">
+                      <label>Date of birth</label>
+                      <input type="date" name="dob" id="dob" required>
+                    </p>
+                  </fieldset>
+
+                  <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" data-back>Back</button>
+                    <button type="button" class="btn btn-success" data-next>NEXT STEP</button>
                   </div>
+                </div>
 
-                  <p class="form-row">
-                    <label>Others, please specify</label>
-                    <input name="medicalOther" id="medicalOther" disabled placeholder="If Others is checked, type here">
-                  </p>
+                <!-- ===================== THIRD PAGE ===================== -->
+                <div class="step" data-step="2">
+                  <fieldset class="form-group">
+                    <legend>Parent / Guardian</legend>
 
-                  <p class="form-row">
-                    <label>How supported</label>
-                    <input name="howSupported" placeholder="e.g., Parents, Scholarship, Working, etc.">
-                  </p>
-                </fieldset>
+                    <p class="form-row"><label>Name of Parents or Guardian</label><input name="guardianName" required>
+                    </p>
+                    <p class="form-row"><label>Relationship</label><input name="relationship" required></p>
+                    <p class="form-row"><label>Address</label><input name="guardianAddress" required></p>
+                    <p class="form-row"><label>Occupation</label><input name="occupation" required></p>
 
-                <!-- ===================== PARENT / GUARDIAN ===================== -->
-                <fieldset class="form-group">
-                  <legend>Parent / Guardian Information</legend>
+                    <p class="form-row"><label>Tel No.</label>
+                      <input name="telNo" inputmode="numeric" maxlength="10" placeholder="Optional landline">
+                    </p>
 
-                  <p class="form-row">
-                    <label>Name of Parents or Guardian</label>
-                    <input name="guardianName" required>
-                  </p>
+                    <p class="form-row">
+                      <label>Cellphone No.</label>
+                      <input name="cellphoneNo" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
+                        title="Must start with 09 and be 11 digits (e.g., 09123456789).">
+                    </p>
 
-                  <p class="form-row">
-                    <label>Civil Status</label>
-                    <input name="guardianCivilStatus">
-                  </p>
+                    <p class="form-row">
+                      <label>Date and kind of credentials submitted</label>
+                      <input name="credentialsSubmitted" required
+                        placeholder="e.g., Form 137, PSA Birth Cert, Good Moral, etc.">
+                    </p>
 
-                  <p class="form-row">
-                    <label>Employment Status</label>
-                    <span class="inline-options">
-                      <label style="margin:0;"><input type="radio" name="guardianEmployment" value="Employed">
-                        Employed</label>
-                      <label style="margin:0;"><input type="radio" name="guardianEmployment" value="Unemployed">
-                        Unemployed</label>
-                    </span>
-                  </p>
+                  </fieldset>
 
-                  <p class="form-row">
-                    <label>Occupation</label>
-                    <input name="guardianOccupation">
-                  </p>
+                  <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" data-back>Back</button>
+                    <button type="button" class="btn btn-success" data-next>DONE</button>
+                  </div>
+                </div>
 
-                  <p class="form-row">
-                    <label>Relationship</label>
-                    <input name="guardianRelationship" required placeholder="e.g., Mother/Father/Guardian">
-                  </p>
+                <!-- ===================== FOURTH PAGE ===================== -->
+                <div class="step" data-step="3">
+                  <fieldset class="form-group">
+                    <legend>Review Form</legend>
+                    <div class="review-box" id="reviewBox"></div>
+                  </fieldset>
 
-                  <p class="form-row">
-                    <label>Tel No.</label>
-                    <input name="guardianTel" inputmode="numeric" maxlength="10" placeholder="Optional landline">
-                  </p>
+                  <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" data-back>Back</button>
+                    <button type="submit" class="btn btn-success">SUBMIT</button>
+                    <button type="reset" class="btn btn-light">Clear</button>
+                  </div>
+                </div>
 
-                  <p class="form-row">
-                    <label>Parent/Guardian Contact (Cellphone)</label>
-                    <input name="guardianContact" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
-                      title="Must start with 09 and be 11 digits (e.g., 09123456789).">
-                  </p>
-                </fieldset>
-
-                <!-- ===================== CREDENTIALS ===================== -->
-                <fieldset class="form-group">
-                  <legend>Credentials Submitted</legend>
-
-                  <p class="form-row">
-                    <label>Date and Kind of credentials submitted</label>
-                    <input name="credentialsSubmitted" placeholder="e.g., Form 137, PSA Birth Cert, Good Moral, etc.">
-                  </p>
-                </fieldset>
-
-                <!-- ===================== STUDENT PLEDGE ===================== -->
-                <fieldset class="form-group">
-                  <legend>Student Pledge</legend>
-
-                  <p class="form-row">
-                    <label>First time to enroll in AU?</label>
-                    <span class="inline-options">
-                      <label style="margin:0;"><input type="radio" name="firstTimeAU" value="Yes" required> Yes</label>
-                      <label style="margin:0;"><input type="radio" name="firstTimeAU" value="No" required> No </label>
-                    </span>
-                  </p>
-
-                  <p class="form-row">
-                    <label>Enrolled Year (if applicable)</label>
-                    <input name="enrolledYear" inputmode="numeric" maxlength="4" pattern="\d{4}"
-                      title="Use 4-digit year (e.g., 2026)." placeholder="e.g., 2026">
-                  </p>
-
-                  <p class="form-row">
-                    <label>Student Signature / Typed Name</label>
-                    <input name="studentSignature" placeholder="Type your full name as signature">
-                  </p>
-                </fieldset>
-
-                <!-- ===================== BUTTONS ===================== -->
-                <p class="center">
-                  <button type="submit" class="btn-success">Submit</button>
-                  <button type="reset">Clear</button>
-                </p>
               </form>
+
+              <p id="Reservation-message"></p>
+
+              <script>
+                const form = document.getElementById('Reservation-form');
+                const steps = Array.from(document.querySelectorAll('.step'));
+                const dots = Array.from(document.querySelectorAll('.stepper .dot'));
+                const reviewBox = document.getElementById('reviewBox');
+                let currentStep = 0;
+
+                function showStep(index) {
+                  currentStep = index;
+                  steps.forEach((s, i) => s.classList.toggle('active', i === index));
+                  dots.forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                    d.classList.toggle('done', i < index);
+                  });
+                  if (index === 3) buildReview();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                function validateStep(index) {
+                  // Ensure track selection requires the correct sub-select
+                  updateTrackUI();
+
+                  const stepEl = steps[index];
+                  const fields = Array.from(stepEl.querySelectorAll('input, select, textarea'));
+                  for (const field of fields) {
+                    if (field.disabled) continue;
+                    if (!field.checkValidity()) {
+                      field.reportValidity();
+                      field.focus();
+                      return false;
+                    }
+                  }
+                  return true;
+                }
+
+                document.addEventListener('click', (e) => {
+                  const nextBtn = e.target.closest('[data-next]');
+                  const backBtn = e.target.closest('[data-back]');
+
+                  if (nextBtn) {
+                    if (!validateStep(currentStep)) return;
+                    showStep(Math.min(currentStep + 1, steps.length - 1));
+                  }
+                  if (backBtn) {
+                    showStep(Math.max(currentStep - 1, 0));
+                  }
+                });
+
+                form.addEventListener('reset', () => {
+                  setTimeout(() => showStep(0), 0);
+                });
+
+                // Date limits
+                const today = new Date().toISOString().split("T")[0];
+                const dob = document.getElementById('dob');
+                const dg = document.getElementById('dateGraduation');
+                const dr = document.getElementById('dateRegistration');
+                if (dob) dob.max = today;
+                if (dg) dg.max = today;
+                if (dr) dr.max = today;
+
+                // Track UI
+                const track = document.getElementById('track');
+                const academicWrap = document.getElementById('academicWrap');
+                const tvlWrap = document.getElementById('tvlWrap');
+                const academicStrand = document.getElementById('academicStrand');
+                const tvlSpec = document.getElementById('tvlSpec');
+
+                function updateTrackUI() {
+                  const isAcademic = track.value === 'Academic Track';
+                  const isTVL = track.value === 'TVL Track';
+
+                  academicWrap.style.display = isAcademic ? 'block' : 'none';
+                  tvlWrap.style.display = isTVL ? 'block' : 'none';
+
+                  // required logic
+                  if (isAcademic) {
+                    academicStrand.setAttribute('required', 'required');
+                    tvlSpec.removeAttribute('required');
+                    tvlSpec.value = '';
+                  } else if (isTVL) {
+                    tvlSpec.setAttribute('required', 'required');
+                    academicStrand.removeAttribute('required');
+                    academicStrand.value = '';
+                  } else {
+                    academicStrand.removeAttribute('required');
+                    tvlSpec.removeAttribute('required');
+                    academicStrand.value = '';
+                    tvlSpec.value = '';
+                  }
+                }
+
+                if (track) track.addEventListener('change', updateTrackUI);
+                updateTrackUI();
+
+                function getRadioValue(name) {
+                  const el = form.querySelector(`input[name="${name}"]:checked`);
+                  return el ? el.value : '';
+                }
+
+                function safeVal(v) {
+                  if (v === null || v === undefined) return '—';
+                  const s = String(v).trim();
+                  return s ? s : '—';
+                }
+
+                function buildReview() {
+                  const pickedTrack = track.value;
+                  const pickedStrand = (pickedTrack === 'Academic Track')
+                    ? academicStrand.value
+                    : (pickedTrack === 'TVL Track' ? tvlSpec.value : '');
+
+                  const data = [
+                    ["Track", safeVal(pickedTrack)],
+                    ["Strand / Specialization", safeVal(pickedStrand)],
+
+                    ["Surname", safeVal(form.surname?.value)],
+                    ["Given name", safeVal(form.givenName?.value)],
+                    ["Middle name", safeVal(form.middleName?.value)],
+                    ["LRN No.", safeVal(form.lrn?.value)],
+                    ["Contact No.", safeVal(form.contactNo?.value)],
+                    ["School", safeVal(form.school?.value)],
+                    ["Date of Registration", safeVal(form.dateRegistration?.value)],
+
+                    ["Present/Home address", safeVal(form.address?.value)],
+                    ["JHS graduated", safeVal(form.jhsGraduated?.value)],
+                    ["Date of graduation", safeVal(form.dateGraduation?.value)],
+                    ["Sex", safeVal(getRadioValue("sex"))],
+                    ["Nationality", safeVal(form.nationality?.value)],
+                    ["Civil Status", safeVal(form.civilStatus?.value)],
+                    ["Date of birth", safeVal(form.dob?.value)],
+
+                    ["Parent/Guardian Name", safeVal(form.guardianName?.value)],
+                    ["Relationship", safeVal(form.relationship?.value)],
+                    ["Parent/Guardian Address", safeVal(form.guardianAddress?.value)],
+                    ["Occupation", safeVal(form.occupation?.value)],
+                    ["Tel No.", safeVal(form.telNo?.value)],
+                    ["Cellphone No.", safeVal(form.cellphoneNo?.value)],
+                    ["Credentials submitted", safeVal(form.credentialsSubmitted?.value)],
+                  ];
+
+                  reviewBox.innerHTML = data.map(([k, v]) => `
+      <div class="review-item">
+        <div class="review-key">${k}</div>
+        <div class="review-val">${v}</div>
+      </div>
+    `).join("");
+                }
+
+                // stop submit if invalid on last step
+                form.addEventListener('submit', (e) => {
+                  if (!validateStep(currentStep)) {
+                    e.preventDefault();
+                    return;
+                  }
+                  // Optional message
+                  const msg = document.getElementById('Reservation-message');
+                  if (msg) msg.textContent = "Submitting...";
+                });
+
+                showStep(0);
+              </script>
+
+
+              <p id="Reservation-message"></p>
+
+              <script>
+                // =========================
+                // Helpers
+                // =========================
+                const form = document.getElementById('Reservation-form');
+                const steps = Array.from(document.querySelectorAll('.step'));
+                const dots = Array.from(document.querySelectorAll('.stepper .dot'));
+                const reviewBox = document.getElementById('reviewBox');
+
+                let currentStep = 0;
+
+                function showStep(index) {
+                  currentStep = index;
+
+                  steps.forEach((s, i) => s.classList.toggle('active', i === index));
+
+                  dots.forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                    d.classList.toggle('done', i < index);
+                  });
+
+                  // build review when entering last step
+                  if (index === 3) buildReview();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                function validateStep(index) {
+                  // validate only inputs/selects inside current step
+                  const stepEl = steps[index];
+                  const fields = Array.from(stepEl.querySelectorAll('input, select, textarea'));
+
+                  // Special: if TVL not selected, remove required on tvlSpec
+                  updateTVL();
+
+                  for (const field of fields) {
+                    // skip disabled
+                    if (field.disabled) continue;
+
+                    // use native validation
+                    if (!field.checkValidity()) {
+                      field.reportValidity();
+                      field.focus();
+                      return false;
+                    }
+                  }
+                  return true;
+                }
+
+                // Next/Back buttons
+                document.addEventListener('click', (e) => {
+                  const nextBtn = e.target.closest('[data-next]');
+                  const backBtn = e.target.closest('[data-back]');
+
+                  if (nextBtn) {
+                    if (!validateStep(currentStep)) return;
+                    showStep(Math.min(currentStep + 1, steps.length - 1));
+                  }
+
+                  if (backBtn) {
+                    showStep(Math.max(currentStep - 1, 0));
+                  }
+                });
+
+                // Prevent submit if last step invalid
+                form.addEventListener('submit', (e) => {
+                  if (!validateStep(currentStep)) {
+                    e.preventDefault();
+                    return;
+                  }
+                  // Optional: show message (remove if you submit to backend)
+                  const msg = document.getElementById('Reservation-message');
+                  if (msg) msg.textContent = "Submitting...";
+
+                  // If you will post to Flask, keep default submit behavior
+                  // If you want AJAX, prevent default and send fetch().
+                });
+
+                // Reset returns to step 1
+                form.addEventListener('reset', () => {
+                  setTimeout(() => showStep(0), 0);
+                });
+
+                // =========================
+                // Existing logic kept
+                // =========================
+
+                // DOB max = today
+                const dob = document.getElementById('dob');
+                if (dob) dob.max = new Date().toISOString().split("T")[0];
+
+                // Date graduation max = today
+                const dg = document.getElementById('dateGraduation');
+                if (dg) dg.max = new Date().toISOString().split("T")[0];
+
+                // TVL specialization show/hide
+                const strand = document.getElementById('strand');
+                const tvlWrap = document.getElementById('tvlWrap');
+                const tvlSpec = document.getElementById('tvlSpec');
+
+                function updateTVL() {
+                  if (!strand || !tvlWrap || !tvlSpec) return;
+
+                  const isTVL = strand.value === 'TVL';
+                  tvlWrap.style.display = isTVL ? 'block' : 'none';
+
+                  if (!isTVL) {
+                    tvlSpec.value = '';
+                    tvlSpec.removeAttribute('required');
+                  } else {
+                    tvlSpec.setAttribute('required', 'required');
+                  }
+                }
+                if (strand) {
+                  strand.addEventListener('change', updateTVL);
+                  updateTVL();
+                }
+
+                // Medical "Others" enable/disable
+                const medOtherChk = document.getElementById('medOtherChk');
+                const medicalOther = document.getElementById('medicalOther');
+
+                function updateMedicalOther() {
+                  if (!medOtherChk || !medicalOther) return;
+                  const enabled = medOtherChk.checked;
+                  medicalOther.disabled = !enabled;
+                  if (!enabled) medicalOther.value = '';
+                }
+                if (medOtherChk) {
+                  medOtherChk.addEventListener('change', updateMedicalOther);
+                  updateMedicalOther();
+                }
+
+                // =========================
+                // Review builder
+                // =========================
+                function getRadioValue(name) {
+                  const el = form.querySelector(`input[name="${name}"]:checked`);
+                  return el ? el.value : '';
+                }
+
+                function getMedicalValues() {
+                  const checked = Array.from(form.querySelectorAll('input[name="medical[]"]:checked'))
+                    .map(x => x.value);
+                  // If Others checked, append the typed value
+                  if (checked.includes('Others') && medicalOther && medicalOther.value.trim()) {
+                    return checked.map(v => v === 'Others' ? `Others: ${medicalOther.value.trim()}` : v);
+                  }
+                  return checked;
+                }
+
+                function safeVal(v) {
+                  if (v === null || v === undefined) return '';
+                  const s = String(v).trim();
+                  return s ? s : '—';
+                }
+
+                function buildReview() {
+                  const data = [
+                    ["Full Name", form.fullName?.value],
+                    ["LRN", form.lrn?.value],
+                    ["Date of Birth", form.dob?.value],
+                    ["Place of Birth", form.pob?.value],
+                    ["Address", form.address?.value],
+                    ["Sex", getRadioValue("sex")],
+                    ["Nationality", form.nationality?.value],
+                    ["Email", form.email?.value],
+                    ["Contact Number", form.contact?.value],
+
+                    ["JHS Graduated", form.jhsGraduated?.value],
+                    ["Date of Graduation", form.dateGraduation?.value],
+
+                    ["Grade Level", form.gradeLevel?.value],
+                    ["Strand", form.strand?.value],
+                    ["TVL Specialization", form.tvlSpec?.value],
+                    ["General Ave", form.generalAve?.value],
+
+                    ["Medical Conditions", getMedicalValues().join(", ") || "—"],
+                    ["How Supported", form.howSupported?.value],
+
+                    ["Guardian Name", form.guardianName?.value],
+                    ["Guardian Civil Status", form.guardianCivilStatus?.value],
+                    ["Guardian Employment", getRadioValue("guardianEmployment")],
+                    ["Guardian Occupation", form.guardianOccupation?.value],
+                    ["Relationship", form.guardianRelationship?.value],
+                    ["Guardian Tel", form.guardianTel?.value],
+                    ["Guardian Contact", form.guardianContact?.value],
+
+                    ["Credentials Submitted", form.credentialsSubmitted?.value],
+
+                    ["First time in AU", getRadioValue("firstTimeAU")],
+                    ["Enrolled Year", form.enrolledYear?.value],
+                    ["Student Signature", form.studentSignature?.value],
+                  ];
+
+                  reviewBox.innerHTML = data.map(([k, v]) => `
+      <div class="review-item">
+        <div class="review-key">${k}</div>
+        <div class="review-val">${safeVal(v)}</div>
+      </div>
+    `).join("");
+                }
+
+                // init
+                showStep(0);
+              </script>
+
 
               <p id="Reservation-message"></p>
 
