@@ -10,6 +10,14 @@ print(">>> USING DB:", DB_PATH)
 def home():
     return render_template("index.html")
 
+@app.get("/enroll")
+def enroll_now():
+    return render_template("enroll.html")
+
+@app.get("/requirements")
+def requirements():
+    return render_template("requirements.html")
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
