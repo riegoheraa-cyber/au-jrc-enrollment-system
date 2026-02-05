@@ -18,6 +18,10 @@ def enroll_now():
 def requirements():
     return render_template("requirements.html")
 
+@app.get("/admin")
+def admin_dashboard():
+    return render_template("admin.html")
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
