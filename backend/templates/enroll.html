@@ -81,6 +81,7 @@ https://templatemo.com/tm-586-scholar
                 </div>
               </li>
               <li class="scroll-to-section"><a href="/#about-us">About Us</a></li>
+              <li class="scroll-to-section"><a href="/admin">Admin</a></li>
               <li class="scroll-to-section"><a href="/enroll" class="register-now">Enroll Now</a></li>
             </ul>
             <a class='menu-trigger'>
@@ -303,6 +304,21 @@ https://templatemo.com/tm-586-scholar
                       </select>
                     </p>
 
+                    <p class="form-row">
+                      <label>Grade Level</label>
+                      <select name="gradeLevel" required>
+                        <option value="">Select</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                      </select>
+                    </p>
+
+                    <p class="form-row">
+                      <label>General Average</label>
+                      <input name="generalAve" required inputmode="decimal" pattern="^(100|[0-9]{1,2})(\.[0-9]{1,2})?$"
+                        title="Enter a valid average (e.g., 85 or 89.5).">
+                    </p>
+
                     <!-- Academic Track Options -->
                     <div id="academicWrap" style="display:none;">
                       <p class="form-row">
@@ -409,7 +425,8 @@ https://templatemo.com/tm-586-scholar
                     <p class="form-row"><label>Occupation</label><input name="occupation" required></p>
 
                     <p class="form-row"><label>Tel No.</label>
-                      <input name="telNo" inputmode="numeric" maxlength="10" placeholder="Optional landline">
+                      <input name="telNo" inputmode="numeric" maxlength="10" pattern="\d{7,10}"
+                        title="Telephone number must contain 7 to 10 digits only." placeholder="Optional landline">
                     </p>
 
                     <p class="form-row">
