@@ -18,6 +18,10 @@ def enroll_now():
 def requirements():
     return render_template("requirements.html")
 
+@app.get("/admin")
+def admin_dashboard():
+    return render_template("admin.html")
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
@@ -37,8 +41,11 @@ def enroll():
     fullName = str(data["fullName"]).strip()
 
     email = (data.get("email") or "").strip() or None
-    contact = (data.get("contact") or "").strip() or None
+    contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
     address = (data.get("address") or "").strip() or None
+
+    if contact and (not contact.isdigit() or len(contact) != 11):
+        return jsonify({"ok": False, "error": "Contact number must be exactly 11 digits."}), 400
 
     # --- Extra student info (optional but in your form) ---
     dob = (data.get("dob") or "").strip() or None
@@ -74,8 +81,14 @@ def enroll():
     guardianEmployment = (data.get("guardianEmployment") or "").strip() or None
     guardianOccupation = (data.get("guardianOccupation") or "").strip() or None
     guardianRelationship = (data.get("guardianRelationship") or "").strip() or None
-    guardianTel = (data.get("guardianTel") or "").strip() or None
-    guardianContact = (data.get("guardianContact") or "").strip() or None
+    guardianTel = (data.get("guardianTel") or data.get("telNo") or "").strip() or None
+    guardianContact = (data.get("guardianContact") or data.get("cellphoneNo") or "").strip() or None
+
+    if guardianTel and (not guardianTel.isdigit()):
+        return jsonify({"ok": False, "error": "Telephone number must contain digits only."}), 400
+
+    if guardianContact and (not guardianContact.isdigit() or len(guardianContact) != 11):
+        return jsonify({"ok": False, "error": "Guardian cellphone number must be exactly 11 digits."}), 400
 
     # --- Credentials + pledge ---
     credentialsSubmitted = (data.get("credentialsSubmitted") or "").strip() or None
