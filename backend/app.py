@@ -197,4 +197,4 @@ def update_status(app_id: int):
     return jsonify({"ok": True})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
