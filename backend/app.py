@@ -51,7 +51,7 @@ def enroll():
     if not fullName:
         fullName = " ".join(filter(None, [pick("surname"), pick("givenName"), pick("middleName")]))
 
-    gradeLevel = pick("gradeLevel", "yearLevel")
+    gradeLevel = pick("gradeLevel", "yearLevel") or "N/A"
     generalAve = pick("generalAve", "generalAverage")
 
     track = pick("track")
@@ -65,8 +65,6 @@ def enroll():
     required = {
         "lrn": lrn,
         "fullName": fullName,
-        "gradeLevel": gradeLevel,
-        "generalAve": generalAve,
     }
     missing = [k for k, v in required.items() if not v]
     if missing:
