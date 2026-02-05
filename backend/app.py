@@ -18,6 +18,10 @@ def enroll_now():
 def requirements():
     return render_template("requirements.html")
 
+@app.get("/admin")
+def admin_dashboard():
+    return render_template("admin.html")
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
@@ -26,19 +30,54 @@ def health():
 def enroll():
     data = request.get_json(force=True) or {}
 
-    # Minimal required fields (adjust to your form)
-    required = ["lrn", "fullName", "gradeLevel", "generalAve"]
-    missing = [k for k in required if not str(data.get(k, "")).strip()]
+    def clean(v):
+        if v is None:
+            return ""
+        s = str(v).strip()
+        if s.lower() in {"", "none", "null", "undefined"}:
+            return ""
+        return s
+
+    def pick(*keys):
+        for key in keys:
+            v = clean(data.get(key))
+            if v:
+                return v
+        return ""
+
+    # Normalize payload aliases coming from different frontend versions
+    lrn = pick("lrn")
+    fullName = pick("fullName")
+    if not fullName:
+        fullName = " ".join(filter(None, [pick("surname"), pick("givenName"), pick("middleName")]))
+
+    gradeLevel = pick("gradeLevel", "yearLevel") or "N/A"
+    generalAve = pick("generalAve", "generalAverage")
+
+    track = pick("track")
+    strand = pick("strand")
+    if not strand and track == "Academic Track":
+        strand = pick("academicStrand")
+    elif not strand and track == "TVL Track":
+        strand = "TVL"
+
+    # Minimal required fields
+    required = {
+        "lrn": lrn,
+        "fullName": fullName,
+    }
+    missing = [k for k, v in required.items() if not v]
     if missing:
         return jsonify({"ok": False, "error": f"Missing: {', '.join(missing)}"}), 400
 
     # --- Student core ---
-    lrn = str(data["lrn"]).strip()
-    fullName = str(data["fullName"]).strip()
 
     email = (data.get("email") or "").strip() or None
-    contact = (data.get("contact") or "").strip() or None
+    contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
     address = (data.get("address") or "").strip() or None
+
+    if contact and (not contact.isdigit() or len(contact) != 11):
+        return jsonify({"ok": False, "error": "Contact number must be exactly 11 digits."}), 400
 
     # --- Extra student info (optional but in your form) ---
     dob = (data.get("dob") or "").strip() or None
@@ -51,14 +90,13 @@ def enroll():
     dateGraduation = (data.get("dateGraduation") or "").strip() or None
 
     # --- Enrollment details ---
-    gradeLevel = str(data["gradeLevel"]).strip()
-    strand = (data.get("strand") or "").strip() or None
+    strand = strand or None
 
     tvlSpec = (data.get("tvlSpec") or "").strip() or None
     if strand == "TVL" and not tvlSpec:
         return jsonify({"ok": False, "error": "TVL specialization is required"}), 400
 
-    generalAve = str(data["generalAve"]).strip()
+    generalAve = generalAve
 
     # --- Medical ---
     medicalConditions = data.get("medicalConditions") or []
@@ -74,8 +112,14 @@ def enroll():
     guardianEmployment = (data.get("guardianEmployment") or "").strip() or None
     guardianOccupation = (data.get("guardianOccupation") or "").strip() or None
     guardianRelationship = (data.get("guardianRelationship") or "").strip() or None
-    guardianTel = (data.get("guardianTel") or "").strip() or None
-    guardianContact = (data.get("guardianContact") or "").strip() or None
+    guardianTel = (data.get("guardianTel") or data.get("telNo") or "").strip() or None
+    guardianContact = (data.get("guardianContact") or data.get("cellphoneNo") or "").strip() or None
+
+    if guardianTel and (not guardianTel.isdigit()):
+        return jsonify({"ok": False, "error": "Telephone number must contain digits only."}), 400
+
+    if guardianContact and (not guardianContact.isdigit() or len(guardianContact) != 11):
+        return jsonify({"ok": False, "error": "Guardian cellphone number must be exactly 11 digits."}), 400
 
     # --- Credentials + pledge ---
     credentialsSubmitted = (data.get("credentialsSubmitted") or "").strip() or None

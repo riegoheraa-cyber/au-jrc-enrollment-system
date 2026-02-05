@@ -81,6 +81,7 @@ https://templatemo.com/tm-586-scholar
                 </div>
               </li>
               <li class="scroll-to-section"><a href="/#about-us">About Us</a></li>
+              <li class="scroll-to-section"><a href="/admin">Admin</a></li>
               <li class="scroll-to-section"><a href="/enroll" class="register-now">Enroll Now</a></li>
             </ul>
             <a class='menu-trigger'>
@@ -409,7 +410,8 @@ https://templatemo.com/tm-586-scholar
                     <p class="form-row"><label>Occupation</label><input name="occupation" required></p>
 
                     <p class="form-row"><label>Tel No.</label>
-                      <input name="telNo" inputmode="numeric" maxlength="10" placeholder="Optional landline">
+                      <input name="telNo" inputmode="numeric" maxlength="10" pattern="\d{7,10}"
+                        title="Telephone number must contain 7 to 10 digits only." placeholder="Optional landline">
                     </p>
 
                     <p class="form-row">
@@ -787,10 +789,8 @@ https://templatemo.com/tm-586-scholar
                     ["JHS Graduated", form.jhsGraduated?.value],
                     ["Date of Graduation", form.dateGraduation?.value],
 
-                    ["Grade Level", form.gradeLevel?.value],
                     ["Strand", form.strand?.value],
                     ["TVL Specialization", form.tvlSpec?.value],
-                    ["General Ave", form.generalAve?.value],
 
                     ["Medical Conditions", getMedicalValues().join(", ") || "—"],
                     ["How Supported", form.howSupported?.value],
