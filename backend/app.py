@@ -30,23 +30,15 @@ def health():
 def enroll():
     data = request.get_json(force=True) or {}
 
-    def clean(v):
-        if v is None:
-            return ""
-        s = str(v).strip()
-        if s.lower() in {"", "none", "null", "undefined"}:
-            return ""
-        return s
-
     # Minimal required fields (adjust to your form)
     required = ["lrn", "fullName", "gradeLevel", "generalAve"]
-    missing = [k for k in required if not clean(data.get(k))]
+    missing = [k for k in required if not str(data.get(k, "")).strip()]
     if missing:
         return jsonify({"ok": False, "error": f"Missing: {', '.join(missing)}"}), 400
 
     # --- Student core ---
-    lrn = clean(data["lrn"])
-    fullName = clean(data["fullName"])
+    lrn = str(data["lrn"]).strip()
+    fullName = str(data["fullName"]).strip()
 
     email = (data.get("email") or "").strip() or None
     contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
@@ -66,14 +58,14 @@ def enroll():
     dateGraduation = (data.get("dateGraduation") or "").strip() or None
 
     # --- Enrollment details ---
-    gradeLevel = clean(data["gradeLevel"])
+    gradeLevel = str(data["gradeLevel"]).strip()
     strand = (data.get("strand") or "").strip() or None
 
     tvlSpec = (data.get("tvlSpec") or "").strip() or None
     if strand == "TVL" and not tvlSpec:
         return jsonify({"ok": False, "error": "TVL specialization is required"}), 400
 
-    generalAve = clean(data["generalAve"])
+    generalAve = str(data["generalAve"]).strip()
 
     # --- Medical ---
     medicalConditions = data.get("medicalConditions") or []

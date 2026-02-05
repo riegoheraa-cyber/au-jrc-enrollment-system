@@ -1,4 +1,4 @@
-const API_BASE = ""; // use same-origin backend
+const API_BASE = "https://ommatophorous-ryder-prepotently.ngrok-free.dev/"; // backend URL
 
 // ---------- BASIC PAGE SWITCHING ----------
 const pages = document.querySelectorAll('.page');
@@ -52,77 +52,84 @@ function initContent() {
 const ReservationForm = document.getElementById('Reservation-form');
 const ReservationMsg = document.getElementById('Reservation-message');
 
-if (ReservationForm) {
-    ReservationForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
+ReservationForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-        const data = new FormData(ReservationForm);
-        const fullName = [data.get('surname'), data.get('givenName'), data.get('middleName')]
-            .map(v => (v || '').trim())
-            .filter(Boolean)
-            .join(' ');
+    const data = new FormData(ReservationForm);
+    console.log('data==', data);
+    const reservation = {
+        // Student Information
+        fullName: data.get('fullName'),
+        lrn: data.get('lrn'),
+        dob: data.get('dob'),
+        pob: data.get('pob'),
+        address: data.get('address'),
+        sex: data.get('sex'),
+        nationality: data.get('nationality'),
+        email: data.get('email'),
+        contact: data.get('contact'),
+      
+        // School History
+        jhsGraduated: data.get('jhsGraduated'),
+        dateGraduation: data.get('dateGraduation'),
+      
+        // Enrollment Details
+        gradeLevel: data.get('gradeLevel'),
+        strand: data.get('strand'),
+        tvlSpec: data.get('tvlSpec'), // null if not TVL
+        generalAve: data.get('generalAve'),
+      
+        // Medical Information
+        medicalConditions: data.getAll('medical[]'), // ARRAY
+        medicalOther: data.get('medicalOther'),
+        howSupported: data.get('howSupported'),
+      
+        // Parent / Guardian
+        guardianName: data.get('guardianName'),
+        guardianCivilStatus: data.get('guardianCivilStatus'),
+        guardianEmployment: data.get('guardianEmployment'),
+        guardianOccupation: data.get('guardianOccupation'),
+        guardianRelationship: data.get('guardianRelationship'),
+        guardianTel: data.get('guardianTel'),
+        guardianContact: data.get('guardianContact'),
+      
+        // Credentials
+        credentialsSubmitted: data.get('credentialsSubmitted'),
+      
+        // Student Pledge
+        firstTimeAU: data.get('firstTimeAU'),
+        enrolledYear: data.get('enrolledYear'),
+        studentSignature: data.get('studentSignature')
+    };
+      
+    
 
-        const track = data.get('track');
-        const strand = track === 'Academic Track' ? data.get('academicStrand') : (track === 'TVL Track' ? 'TVL' : '');
+    const Reservations = getStored('Reservations', []);
+    Reservations.push(reservation);
+    setStored('Reservations', Reservations);
 
-        const reservation = {
-            fullName,
-            lrn: data.get('lrn'),
-            dob: data.get('dob'),
-            pob: data.get('pob'),
-            address: data.get('address'),
-            sex: data.get('sex'),
-            nationality: data.get('nationality'),
-            email: data.get('email'),
-            contactNo: data.get('contactNo'),
-
-            jhsGraduated: data.get('jhsGraduated'),
-            dateGraduation: data.get('dateGraduation'),
-
-            gradeLevel: data.get('gradeLevel'),
-            strand,
-            tvlSpec: data.get('tvlSpec'),
-            generalAve: data.get('generalAve'),
-
-            medicalConditions: data.getAll('medical[]'),
-            medicalOther: data.get('medicalOther'),
-            howSupported: data.get('howSupported'),
-
-            guardianName: data.get('guardianName'),
-            guardianRelationship: data.get('relationship'),
-            guardianOccupation: data.get('occupation'),
-            telNo: data.get('telNo'),
-            cellphoneNo: data.get('cellphoneNo'),
-
-            credentialsSubmitted: data.get('credentialsSubmitted')
-        };
-
-        const Reservations = getStored('Reservations', []);
-        Reservations.push({ ...reservation, submittedAt: new Date().toISOString() });
-        setStored('Reservations', Reservations);
-
-        try {
-            const res = await fetch(`${API_BASE}/api/enroll`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(reservation),
-            });
-
-            const payload = await res.json();
-
-            if (!res.ok || !payload.ok) {
-                throw new Error(payload.error || "Submit failed");
-            }
-
-            alert(`Submitted! Application ID: ${payload.application_id}`);
-            e.target.reset();
-            if (ReservationMsg) ReservationMsg.textContent = "Reservation submitted successfully.";
-        } catch (err) {
-            alert("Error: " + err.message);
-            if (ReservationMsg) ReservationMsg.textContent = "Submission failed.";
+    try {
+        const res = await fetch(`${API_BASE}/api/enroll`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reservation),
+        });
+    
+        const data = await res.json();
+    
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Submit failed");
         }
-    });
-}
+    
+        alert(`Submitted! Application ID: ${data.application_id}`);
+        e.target.reset();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+
+    ReservationMsg.textContent = "Reservation submitted successfully.";
+    // ReservationForm.reset();
+});
 
 // ---------- ADMIN LOGIN ----------
 // const adminLoginForm = document.getElementById('admin-login-form');
