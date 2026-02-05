@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Admin Login</title>
+
+  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/assets/css/fontawesome.css">
+  <link rel="stylesheet" href="../static/assets/css/templatemo-scholar.css">
+
+  <style>
+    body { font-family: "Poppins", sans-serif; background: #f6f7fb; }
+    .login-wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .card-login { width: 100%; max-width: 430px; border: 0; border-radius: 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+    .card-login .card-body { padding: 28px; }
+    .brand-title { font-weight: 700; margin-bottom: 8px; }
+  </style>
+</head>
+
+<body>
+  <main class="login-wrap">
+    <div class="card card-login">
+      <div class="card-body">
+        <h4 class="brand-title">Admin Login</h4>
+        <p class="text-muted mb-4">Please log in to view the admin dashboard.</p>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('admin_login_submit', next=request.args.get('next')) }}" method="post">
+          <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+          <div class="form-group mb-3">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" required autofocus>
+          </div>
+          <div class="form-group mb-4">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Log in</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
