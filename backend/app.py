@@ -18,6 +18,10 @@ def enroll_now():
 def requirements():
     return render_template("requirements.html")
 
+@app.get("/admin")
+def admin_dashboard():
+    return render_template("admin.html")
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
@@ -26,19 +30,30 @@ def health():
 def enroll():
     data = request.get_json(force=True) or {}
 
+    def clean(v):
+        if v is None:
+            return ""
+        s = str(v).strip()
+        if s.lower() in {"", "none", "null", "undefined"}:
+            return ""
+        return s
+
     # Minimal required fields (adjust to your form)
     required = ["lrn", "fullName", "gradeLevel", "generalAve"]
-    missing = [k for k in required if not str(data.get(k, "")).strip()]
+    missing = [k for k in required if not clean(data.get(k))]
     if missing:
         return jsonify({"ok": False, "error": f"Missing: {', '.join(missing)}"}), 400
 
     # --- Student core ---
-    lrn = str(data["lrn"]).strip()
-    fullName = str(data["fullName"]).strip()
+    lrn = clean(data["lrn"])
+    fullName = clean(data["fullName"])
 
     email = (data.get("email") or "").strip() or None
-    contact = (data.get("contact") or "").strip() or None
+    contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
     address = (data.get("address") or "").strip() or None
+
+    if contact and (not contact.isdigit() or len(contact) != 11):
+        return jsonify({"ok": False, "error": "Contact number must be exactly 11 digits."}), 400
 
     # --- Extra student info (optional but in your form) ---
     dob = (data.get("dob") or "").strip() or None
@@ -51,14 +66,14 @@ def enroll():
     dateGraduation = (data.get("dateGraduation") or "").strip() or None
 
     # --- Enrollment details ---
-    gradeLevel = str(data["gradeLevel"]).strip()
+    gradeLevel = clean(data["gradeLevel"])
     strand = (data.get("strand") or "").strip() or None
 
     tvlSpec = (data.get("tvlSpec") or "").strip() or None
     if strand == "TVL" and not tvlSpec:
         return jsonify({"ok": False, "error": "TVL specialization is required"}), 400
 
-    generalAve = str(data["generalAve"]).strip()
+    generalAve = clean(data["generalAve"])
 
     # --- Medical ---
     medicalConditions = data.get("medicalConditions") or []
@@ -74,8 +89,14 @@ def enroll():
     guardianEmployment = (data.get("guardianEmployment") or "").strip() or None
     guardianOccupation = (data.get("guardianOccupation") or "").strip() or None
     guardianRelationship = (data.get("guardianRelationship") or "").strip() or None
-    guardianTel = (data.get("guardianTel") or "").strip() or None
-    guardianContact = (data.get("guardianContact") or "").strip() or None
+    guardianTel = (data.get("guardianTel") or data.get("telNo") or "").strip() or None
+    guardianContact = (data.get("guardianContact") or data.get("cellphoneNo") or "").strip() or None
+
+    if guardianTel and (not guardianTel.isdigit()):
+        return jsonify({"ok": False, "error": "Telephone number must contain digits only."}), 400
+
+    if guardianContact and (not guardianContact.isdigit() or len(guardianContact) != 11):
+        return jsonify({"ok": False, "error": "Guardian cellphone number must be exactly 11 digits."}), 400
 
     # --- Credentials + pledge ---
     credentialsSubmitted = (data.get("credentialsSubmitted") or "").strip() or None
