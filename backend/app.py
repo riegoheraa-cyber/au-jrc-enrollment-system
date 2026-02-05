@@ -1,8 +1,27 @@
-from flask import Flask, request, jsonify, render_template
+import os
+from functools import wraps
+from flask import Flask, request, jsonify, render_template, redirect, session, url_for
 import json
 from db import DB_PATH, get_conn, init_db
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-admin-secret-change-me")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not session.get("admin_logged_in"):
+            if request.path.startswith("/api/"):
+                return jsonify({"ok": False, "error": "Authentication required"}), 401
+            return redirect(url_for("admin_login", next=request.path))
+        return view(*args, **kwargs)
+
+    return wrapped_view
+
+
 init_db()
 print(">>> USING DB:", DB_PATH)
 
@@ -18,7 +37,36 @@ def enroll_now():
 def requirements():
     return render_template("requirements.html")
 
+@app.get("/admin/login")
+def admin_login():
+    if session.get("admin_logged_in"):
+        return redirect(url_for("admin_dashboard"))
+    return render_template("admin_login.html", error=None)
+
+
+@app.post("/admin/login")
+def admin_login_submit():
+    username = (request.form.get("username") or "").strip()
+    password = request.form.get("password") or ""
+
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        session["admin_logged_in"] = True
+        next_url = (request.form.get("next") or request.args.get("next") or url_for("admin_dashboard")).strip()
+        if not next_url.startswith("/"):
+            next_url = url_for("admin_dashboard")
+        return redirect(next_url)
+
+    return render_template("admin_login.html", error="Invalid admin username or password."), 401
+
+
+@app.post("/admin/logout")
+def admin_logout():
+    session.clear()
+    return redirect(url_for("admin_login"))
+
+
 @app.get("/admin")
+@login_required
 def admin_dashboard():
     return render_template("admin.html")
 
@@ -199,6 +247,7 @@ def enroll():
     return jsonify({"ok": True, "application_id": application_id})
 
 @app.get("/api/applications")
+@login_required
 def list_applications():
     status = request.args.get("status")  # optional filter
 
@@ -225,6 +274,7 @@ def list_applications():
     return jsonify({"ok": True, "items": items})
 
 @app.patch("/api/applications/<int:app_id>/status")
+@login_required
 def update_status(app_id: int):
     data = request.get_json(force=True) or {}
     new_status = (data.get("status") or "").strip()
