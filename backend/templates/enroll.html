@@ -527,14 +527,26 @@ https://templatemo.com/tm-586-scholar
                   });
                 });
 
+                let resetByClearButton = false;
+                const resetButtons = form.querySelectorAll('button[type="reset"], input[type="reset"]');
+                resetButtons.forEach((button) => {
+                  button.addEventListener('click', () => {
+                    resetByClearButton = true;
+                  });
+                });
+
                 form.addEventListener('reset', (e) => {
-                  const ok = window.confirm(
-                    "Are you sure you want to clear the form? All entered data will be lost."
-                  );
-                  if (!ok) {
-                    e.preventDefault();
-                    return;
+                  if (resetByClearButton) {
+                    const ok = window.confirm(
+                      "Are you sure you want to clear the form? All entered data will be lost."
+                    );
+                    if (!ok) {
+                      e.preventDefault();
+                      resetByClearButton = false;
+                      return;
+                    }
                   }
+                  resetByClearButton = false;
                   setTimeout(() => showStep(0), 0);
                 });
 
