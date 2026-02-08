@@ -346,11 +346,13 @@ https://templatemo.com/tm-586-scholar
                     <legend>Student Information</legend>
 
                     <p class="form-row"><label>Surname</label><input name="surname" required
-                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
+                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
                     <p class="form-row"><label>Given name</label><input name="givenName" required
-                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
+                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
                     <p class="form-row"><label>Middle name</label><input name="middleName" required
-                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
+                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
+                    <p class="form-row"><label>Suffix</label><input name="suffix"
+                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
 
                     <p class="form-row">
                       <label>LRN No.</label>
@@ -523,7 +525,7 @@ https://templatemo.com/tm-586-scholar
                 const letterOnlyFields = form.querySelectorAll('[data-letters-only]');
                 letterOnlyFields.forEach((field) => {
                   field.addEventListener('input', () => {
-                    field.value = field.value.replace(/[^A-Za-z\\s]/g, '');
+                    field.value = field.value.replace(/[^A-Za-z]/g, '');
                   });
                 });
 
@@ -617,6 +619,7 @@ https://templatemo.com/tm-586-scholar
                     ["Surname", safeVal(form.surname?.value)],
                     ["Given name", safeVal(form.givenName?.value)],
                     ["Middle name", safeVal(form.middleName?.value)],
+                    ["Suffix", safeVal(form.suffix?.value)],
                     ["LRN No.", safeVal(form.lrn?.value)],
                     ["Contact No.", safeVal(form.contactNo?.value)],
                     ["Email Address", safeVal(form.gmail?.value)],
