@@ -346,13 +346,13 @@ https://templatemo.com/tm-586-scholar
                     <legend>Student Information</legend>
 
                     <p class="form-row"><label>Surname</label><input name="surname" required
-                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
                     <p class="form-row"><label>Given name</label><input name="givenName" required
-                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
                     <p class="form-row"><label>Middle name</label><input name="middleName" required
-                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
                     <p class="form-row"><label>Suffix</label><input name="suffix"
-                        pattern="[A-Za-z]+" title="Letters only." data-letters-only></p>
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
 
                     <p class="form-row">
                       <label>LRN No.</label>
@@ -525,7 +525,8 @@ https://templatemo.com/tm-586-scholar
                 const letterOnlyFields = form.querySelectorAll('[data-letters-only]');
                 letterOnlyFields.forEach((field) => {
                   field.addEventListener('input', () => {
-                    field.value = field.value.replace(/[^A-Za-z]/g, '');
+                    const sanitized = field.value.replace(/[^A-Za-z\\s]/g, '');
+                    field.value = sanitized.replace(/\\s+/g, ' ');
                   });
                 });
 
