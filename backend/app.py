@@ -178,29 +178,24 @@ def enroll():
     with get_conn() as conn:
         cur = conn.cursor()
         try:
-            # Upsert student by LRN
+            # Insert student by LRN (do not update existing records)
+            cur.execute("SELECT id FROM students WHERE lrn = ?", (lrn,))
+            existing = cur.fetchone()
+            if existing:
+                return jsonify({"ok": False, "error": "LRN already exists."}), 409
+
             cur.execute("""
                 INSERT INTO students (
                     lrn, fullName, email, contact, address,
                     dob, pob, sex, nationality
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(lrn) DO UPDATE SET
-                    fullName=excluded.fullName,
-                    email=excluded.email,
-                    contact=excluded.contact,
-                    address=excluded.address,
-                    dob=excluded.dob,
-                    pob=excluded.pob,
-                    sex=excluded.sex,
-                    nationality=excluded.nationality
             """, (
                 lrn, fullName, email, contact, address,
                 dob, pob, sex, nationality
             ))
 
-            cur.execute("SELECT id FROM students WHERE lrn = ?", (lrn,))
-            student_id = cur.fetchone()["id"]
+            student_id = cur.lastrowid
 
             # Insert application (store the rest here)
             cur.execute("""
