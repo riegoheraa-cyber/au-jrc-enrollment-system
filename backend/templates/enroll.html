@@ -365,9 +365,10 @@ https://templatemo.com/tm-586-scholar
                     </p>
 
                     <p class="form-row">
-                      <label>Gmail Address</label>
+                      <label>Email Address</label>
                       <input type="email" name="gmail" required
-                        title="Please enter a valid Gmail address (example@gmail.com).">
+                        pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+                        title="Please enter a valid email address (example@gmail.com).">
                     </p>
 
                     <p class="form-row"><label>School</label><input name="school" required></p>
@@ -527,13 +528,13 @@ https://templatemo.com/tm-586-scholar
                   });
                 });
 
-                // const gmailField = form.querySelector('input[name="gmail"]');
-                // if (gmailField) {
-                //   gmailField.addEventListener('input', () => {
-                //     const isValid = /^[A-Za-z0-9._%+-]+@gmail\\.com$/.test(gmailField.value);
-                //     gmailField.setCustomValidity(isValid ? '' : 'Please enter a valid Gmail address.');
-                //   });
-                // }
+                const gmailField = form.querySelector('input[name="gmail"]');
+                if (gmailField) {
+                  gmailField.addEventListener('input', () => {
+                    const isValid = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/.test(gmailField.value);
+                    gmailField.setCustomValidity(isValid ? '' : 'Please enter a valid email address.');
+                  });
+                }
 
                 form.addEventListener('reset', (e) => {
                   const ok = window.confirm(
@@ -615,7 +616,7 @@ https://templatemo.com/tm-586-scholar
                     ["Middle name", safeVal(form.middleName?.value)],
                     ["LRN No.", safeVal(form.lrn?.value)],
                     ["Contact No.", safeVal(form.contactNo?.value)],
-                    ["Gmail Address", safeVal(form.gmail?.value)],
+                    ["Email Address", safeVal(form.gmail?.value)],
                     ["School", safeVal(form.school?.value)],
                     ["Date of Registration", safeVal(form.dateRegistration?.value)],
 
