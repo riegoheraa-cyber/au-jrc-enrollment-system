@@ -1,4 +1,4 @@
-const API_BASE = "https://ommatophorous-ryder-prepotently.ngrok-free.dev"; // use same-origin backend
+const API_BASE = "http://127.0.0.1:5001"; // use same-origin backend
 
 // ---------- BASIC PAGE SWITCHING ----------
 const pages = document.querySelectorAll('.page');
