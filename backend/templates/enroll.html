@@ -366,7 +366,7 @@ https://templatemo.com/tm-586-scholar
 
                     <p class="form-row">
                       <label>Gmail Address</label>
-                      <input type="email" name="gmail" required pattern="^[A-Za-z0-9._%+-]+@gmail\\.com$"
+                      <input type="email" name="gmail" required
                         title="Please enter a valid Gmail address (example@gmail.com).">
                     </p>
 
@@ -527,13 +527,13 @@ https://templatemo.com/tm-586-scholar
                   });
                 });
 
-                const gmailField = form.querySelector('input[name="gmail"]');
-                if (gmailField) {
-                  gmailField.addEventListener('input', () => {
-                    const isValid = /^[A-Za-z0-9._%+-]+@gmail\\.com$/.test(gmailField.value);
-                    gmailField.setCustomValidity(isValid ? '' : 'Please enter a valid Gmail address.');
-                  });
-                }
+                // const gmailField = form.querySelector('input[name="gmail"]');
+                // if (gmailField) {
+                //   gmailField.addEventListener('input', () => {
+                //     const isValid = /^[A-Za-z0-9._%+-]+@gmail\\.com$/.test(gmailField.value);
+                //     gmailField.setCustomValidity(isValid ? '' : 'Please enter a valid Gmail address.');
+                //   });
+                // }
 
                 form.addEventListener('reset', (e) => {
                   const ok = window.confirm(
