@@ -179,11 +179,6 @@ def enroll():
         cur = conn.cursor()
         try:
             # Insert student by LRN (do not update existing records)
-            cur.execute("SELECT id FROM students WHERE lrn = ?", (lrn,))
-            existing = cur.fetchone()
-            if existing:
-                return jsonify({"ok": False, "error": "LRN already exists."}), 409
-
             cur.execute("""
                 INSERT INTO students (
                     lrn, fullName, email, contact, address,
