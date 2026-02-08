@@ -351,6 +351,8 @@ https://templatemo.com/tm-586-scholar
                         pattern="[A-Za-z\s]+" title="Letters and spaces only." data-letters-only></p>
                     <p class="form-row"><label>Middle name</label><input name="middleName" required
                         pattern="[A-Za-z\s]+" title="Letters and spaces only." data-letters-only></p>
+                    <p class="form-row"><label>Suffix</label><input name="suffix"
+                        pattern="[A-Za-z\s]+" title="Letters and spaces only." data-letters-only></p>
 
                     <p class="form-row">
                       <label>LRN No.</label>
@@ -617,6 +619,7 @@ https://templatemo.com/tm-586-scholar
                     ["Surname", safeVal(form.surname?.value)],
                     ["Given name", safeVal(form.givenName?.value)],
                     ["Middle name", safeVal(form.middleName?.value)],
+                    ["Suffix", safeVal(form.suffix?.value)],
                     ["LRN No.", safeVal(form.lrn?.value)],
                     ["Contact No.", safeVal(form.contactNo?.value)],
                     ["Email Address", safeVal(form.gmail?.value)],

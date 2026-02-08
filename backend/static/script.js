@@ -57,7 +57,7 @@ if (ReservationForm) {
         e.preventDefault();
 
         const data = new FormData(ReservationForm);
-        const fullName = [data.get('surname'), data.get('givenName'), data.get('middleName')]
+        const fullName = [data.get('surname'), data.get('givenName'), data.get('middleName'), data.get('suffix')]
             .map(v => (v || '').trim())
             .filter(Boolean)
             .join(' ');
@@ -67,6 +67,7 @@ if (ReservationForm) {
 
         const reservation = {
             fullName,
+            suffix: data.get('suffix'),
             lrn: data.get('lrn'),
             dob: data.get('dob'),
             pob: data.get('pob'),
