@@ -345,9 +345,12 @@ https://templatemo.com/tm-586-scholar
                   <fieldset class="form-group">
                     <legend>Student Information</legend>
 
-                    <p class="form-row"><label>Surname</label><input name="surname" required></p>
-                    <p class="form-row"><label>Given name</label><input name="givenName" required></p>
-                    <p class="form-row"><label>Middle name</label><input name="middleName" required></p>
+                    <p class="form-row"><label>Surname</label><input name="surname" required
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
+                    <p class="form-row"><label>Given name</label><input name="givenName" required
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
+                    <p class="form-row"><label>Middle name</label><input name="middleName" required
+                        pattern="[A-Za-z\\s]+" title="Letters and spaces only." data-letters-only></p>
 
                     <p class="form-row">
                       <label>LRN No.</label>
@@ -359,6 +362,13 @@ https://templatemo.com/tm-586-scholar
                       <label>Contact No.</label>
                       <input name="contactNo" required inputmode="numeric" maxlength="11" pattern="09\d{9}"
                         title="Must start with 09 and be 11 digits (e.g., 09123456789).">
+                    </p>
+
+                    <p class="form-row">
+                      <label>Email Address</label>
+                      <input type="email" name="gmail" required
+                        pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+                        title="Please enter a valid email address (example@gmail.com).">
                     </p>
 
                     <p class="form-row"><label>School</label><input name="school" required></p>
@@ -386,7 +396,16 @@ https://templatemo.com/tm-586-scholar
                     </p>
 
                     <p class="form-row"><label>Nationality</label><input name="nationality" required></p>
-                    <p class="form-row"><label>Civil Status</label><input name="civilStatus" required></p>
+                    <p class="form-row">
+                      <label>Civil Status</label>
+                      <select name="civilStatus" required>
+                        <option value="">Select</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Widowed">Widowed</option>
+                        <option value="Separated">Separated</option>
+                      </select>
+                    </p>
 
                     <p class="form-row">
                       <label>Date of birth</label>
@@ -502,7 +521,29 @@ https://templatemo.com/tm-586-scholar
                   }
                 });
 
-                form.addEventListener('reset', () => {
+                const letterOnlyFields = form.querySelectorAll('[data-letters-only]');
+                letterOnlyFields.forEach((field) => {
+                  field.addEventListener('input', () => {
+                    field.value = field.value.replace(/[^A-Za-z\\s]/g, '');
+                  });
+                });
+
+                const gmailField = form.querySelector('input[name="gmail"]');
+                if (gmailField) {
+                  gmailField.addEventListener('input', () => {
+                    const isValid = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/.test(gmailField.value);
+                    gmailField.setCustomValidity(isValid ? '' : 'Please enter a valid email address.');
+                  });
+                }
+
+                form.addEventListener('reset', (e) => {
+                  const ok = window.confirm(
+                    "Are you sure you want to clear the form? All entered data will be lost."
+                  );
+                  if (!ok) {
+                    e.preventDefault();
+                    return;
+                  }
                   setTimeout(() => showStep(0), 0);
                 });
 
@@ -575,6 +616,7 @@ https://templatemo.com/tm-586-scholar
                     ["Middle name", safeVal(form.middleName?.value)],
                     ["LRN No.", safeVal(form.lrn?.value)],
                     ["Contact No.", safeVal(form.contactNo?.value)],
+                    ["Email Address", safeVal(form.gmail?.value)],
                     ["School", safeVal(form.school?.value)],
                     ["Date of Registration", safeVal(form.dateRegistration?.value)],
 
@@ -615,258 +657,6 @@ https://templatemo.com/tm-586-scholar
                 });
 
                 showStep(0);
-              </script>
-
-
-              <p id="Reservation-message"></p>
-
-              <script>
-                // =========================
-                // Helpers
-                // =========================
-                const form = document.getElementById('Reservation-form');
-                const steps = Array.from(document.querySelectorAll('.step'));
-                const dots = Array.from(document.querySelectorAll('.stepper .dot'));
-                const reviewBox = document.getElementById('reviewBox');
-
-                let currentStep = 0;
-
-                function showStep(index) {
-                  currentStep = index;
-
-                  steps.forEach((s, i) => s.classList.toggle('active', i === index));
-
-                  dots.forEach((d, i) => {
-                    d.classList.toggle('active', i === index);
-                    d.classList.toggle('done', i < index);
-                  });
-
-                  // build review when entering last step
-                  if (index === 3) buildReview();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-
-                function validateStep(index) {
-                  // validate only inputs/selects inside current step
-                  const stepEl = steps[index];
-                  const fields = Array.from(stepEl.querySelectorAll('input, select, textarea'));
-
-                  // Special: if TVL not selected, remove required on tvlSpec
-                  updateTVL();
-
-                  for (const field of fields) {
-                    // skip disabled
-                    if (field.disabled) continue;
-
-                    // use native validation
-                    if (!field.checkValidity()) {
-                      field.reportValidity();
-                      field.focus();
-                      return false;
-                    }
-                  }
-                  return true;
-                }
-
-                // Next/Back buttons
-                document.addEventListener('click', (e) => {
-                  const nextBtn = e.target.closest('[data-next]');
-                  const backBtn = e.target.closest('[data-back]');
-
-                  if (nextBtn) {
-                    if (!validateStep(currentStep)) return;
-                    showStep(Math.min(currentStep + 1, steps.length - 1));
-                  }
-
-                  if (backBtn) {
-                    showStep(Math.max(currentStep - 1, 0));
-                  }
-                });
-
-                // Prevent submit if last step invalid
-                form.addEventListener('submit', (e) => {
-                  if (!validateStep(currentStep)) {
-                    e.preventDefault();
-                    return;
-                  }
-                  // Optional: show message (remove if you submit to backend)
-                  const msg = document.getElementById('Reservation-message');
-                  if (msg) msg.textContent = "Submitting...";
-
-                  // If you will post to Flask, keep default submit behavior
-                  // If you want AJAX, prevent default and send fetch().
-                });
-
-                // Reset returns to step 1
-                form.addEventListener('reset', () => {
-                  setTimeout(() => showStep(0), 0);
-                });
-
-                // =========================
-                // Existing logic kept
-                // =========================
-
-                // DOB max = today
-                const dob = document.getElementById('dob');
-                if (dob) dob.max = new Date().toISOString().split("T")[0];
-
-                // Date graduation max = today
-                const dg = document.getElementById('dateGraduation');
-                if (dg) dg.max = new Date().toISOString().split("T")[0];
-
-                // TVL specialization show/hide
-                const strand = document.getElementById('strand');
-                const tvlWrap = document.getElementById('tvlWrap');
-                const tvlSpec = document.getElementById('tvlSpec');
-
-                function updateTVL() {
-                  if (!strand || !tvlWrap || !tvlSpec) return;
-
-                  const isTVL = strand.value === 'TVL';
-                  tvlWrap.style.display = isTVL ? 'block' : 'none';
-
-                  if (!isTVL) {
-                    tvlSpec.value = '';
-                    tvlSpec.removeAttribute('required');
-                  } else {
-                    tvlSpec.setAttribute('required', 'required');
-                  }
-                }
-                if (strand) {
-                  strand.addEventListener('change', updateTVL);
-                  updateTVL();
-                }
-
-                // Medical "Others" enable/disable
-                const medOtherChk = document.getElementById('medOtherChk');
-                const medicalOther = document.getElementById('medicalOther');
-
-                function updateMedicalOther() {
-                  if (!medOtherChk || !medicalOther) return;
-                  const enabled = medOtherChk.checked;
-                  medicalOther.disabled = !enabled;
-                  if (!enabled) medicalOther.value = '';
-                }
-                if (medOtherChk) {
-                  medOtherChk.addEventListener('change', updateMedicalOther);
-                  updateMedicalOther();
-                }
-
-                // =========================
-                // Review builder
-                // =========================
-                function getRadioValue(name) {
-                  const el = form.querySelector(`input[name="${name}"]:checked`);
-                  return el ? el.value : '';
-                }
-
-                function getMedicalValues() {
-                  const checked = Array.from(form.querySelectorAll('input[name="medical[]"]:checked'))
-                    .map(x => x.value);
-                  // If Others checked, append the typed value
-                  if (checked.includes('Others') && medicalOther && medicalOther.value.trim()) {
-                    return checked.map(v => v === 'Others' ? `Others: ${medicalOther.value.trim()}` : v);
-                  }
-                  return checked;
-                }
-
-                function safeVal(v) {
-                  if (v === null || v === undefined) return '';
-                  const s = String(v).trim();
-                  return s ? s : '—';
-                }
-
-                function buildReview() {
-                  const data = [
-                    ["Full Name", form.fullName?.value],
-                    ["LRN", form.lrn?.value],
-                    ["Date of Birth", form.dob?.value],
-                    ["Place of Birth", form.pob?.value],
-                    ["Address", form.address?.value],
-                    ["Sex", getRadioValue("sex")],
-                    ["Nationality", form.nationality?.value],
-                    ["Email", form.email?.value],
-                    ["Contact Number", form.contact?.value],
-
-                    ["JHS Graduated", form.jhsGraduated?.value],
-                    ["Date of Graduation", form.dateGraduation?.value],
-
-                    ["Strand", form.strand?.value],
-                    ["TVL Specialization", form.tvlSpec?.value],
-
-                    ["Medical Conditions", getMedicalValues().join(", ") || "—"],
-                    ["How Supported", form.howSupported?.value],
-
-                    ["Guardian Name", form.guardianName?.value],
-                    ["Guardian Civil Status", form.guardianCivilStatus?.value],
-                    ["Guardian Employment", getRadioValue("guardianEmployment")],
-                    ["Guardian Occupation", form.guardianOccupation?.value],
-                    ["Relationship", form.guardianRelationship?.value],
-                    ["Guardian Tel", form.guardianTel?.value],
-                    ["Guardian Contact", form.guardianContact?.value],
-
-                    ["Credentials Submitted", form.credentialsSubmitted?.value],
-
-                    ["First time in AU", getRadioValue("firstTimeAU")],
-                    ["Enrolled Year", form.enrolledYear?.value],
-                    ["Student Signature", form.studentSignature?.value],
-                  ];
-
-                  reviewBox.innerHTML = data.map(([k, v]) => `
-      <div class="review-item">
-        <div class="review-key">${k}</div>
-        <div class="review-val">${safeVal(v)}</div>
-      </div>
-    `).join("");
-                }
-
-                // init
-                showStep(0);
-              </script>
-
-
-              <p id="Reservation-message"></p>
-
-              <script>
-                // DOB max = today
-                document.getElementById('dob').max = new Date().toISOString().split("T")[0];
-
-                // Optional: Date graduation max = today
-                const dg = document.getElementById('dateGraduation');
-                if (dg) dg.max = new Date().toISOString().split("T")[0];
-
-                // TVL specialization show/hide
-                const strand = document.getElementById('strand');
-                const tvlWrap = document.getElementById('tvlWrap');
-                const tvlSpec = document.getElementById('tvlSpec');
-
-                function updateTVL() {
-                  const isTVL = strand.value === 'TVL';
-                  tvlWrap.style.display = isTVL ? 'block' : 'none';
-
-                  if (!isTVL) {
-                    tvlSpec.value = '';
-                    tvlSpec.removeAttribute('required');
-                  } else {
-                    tvlSpec.setAttribute('required', 'required');
-                  }
-                }
-
-                strand.addEventListener('change', updateTVL);
-                updateTVL();
-
-                // Medical "Others" enable/disable
-                const medOtherChk = document.getElementById('medOtherChk');
-                const medicalOther = document.getElementById('medicalOther');
-
-                function updateMedicalOther() {
-                  const enabled = medOtherChk.checked;
-                  medicalOther.disabled = !enabled;
-                  if (!enabled) medicalOther.value = '';
-                }
-
-                medOtherChk.addEventListener('change', updateMedicalOther);
-                updateMedicalOther();
               </script>
             </section>
 
