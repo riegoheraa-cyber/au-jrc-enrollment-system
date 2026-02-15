@@ -276,6 +276,39 @@ def list_applications():
 
     return jsonify({"ok": True, "items": items})
 
+
+@app.get("/api/applications/<int:app_id>")
+@login_required
+def get_application_details(app_id: int):
+    query = """
+      SELECT
+        a.id, a.student_id, a.gradeLevel, a.strand, a.tvlSpec, a.generalAve, a.status, a.submitted_at,
+        a.jhsGraduated, a.dateGraduation,
+        a.medicalConditions, a.medicalOther, a.howSupported,
+        a.guardianName, a.guardianCivilStatus, a.guardianEmployment,
+        a.guardianOccupation, a.guardianRelationship, a.guardianTel, a.guardianContact,
+        a.credentialsSubmitted, a.firstTimeAU, a.enrolledYear, a.studentSignature,
+        s.lrn, s.fullName, s.email, s.contact, s.address, s.dob, s.pob, s.sex, s.nationality
+      FROM applications a
+      JOIN students s ON s.id = a.student_id
+      WHERE a.id = ?
+      LIMIT 1
+    """
+
+    with get_conn() as conn:
+        row = conn.execute(query, (app_id,)).fetchone()
+
+    if not row:
+        return jsonify({"ok": False, "error": "Application not found."}), 404
+
+    details = dict(row)
+    try:
+        details["medicalConditions"] = json.loads(details.get("medicalConditions") or "[]")
+    except json.JSONDecodeError:
+        details["medicalConditions"] = []
+
+    return jsonify({"ok": True, "item": details})
+
 @app.patch("/api/applications/<int:app_id>/status")
 @login_required
 def update_status(app_id: int):
