@@ -120,8 +120,8 @@ def enroll():
 
     # --- Student core ---
 
-    email = (data.get("email") or "").strip() or None
-    contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
+    email = pick("email", "gmail") or None
+    contact = pick("contact", "contactNo") or None
     address = (data.get("address") or "").strip() or None
 
     if contact and (not contact.isdigit() or len(contact) != 11):
@@ -156,12 +156,12 @@ def enroll():
 
     # --- Guardian ---
     guardianName = (data.get("guardianName") or "").strip() or None
-    guardianCivilStatus = (data.get("guardianCivilStatus") or "").strip() or None
-    guardianEmployment = (data.get("guardianEmployment") or "").strip() or None
-    guardianOccupation = (data.get("guardianOccupation") or "").strip() or None
-    guardianRelationship = (data.get("guardianRelationship") or "").strip() or None
-    guardianTel = (data.get("guardianTel") or data.get("telNo") or "").strip() or None
-    guardianContact = (data.get("guardianContact") or data.get("cellphoneNo") or "").strip() or None
+    guardianCivilStatus = pick("guardianCivilStatus", "civilStatus") or None
+    guardianEmployment = pick("guardianEmployment") or None
+    guardianOccupation = pick("guardianOccupation", "occupation") or None
+    guardianRelationship = pick("guardianRelationship", "relationship") or None
+    guardianTel = pick("guardianTel", "telNo") or None
+    guardianContact = pick("guardianContact", "cellphoneNo") or None
 
     if guardianTel and (not guardianTel.isdigit()):
         return jsonify({"ok": False, "error": "Telephone number must contain digits only."}), 400
@@ -275,6 +275,39 @@ def list_applications():
         items.append(d)
 
     return jsonify({"ok": True, "items": items})
+
+
+@app.get("/api/applications/<int:app_id>")
+@login_required
+def get_application_details(app_id: int):
+    query = """
+      SELECT
+        a.id, a.student_id, a.gradeLevel, a.strand, a.tvlSpec, a.generalAve, a.status, a.submitted_at,
+        a.jhsGraduated, a.dateGraduation,
+        a.medicalConditions, a.medicalOther, a.howSupported,
+        a.guardianName, a.guardianCivilStatus, a.guardianEmployment,
+        a.guardianOccupation, a.guardianRelationship, a.guardianTel, a.guardianContact,
+        a.credentialsSubmitted, a.firstTimeAU, a.enrolledYear, a.studentSignature,
+        s.lrn, s.fullName, s.email, s.contact, s.address, s.dob, s.pob, s.sex, s.nationality
+      FROM applications a
+      JOIN students s ON s.id = a.student_id
+      WHERE a.id = ?
+      LIMIT 1
+    """
+
+    with get_conn() as conn:
+        row = conn.execute(query, (app_id,)).fetchone()
+
+    if not row:
+        return jsonify({"ok": False, "error": "Application not found."}), 404
+
+    details = dict(row)
+    try:
+        details["medicalConditions"] = json.loads(details.get("medicalConditions") or "[]")
+    except json.JSONDecodeError:
+        details["medicalConditions"] = []
+
+    return jsonify({"ok": True, "item": details})
 
 @app.patch("/api/applications/<int:app_id>/status")
 @login_required
