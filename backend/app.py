@@ -170,7 +170,12 @@ def enroll():
         return jsonify({"ok": False, "error": "Guardian cellphone number must be exactly 11 digits."}), 400
 
     # --- Credentials + pledge ---
-    credentialsSubmitted = (data.get("credentialsSubmitted") or "").strip() or None
+    raw_credentials = data.get("credentialsSubmitted") or []
+    if isinstance(raw_credentials, list):
+        picked_credentials = [str(v).strip() for v in raw_credentials if str(v).strip()]
+    else:
+        picked_credentials = [str(raw_credentials).strip()] if str(raw_credentials).strip() else []
+    credentialsSubmitted = ", ".join(picked_credentials) if picked_credentials else None
     firstTimeAU = (data.get("firstTimeAU") or "").strip() or None
     enrolledYear = (data.get("enrolledYear") or "").strip() or None
     studentSignature = (data.get("studentSignature") or "").strip() or None
@@ -244,7 +249,7 @@ def list_applications():
 
     q = """
       SELECT a.id, a.gradeLevel, a.strand, a.tvlSpec, a.generalAve, a.status, a.submitted_at,
-             s.lrn, s.fullName
+             a.credentialsSubmitted, s.lrn, s.fullName
       FROM applications a
       JOIN students s ON s.id = a.student_id
     """

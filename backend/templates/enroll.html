@@ -442,11 +442,15 @@ https://templatemo.com/tm-586-scholar
                         title="Must start with 09 and be 11 digits (e.g., 09123456789).">
                     </p>
 
-                    <p class="form-row">
-                      <label>Date and kind of credentials submitted</label>
-                      <input name="credentialsSubmitted" required
-                        placeholder="e.g., Form 137, PSA Birth Cert, Good Moral, etc.">
-                    </p>
+                    <div class="form-row">
+                      <label>Credentials Submitted</label>
+                      <div class="check-grid">
+                        <label><input type="checkbox" name="credentialsSubmitted" value="Form 138"> Form 138</label>
+                        <label><input type="checkbox" name="credentialsSubmitted" value="Good Moral Certificate"> Good Moral Certificate</label>
+                        <label><input type="checkbox" name="credentialsSubmitted" value="PSA Birth Certificate"> PSA Birth Certificate</label>
+                        <label><input type="checkbox" name="credentialsSubmitted" value="2x2 Picture"> 2x2 Picture</label>
+                      </div>
+                    </div>
 
                   </fieldset>
 
@@ -599,6 +603,12 @@ https://templatemo.com/tm-586-scholar
                   return s ? s : '—';
                 }
 
+                function getSelectedCredentials() {
+                  const picked = Array.from(form.querySelectorAll('input[name="credentialsSubmitted"]:checked'))
+                    .map((el) => el.value);
+                  return picked.length ? picked.join(', ') : '—';
+                }
+
                 function buildReview() {
                   const pickedTrack = track.value;
                   const pickedStrand = (pickedTrack === 'Academic Track')
@@ -633,7 +643,7 @@ https://templatemo.com/tm-586-scholar
                     ["Occupation", safeVal(form.occupation?.value)],
                     ["Tel No.", safeVal(form.telNo?.value)],
                     ["Cellphone No.", safeVal(form.cellphoneNo?.value)],
-                    ["Credentials submitted", safeVal(form.credentialsSubmitted?.value)],
+                    ["Credentials submitted", getSelectedCredentials()],
                   ];
 
                   reviewBox.innerHTML = data.map(([k, v]) => `
