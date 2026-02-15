@@ -120,8 +120,8 @@ def enroll():
 
     # --- Student core ---
 
-    email = (data.get("email") or "").strip() or None
-    contact = (data.get("contact") or data.get("contactNo") or "").strip() or None
+    email = pick("email", "gmail") or None
+    contact = pick("contact", "contactNo") or None
     address = (data.get("address") or "").strip() or None
 
     if contact and (not contact.isdigit() or len(contact) != 11):
@@ -156,12 +156,12 @@ def enroll():
 
     # --- Guardian ---
     guardianName = (data.get("guardianName") or "").strip() or None
-    guardianCivilStatus = (data.get("guardianCivilStatus") or "").strip() or None
-    guardianEmployment = (data.get("guardianEmployment") or "").strip() or None
-    guardianOccupation = (data.get("guardianOccupation") or "").strip() or None
-    guardianRelationship = (data.get("guardianRelationship") or "").strip() or None
-    guardianTel = (data.get("guardianTel") or data.get("telNo") or "").strip() or None
-    guardianContact = (data.get("guardianContact") or data.get("cellphoneNo") or "").strip() or None
+    guardianCivilStatus = pick("guardianCivilStatus", "civilStatus") or None
+    guardianEmployment = pick("guardianEmployment") or None
+    guardianOccupation = pick("guardianOccupation", "occupation") or None
+    guardianRelationship = pick("guardianRelationship", "relationship") or None
+    guardianTel = pick("guardianTel", "telNo") or None
+    guardianContact = pick("guardianContact", "cellphoneNo") or None
 
     if guardianTel and (not guardianTel.isdigit()):
         return jsonify({"ok": False, "error": "Telephone number must contain digits only."}), 400
