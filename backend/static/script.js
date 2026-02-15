@@ -65,6 +65,8 @@ if (ReservationForm) {
         const track = data.get('track');
         const strand = track === 'Academic Track' ? data.get('academicStrand') : (track === 'TVL Track' ? 'TVL' : '');
 
+        const selectedCredentials = data.getAll('credentialsSubmitted');
+
         const reservation = {
             fullName,
             suffix: data.get('suffix'),
@@ -95,7 +97,7 @@ if (ReservationForm) {
             telNo: data.get('telNo'),
             cellphoneNo: data.get('cellphoneNo'),
 
-            credentialsSubmitted: data.get('credentialsSubmitted')
+            credentialsSubmitted: selectedCredentials
         };
 
         const Reservations = getStored('Reservations', []);

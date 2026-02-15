@@ -93,6 +93,7 @@
             <th>Strand</th>
             <th>Status</th>
             <th>Submitted</th>
+            <th>Documents</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -169,7 +170,7 @@
       if (statusFilter.value) params.set('status', statusFilter.value);
       if (strandFilter.value) params.set('strand', strandFilter.value);
 
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">Loading...</td></tr>';
 
       try {
         const res = await fetch(`/api/applications?${params.toString()}`);
@@ -179,7 +180,7 @@
         }
 
         if (!payload.items.length) {
-          tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No applications found.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No applications found.</td></tr>';
           return;
         }
 
@@ -191,11 +192,12 @@
             <td>${escapeHtml(item.strand || '-')}</td>
             <td>${statusChip(item.status)}</td>
             <td>${escapeHtml(item.submitted_at || '-')}</td>
+            <td>${escapeHtml(item.credentialsSubmitted || '-')}</td>
             <td>${buildActionButtons(item)}</td>
           </tr>
         `).join('');
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${escapeHtml(err.message)}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${escapeHtml(err.message)}</td></tr>`;
       }
     }
 
