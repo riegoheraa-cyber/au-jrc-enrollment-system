@@ -21,6 +21,16 @@
     .status-rejected { background: #ffd6db; color: #8b1d2c; }
     .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
     .table td, .table th { vertical-align: middle; }
+    .name-link { border: none; background: none; color: #0d6efd; text-decoration: underline; padding: 0; font: inherit; }
+    .details-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 2000; }
+    .details-modal.is-open { display: flex; }
+    .details-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); }
+    .details-card { position: relative; width: min(1000px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; border: 1px solid #e4e7ec; border-radius: 12px; padding: 20px; background: #fff; z-index: 1; }
+    .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .detail-list { margin: 0; padding: 0; list-style: none; }
+    .detail-list li { padding: 5px 0; border-bottom: 1px dashed #f0f0f0; }
+    .req-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+    .req-item { display: flex; align-items: center; gap: 8px; }
   </style>
 </head>
 
@@ -100,13 +110,53 @@
         <tbody></tbody>
       </table>
     </div>
+
   </main>
+
+  <section id="detailsModal" class="details-modal" aria-hidden="true">
+    <div class="details-modal-backdrop" data-close-modal="true"></div>
+    <div class="details-card shadow-sm" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+      <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap: 12px;">
+        <div>
+          <h4 class="mb-1" id="detailsTitle">Applicant Details</h4>
+          <p class="mb-0 text-muted" id="detailsSubtitle">Select an applicant to view details.</p>
+        </div>
+        <div class="action-btns">
+          <button class="btn btn-success" id="detailsApproveBtn">Approve</button>
+          <button class="btn btn-danger" id="detailsRejectBtn">Reject</button>
+          <button class="btn btn-outline-secondary" id="detailsCloseBtn" data-close-modal="true">Close</button>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="details-grid mb-4">
+        <div>
+          <h6>Complete Form Answers</h6>
+          <ul class="detail-list" id="completeAnswersList"></ul>
+        </div>
+        <div>
+          <h6>Submitted Requirements</h6>
+          <div class="req-grid" id="requirementsChecklist"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script>
     const tbody = document.querySelector('#applicationsTable tbody');
     const messageBox = document.getElementById('messageBox');
     const statusFilter = document.getElementById('statusFilter');
     const strandFilter = document.getElementById('strandFilter');
+    const detailsModal = document.getElementById('detailsModal');
+    const detailsSubtitle = document.getElementById('detailsSubtitle');
+    const completeAnswersList = document.getElementById('completeAnswersList');
+    const requirementsChecklist = document.getElementById('requirementsChecklist');
+    const detailsApproveBtn = document.getElementById('detailsApproveBtn');
+    const detailsRejectBtn = document.getElementById('detailsRejectBtn');
+    const detailsCloseBtn = document.getElementById('detailsCloseBtn');
+    const knownRequirements = ['Form 138', 'Good Moral Certificate', 'PSA Birth Certificate', '2x2 Picture'];
+    let selectedApplicationId = null;
 
     function showMessage(text, level = 'info') {
       messageBox.textContent = text;
@@ -130,6 +180,23 @@
     function statusChip(status) {
       const safe = escapeHtml(status || 'submitted');
       return `<span class="status-chip status-${safe}">${safe.replace('_', ' ')}</span>`;
+    }
+
+    function parseSubmittedRequirements(csv) {
+      return String(csv || '')
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function valueOrDash(value) {
+      const cleaned = String(value ?? '').trim();
+      return cleaned ? cleaned : '—';
+    }
+
+    function closeDetailsModal() {
+      detailsModal.classList.remove('is-open');
+      detailsModal.setAttribute('aria-hidden', 'true');
     }
 
     async function updateStatus(id, status) {
@@ -165,6 +232,67 @@
       return `<div class="action-btns">${buttons.join('')}</div>`;
     }
 
+    function renderRequirementsCheckboxes(credentialsSubmitted) {
+      const picked = new Set(parseSubmittedRequirements(credentialsSubmitted));
+      requirementsChecklist.innerHTML = knownRequirements.map((name) => {
+        const checked = picked.has(name) ? 'checked' : '';
+        return `
+          <label class="req-item">
+            <input type="checkbox" disabled ${checked}>
+            <span>${escapeHtml(name)}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function renderCompleteAnswers(item) {
+      const rows = [
+        ['Name', item.fullName],
+        ['LRN', item.lrn],
+        ['Contact Number', item.contact],
+        ['Email Address', item.email],
+        ['Present/Home Address', item.address],
+        ['Date of Birth', item.dob],
+        ['Sex', item.sex],
+        ['Nationality', item.nationality],
+        ['Grade Level', item.gradeLevel],
+        ['Strand', item.strand],
+        ['TVL Specialization', item.tvlSpec],
+        ['General Average', item.generalAve],
+        ['JHS Graduated', item.jhsGraduated],
+        ['Date of Graduation', item.dateGraduation],
+        ['Parent/Guardian Name', item.guardianName],
+        ['Relationship', item.guardianRelationship],
+        ['Occupation', item.guardianOccupation],
+        ['Tel No.', item.guardianTel],
+        ['Cellphone No.', item.guardianContact],
+      ];
+
+      completeAnswersList.innerHTML = rows
+        .map(([label, value]) => `<li><strong>${escapeHtml(label)}:</strong> ${escapeHtml(valueOrDash(value))}</li>`)
+        .join('');
+    }
+
+    async function loadApplicationDetails(id) {
+      hideMessage();
+      try {
+        const res = await fetch(`/api/applications/${id}`);
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          throw new Error(payload.error || 'Failed to load applicant details.');
+        }
+
+        selectedApplicationId = payload.item.id;
+        detailsModal.classList.add('is-open');
+        detailsModal.setAttribute('aria-hidden', 'false');
+        detailsSubtitle.textContent = `Viewing applicant: ${payload.item.fullName} (Application #${payload.item.id})`;
+        renderCompleteAnswers(payload.item);
+        renderRequirementsCheckboxes(payload.item.credentialsSubmitted);
+      } catch (err) {
+        showMessage(err.message, 'danger');
+      }
+    }
+
     async function loadApplications() {
       const params = new URLSearchParams();
       if (statusFilter.value) params.set('status', statusFilter.value);
@@ -187,7 +315,7 @@
         tbody.innerHTML = payload.items.map(item => `
           <tr>
             <td>${item.id}</td>
-            <td>${escapeHtml(item.fullName)}</td>
+            <td><button type="button" class="name-link" data-view="details" data-id="${item.id}">${escapeHtml(item.fullName)}</button></td>
             <td>${escapeHtml(item.lrn)}</td>
             <td>${escapeHtml(item.strand || '-')}</td>
             <td>${statusChip(item.status)}</td>
@@ -202,11 +330,42 @@
     }
 
     tbody.addEventListener('click', (event) => {
+      const viewButton = event.target.closest('button[data-view="details"]');
+      if (viewButton) {
+        const id = Number(viewButton.dataset.id);
+        loadApplicationDetails(id);
+        return;
+      }
+
       const button = event.target.closest('button[data-action]');
       if (!button) return;
       const id = Number(button.dataset.id);
       const action = button.dataset.action;
       updateStatus(id, action);
+    });
+
+    detailsApproveBtn.addEventListener('click', async () => {
+      if (!selectedApplicationId) return;
+      await updateStatus(selectedApplicationId, 'approved');
+      await loadApplicationDetails(selectedApplicationId);
+    });
+
+    detailsRejectBtn.addEventListener('click', async () => {
+      if (!selectedApplicationId) return;
+      await updateStatus(selectedApplicationId, 'rejected');
+      await loadApplicationDetails(selectedApplicationId);
+    });
+
+    detailsCloseBtn.addEventListener('click', closeDetailsModal);
+    detailsModal.addEventListener('click', (event) => {
+      if (event.target.matches('[data-close-modal="true"]')) {
+        closeDetailsModal();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && detailsModal.classList.contains('is-open')) {
+        closeDetailsModal();
+      }
     });
 
     document.getElementById('refreshBtn').addEventListener('click', loadApplications);
