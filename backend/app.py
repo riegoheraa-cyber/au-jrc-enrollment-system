@@ -239,7 +239,8 @@ def enroll():
 @app.get("/api/applications")
 @login_required
 def list_applications():
-    status = request.args.get("status")  # optional filter
+    status = (request.args.get("status") or "").strip()  # optional filter
+    strand = (request.args.get("strand") or "").strip()  # optional filter
 
     q = """
       SELECT a.id, a.gradeLevel, a.strand, a.tvlSpec, a.generalAve, a.status, a.submitted_at,
@@ -247,14 +248,21 @@ def list_applications():
       FROM applications a
       JOIN students s ON s.id = a.student_id
     """
-    params = ()
+    params = []
+    filters = []
     if status:
-        q += " WHERE a.status = ?"
-        params = (status,)
+        filters.append("a.status = ?")
+        params.append(status)
+    if strand:
+        filters.append("a.strand = ?")
+        params.append(strand)
+
+    if filters:
+        q += " WHERE " + " AND ".join(filters)
     q += " ORDER BY a.id DESC LIMIT 200"
 
     with get_conn() as conn:
-        rows = conn.execute(q, params).fetchall()
+        rows = conn.execute(q, tuple(params)).fetchall()
 
     items = []
     for r in rows:

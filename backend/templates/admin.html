@@ -67,6 +67,16 @@
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
         </select>
+        <select id="strandFilter" class="form-control">
+          <option value="">All strands</option>
+          <option value="STEM">STEM</option>
+          <option value="ABM">ABM</option>
+          <option value="HUMSS">HUMSS</option>
+          <option value="GAS">GAS</option>
+          <option value="TVL">TVL</option>
+          <option value="ICT">ICT</option>
+          <option value="HE">HE</option>
+        </select>
         <button id="refreshBtn" class="btn btn-primary">Refresh</button>
       </div>
     </div>
@@ -95,6 +105,7 @@
     const tbody = document.querySelector('#applicationsTable tbody');
     const messageBox = document.getElementById('messageBox');
     const statusFilter = document.getElementById('statusFilter');
+    const strandFilter = document.getElementById('strandFilter');
 
     function showMessage(text, level = 'info') {
       messageBox.textContent = text;
@@ -156,6 +167,7 @@
     async function loadApplications() {
       const params = new URLSearchParams();
       if (statusFilter.value) params.set('status', statusFilter.value);
+      if (strandFilter.value) params.set('strand', strandFilter.value);
 
       tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>';
 
@@ -197,6 +209,7 @@
 
     document.getElementById('refreshBtn').addEventListener('click', loadApplications);
     statusFilter.addEventListener('change', loadApplications);
+    strandFilter.addEventListener('change', loadApplications);
 
     loadApplications();
   </script>
