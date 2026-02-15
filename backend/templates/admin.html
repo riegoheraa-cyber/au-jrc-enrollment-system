@@ -246,19 +246,13 @@
     }
 
     function renderCompleteAnswers(item) {
-      const medicalConditions = Array.isArray(item.medicalConditions) && item.medicalConditions.length
-        ? item.medicalConditions.join(', ')
-        : '—';
-
       const rows = [
-        ['Application ID', item.id],
-        ['Full Name', item.fullName],
+        ['Name', item.fullName],
         ['LRN', item.lrn],
-        ['Email', item.email],
         ['Contact Number', item.contact],
-        ['Address', item.address],
+        ['Email Address', item.email],
+        ['Present/Home Address', item.address],
         ['Date of Birth', item.dob],
-        ['Place of Birth', item.pob],
         ['Sex', item.sex],
         ['Nationality', item.nationality],
         ['Grade Level', item.gradeLevel],
@@ -267,20 +261,11 @@
         ['General Average', item.generalAve],
         ['JHS Graduated', item.jhsGraduated],
         ['Date of Graduation', item.dateGraduation],
-        ['Medical Conditions', medicalConditions],
-        ['Medical Other', item.medicalOther],
-        ['How Supported', item.howSupported],
-        ['Guardian Name', item.guardianName],
-        ['Guardian Civil Status', item.guardianCivilStatus],
-        ['Guardian Employment', item.guardianEmployment],
-        ['Guardian Occupation', item.guardianOccupation],
-        ['Guardian Relationship', item.guardianRelationship],
-        ['Guardian Tel', item.guardianTel],
-        ['Guardian Contact', item.guardianContact],
-        ['First Time AU', item.firstTimeAU],
-        ['Enrolled Year', item.enrolledYear],
-        ['Student Signature', item.studentSignature],
-        ['Status', item.status],
+        ['Parent/Guardian Name', item.guardianName],
+        ['Relationship', item.guardianRelationship],
+        ['Occupation', item.guardianOccupation],
+        ['Tel No.', item.guardianTel],
+        ['Cellphone No.', item.guardianContact],
       ];
 
       completeAnswersList.innerHTML = rows
