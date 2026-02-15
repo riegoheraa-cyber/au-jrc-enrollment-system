@@ -2299,3 +2299,136 @@ body {
     margin-top: 10px;
   }
 }
+
+.main-banner .item .header-text {
+  max-width: 640px;
+}
+
+.main-banner .item .header-text .category {
+  background: #f6c343;
+  color: #0b2b73;
+}
+
+.main-banner .item .header-text h2 {
+  color: #ffffff;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.main-banner .item .header-text p {
+  color: #eef3ff;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 18px 0 26px;
+}
+
+.au-highlights {
+  background: #ffffff;
+  margin-top: -40px;
+  position: relative;
+  z-index: 10;
+}
+
+.highlight-card,
+.announcement-card {
+  border: 1px solid #e3e9fb;
+  border-radius: 20px;
+  background: #fff;
+  padding: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px rgba(13, 42, 112, 0.08);
+  height: calc(100% - 24px);
+}
+
+.highlight-card h4,
+.announcement-card h5 {
+  color: #0b2b73;
+  margin-bottom: 15px;
+}
+
+.highlight-card p,
+.announcement-card p {
+  color: #4a5773;
+  margin-bottom: 0;
+}
+
+.highlight-card a {
+  display: inline-block;
+  margin-top: 18px;
+  font-weight: 600;
+  color: #0b46a0;
+}
+
+.highlight-card a i {
+  margin-left: 8px;
+}
+
+.au-announcements {
+  background: linear-gradient(180deg, #f6f9ff 0%, #eef3ff 100%);
+}
+
+/* Hero overflow/cutoff fix */
+.main-banner .item {
+  min-height: 560px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.main-banner .item .header-text {
+  max-width: 660px;
+  width: 100%;
+  padding-top: 8px;
+}
+
+.main-banner .item .header-text .category {
+  margin-bottom: 28px;
+}
+
+.main-banner .item .header-text h2 {
+  width: 100%;
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
+
+.main-banner .item .header-text p {
+  width: 100%;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.main-banner .item .header-text .buttons {
+  margin-top: 28px;
+}
+
+.au-highlights {
+  margin-top: 0;
+}
+
+@media (max-width: 1200px) {
+  .main-banner .item {
+    min-height: 520px;
+  }
+
+  .main-banner .item .header-text h2 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-banner .item {
+    min-height: 460px;
+  }
+
+  .main-banner .item .header-text {
+    padding-top: 0;
+  }
+
+  .main-banner .item .header-text h2 {
+    font-size: 34px;
+    line-height: 1.25;
+  }
+
+  .main-banner .item .header-text p {
+    font-size: 16px;
+  }
+}
