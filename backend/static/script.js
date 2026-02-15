@@ -76,7 +76,9 @@ if (ReservationForm) {
             address: data.get('address'),
             sex: data.get('sex'),
             nationality: data.get('nationality'),
-            email: data.get('email'),
+            // Form field is currently named `gmail` in enroll.html.
+            // Keep fallback to `email` for compatibility with older templates.
+            email: data.get('gmail') || data.get('email'),
             contactNo: data.get('contactNo'),
 
             jhsGraduated: data.get('jhsGraduated'),
@@ -92,6 +94,7 @@ if (ReservationForm) {
             howSupported: data.get('howSupported'),
 
             guardianName: data.get('guardianName'),
+            civilStatus: data.get('civilStatus'),
             guardianRelationship: data.get('relationship'),
             guardianOccupation: data.get('occupation'),
             telNo: data.get('telNo'),
