@@ -2461,6 +2461,14 @@ html {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    transition: none;
+    transform: none;
+    filter: none;
+  }
+}
+
 .au-requirements {
   background: linear-gradient(180deg, #f8f9ff 0%, #f1f4ff 100%);
   padding: 100px;
