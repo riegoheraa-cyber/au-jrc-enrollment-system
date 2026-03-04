@@ -2464,6 +2464,10 @@ html {
   transform: translate3d(0, 0, 0);
 }
 
+.scroll-reveal.slow-reveal {
+  transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1.2s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-reveal {
     transition: none;

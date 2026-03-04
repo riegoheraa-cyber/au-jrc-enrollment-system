@@ -244,8 +244,15 @@
 	var revealEffects = ['reveal-slide-up', 'reveal-slide-left', 'reveal-slide-right'];
 
 	revealSections.forEach(function (section, index) {
-		var effectClass = revealEffects[index % revealEffects.length];
-		section.classList.add(effectClass);
+		var hasPresetEffect = revealEffects.some(function (effect) {
+			return section.classList.contains(effect);
+		});
+
+		if (!hasPresetEffect) {
+			var effectClass = revealEffects[index % revealEffects.length];
+			section.classList.add(effectClass);
+		}
+
 		section.style.setProperty('--reveal-delay', Math.min(index * 80, 320) + 'ms');
 	});
 
