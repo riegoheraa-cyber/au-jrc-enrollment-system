@@ -2449,6 +2449,81 @@ html {
 }
 
 .au-requirements {
+  background: linear-gradient(180deg, #f8f9ff 0%, #f1f4ff 100%);
+}
+
+.au-requirements .section-heading h6 {
+  color: #7a6ad8;
+}
+
+.au-requirements .section-heading h2 {
+  color: #1e1e1e;
+}
+
+.requirements-panel {
+  background: #ffffff;
+  border: 1px solid rgba(122, 106, 216, 0.16);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 20px 45px rgba(53, 38, 130, 0.12);
+}
+
+.requirements-panel h4 {
+  color: #2b2b2b;
+  margin-bottom: 8px;
+}
+
+.requirements-intro {
+  color: #6b6b6b;
+  margin-bottom: 18px;
+}
+
+.requirements-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.requirements-list li {
+  position: relative;
+  color: #3a3a3a;
+  padding: 14px 16px 14px 44px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  background: #f7f5ff;
+  border: 1px solid #ece7ff;
+  border-radius: 14px;
+}
+
+.requirements-list li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 16px;
+  top: 15px;
+  color: #7a6ad8;
+}
+
+.requirements-actions {
+  margin-top: 24px;
+}
+
+.requirements-cta {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 12px 24px;
+  background: #7a6ad8;
+  color: #fff;
+  border: none;
+}
+
+.requirements-cta:hover {
+  background: #6553c9;
+  color: #fff;
+}
+
+.au-requirements {
   background: linear-gradient(135deg, #7a6ad8 0%, #5b42cf 100%);
 }
 
@@ -2508,6 +2583,9 @@ html {
     padding: 26px 20px;
   }
 
+  .requirements-cta {
+    width: 100%;
+    text-align: center;
   .requirements-actions .btn {
     width: 100%;
   }
