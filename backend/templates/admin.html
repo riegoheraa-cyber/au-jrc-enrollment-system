@@ -57,10 +57,22 @@
     .summary-rejected::before { background: #dc3545; }
     .summary-label { color: #6c757d; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
     .summary-value { font-size: 1.35rem; font-weight: 700; color: #212529; }
-    .datatable-controls { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 4px 8px; color: #5e6670; }
+    .table-shell { border: 1px solid #e7ebf0; border-radius: 14px; box-shadow: 0 10px 24px rgba(15, 23, 42, .06); padding: 8px; background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%); }
+    #applicationsTable { border-collapse: separate; border-spacing: 0; }
+    #applicationsTable thead th { border-top: 0; border-bottom: 1px solid #e8edf3; font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #526070; background: #f7f9fc; position: sticky; top: 0; z-index: 1; }
+    #applicationsTable thead th:first-child { border-top-left-radius: 10px; }
+    #applicationsTable thead th:last-child { border-top-right-radius: 10px; }
+    #applicationsTable tbody td { border-color: #edf1f6; padding-top: 14px; padding-bottom: 14px; vertical-align: top; color: #27313d; }
+    #applicationsTable tbody tr { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+    #applicationsTable tbody tr:hover { background: #f8fbff; box-shadow: inset 0 0 0 9999px rgba(47, 128, 237, .05); }
+    #applicationsTable td:nth-child(2) { min-width: 230px; }
+    #applicationsTable td:nth-child(7) { min-width: 280px; color: #3f4b5a; }
+    #applicationsTable td:last-child { min-width: 190px; }
+    .action-btns .btn { border-radius: 10px; font-weight: 500; }
+    .datatable-controls { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 2px 6px 10px; color: #5e6670; font-size: .95rem; }
     .sortable-col { cursor: pointer; user-select: none; white-space: nowrap; }
     .sort-arrow { font-size: .75rem; margin-left: 5px; opacity: .6; }
-    .table-footer-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 4px 4px; flex-wrap: wrap; }
+    .table-footer-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 6px 4px; flex-wrap: wrap; border-top: 1px solid #edf1f6; margin-top: 2px; }
     .table-footer-controls .btn-group .btn { min-width: 36px; }
   </style>
 </head>
@@ -111,7 +123,7 @@
       <article class="summary-card summary-rejected"><div class="summary-label">Rejected</div><div class="summary-value" data-summary="rejected">0</div></article>
     </div>
 
-    <div class="table-responsive bg-white rounded shadow-sm p-2">
+    <div class="table-responsive table-shell">
       <div class="datatable-controls">
         <div id="recordInfo">Showing 0 to 0 of 0 entries</div>
         <div id="filterInfo">No filters applied</div>
