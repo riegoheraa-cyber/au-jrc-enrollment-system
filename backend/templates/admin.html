@@ -157,13 +157,15 @@
       }
     }
 
-    function renderSectionEditor() {
+    function renderSectionEditor(useDraft = false) {
       const key = contentSection.value;
-      draftContent = JSON.parse(JSON.stringify(siteContent[key]));
+      if (!useDraft || !draftContent) {
+        draftContent = JSON.parse(JSON.stringify(siteContent[key]));
+      }
       let html = '';
 
       if (key === 'hero_slides') {
-        draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Slide ${i+1}</h6>${inputField('Category',`${i}.category`,item.category)}${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Button Text',`${i}.button_text`,item.button_text)}${inputField('Button Link',`${i}.button_link`,item.button_link)}</div>`);
+        draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Slide ${i+1}</h6>${inputField('Category',`${i}.category`,item.category)}${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Button Text',`${i}.button_text`,item.button_text)}${inputField('Button Link',`${i}.button_link`,item.button_link)}${imageField('Slide Image',`${i}.image`,item.image,'slide')}</div>`);
       } else if (key === 'highlights') {
         draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Highlight ${i+1}</h6>${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Link Text',`${i}.link_text`,item.link_text)}${inputField('Link URL',`${i}.link`,item.link)}</div>`);
       } else if (key === 'enrollment_banner') {
@@ -204,7 +206,7 @@
             const payload = await res.json();
             if (!res.ok || !payload.ok) throw new Error(payload.error || 'Upload failed.');
             updateAtPath(el.dataset.uploadPath, payload.url);
-            renderSectionEditor();
+            renderSectionEditor(true);
             showMessage('Image uploaded successfully.', 'success');
           } catch (err) {
             showMessage(err.message, 'danger');
@@ -292,8 +294,8 @@
     document.getElementById('refreshBtn').addEventListener('click', loadApplications);
     statusFilter.addEventListener('change', loadApplications);
     strandFilter.addEventListener('change', loadApplications);
-    contentSection.addEventListener('change', renderSectionEditor);
-    document.getElementById('reloadSectionBtn').addEventListener('click', renderSectionEditor);
+    contentSection.addEventListener('change', () => renderSectionEditor(false));
+    document.getElementById('reloadSectionBtn').addEventListener('click', () => renderSectionEditor(false));
     document.getElementById('saveSectionBtn').addEventListener('click', saveSelectedSection);
 
     (async function init(){ await loadApplications(); await loadSiteContent(); })().catch(err => showMessage(err.message, 'danger'));
