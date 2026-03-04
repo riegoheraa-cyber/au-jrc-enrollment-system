@@ -115,9 +115,9 @@
 					$('.menu-trigger').removeClass('active');
 					$('.header-area .nav').slideUp(200);
 				}
-				$('html,body').animate({
+				$('html,body').stop().animate({
 					scrollTop: (target.offset().top) - 80
-				}, 700);
+				}, 550, 'swing');
 				return false;
 			}
 		}
@@ -136,13 +136,18 @@
 			})
 			$(this).addClass('active');
 
-			var target = this.hash,
-				menu = target;
 			var target = $(this.hash);
+			if (!target.length) {
+				$(document).on("scroll", onScroll);
+				return;
+			}
+
 			$('html, body').stop().animate({
 				scrollTop: (target.offset().top) - 79
-			}, 500, 'swing', function () {
-				window.location.hash = target.prop('id');
+			}, 550, 'swing', function () {
+				if (history.replaceState) {
+					history.replaceState(null, '', '#' + target.prop('id'));
+				}
 				$(document).on("scroll", onScroll);
 			});
 		});
@@ -223,11 +228,6 @@
 	function revealSection(section) {
 		if (!section) return;
 		section.classList.add('is-visible');
-		setTimeout(function () {
-			section.classList.remove('is-visible');
-			void section.offsetWidth;
-			section.classList.add('is-visible');
-		}, 10);
 	}
 
 	function scrollToHashSection(hash) {
@@ -260,10 +260,6 @@
 			section.classList.add('is-visible');
 		});
 	}
-
-	window.addEventListener('hashchange', function () {
-		scrollToHashSection(window.location.hash);
-	});
 
 	window.addEventListener('load', function () {
 		scrollToHashSection(window.location.hash);
