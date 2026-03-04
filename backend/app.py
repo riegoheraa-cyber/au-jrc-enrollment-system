@@ -35,7 +35,7 @@ def enroll_now():
 
 @app.get("/requirements")
 def requirements():
-    return render_template("requirements.html")
+    return redirect(url_for("home") + "#requirements")
 
 @app.get("/admin/login")
 def admin_login():
