@@ -57,3 +57,9 @@ CREATE INDEX IF NOT EXISTS idx_applications_status ON applications(status);
 
 CREATE INDEX IF NOT EXISTS idx_students_lrn ON students(lrn);
 CREATE INDEX IF NOT EXISTS idx_students_fullName ON students(fullName);
+
+CREATE TABLE IF NOT EXISTS site_content (
+  content_key TEXT PRIMARY KEY,
+  content_value TEXT NOT NULL,
+  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
