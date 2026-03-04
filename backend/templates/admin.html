@@ -31,6 +31,13 @@
     .block-card h6 { margin-bottom: 12px; }
     .field-label { font-weight: 600; margin-bottom: 5px; }
     .ck-editor__editable_inline { min-height: 130px; }
+    .ck-content ul,
+    .ck-content ol {
+      margin: 0 0 1rem 1.5rem;
+      padding-left: 1.25rem;
+    }
+    .ck-content ul li { list-style-type: disc; }
+    .ck-content ol li { list-style-type: decimal; }
     .image-preview { max-width: 180px; border-radius: 6px; display:block; margin-top:8px; border:1px solid #dfe3e8; }
     .admissions-menu .logout-form { margin: 0; }
   </style>
@@ -167,12 +174,34 @@
       `;
     }
 
+    const SIMPLE_EDITOR_CONFIG = {
+      toolbar: [
+        'undo', 'redo', '|',
+        'bold', 'italic', 'underline', '|',
+        'bulletedList', 'numberedList', '|',
+        'link'
+      ],
+      removePlugins: [
+        'CKFinderUploadAdapter',
+        'CKFinder',
+        'EasyImage',
+        'Image',
+        'ImageCaption',
+        'ImageStyle',
+        'ImageToolbar',
+        'ImageUpload',
+        'MediaEmbed',
+        'Table',
+        'TableToolbar'
+      ]
+    };
+
     async function mountRichEditors() {
       for (const e of editorInstances) await e.destroy();
       editorInstances = [];
       const nodes = friendlyEditor.querySelectorAll('.rich-input');
       for (const n of nodes) {
-        const instance = await ClassicEditor.create(n);
+        const instance = await ClassicEditor.create(n, SIMPLE_EDITOR_CONFIG);
         editorInstances.push(instance);
       }
     }
