@@ -9,6 +9,23 @@ import json
 from werkzeug.utils import secure_filename
 from db import DB_PATH, get_conn, init_db
 
+
+def _load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip("\"'")
+        os.environ.setdefault(key, value)
+
+
+BASE_DIR = Path(__file__).resolve().parent
+_load_env_file(BASE_DIR / ".env")
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-admin-secret-change-me")
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -17,6 +34,8 @@ app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "f
 app.config["PERMANENT_SESSION_LIFETIME"] = int(os.environ.get("ADMIN_SESSION_TIMEOUT_SECONDS", "3600"))
 
 _configured_admin_path = (os.environ.get("ADMIN_PATH") or "internal-portal").strip().strip("/")
+if _configured_admin_path.lower().endswith("/login"):
+    _configured_admin_path = _configured_admin_path[: -len("/login")].strip("/")
 ADMIN_PATH = f"/{_configured_admin_path or 'internal-portal'}"
 
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
@@ -449,6 +468,7 @@ def _get_site_content() -> dict:
 
 _ensure_site_content_defaults()
 print(">>> USING DB:", DB_PATH)
+print(">>> ADMIN LOGIN URL PATH:", f"{ADMIN_PATH}/login")
 
 @app.get("/")
 def home():
