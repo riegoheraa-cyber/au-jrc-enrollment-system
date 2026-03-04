@@ -50,7 +50,7 @@
     <div class="container"><div class="row"><div class="col-lg-12">
       <div class="owl-carousel owl-banner">
         {% for slide in content.hero_slides %}
-        <div class="item item-{{ loop.index }}">
+        <div class="item item-{{ loop.index }}"{% if slide.image %} style="background-image: url('{{ slide.image }}');"{% endif %}>
           <div class="header-text">
             <span class="category">{{ slide.category }}</span>
             <h2>{{ slide.title }}</h2>
