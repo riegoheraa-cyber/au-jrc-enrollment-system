@@ -11,7 +11,7 @@
   <style>
     body { font-family: "Poppins", sans-serif; }
     .admin-wrap { margin-top: 130px; margin-bottom: 60px; }
-    .status-chip { font-size: .85rem; border-radius: 999px; padding: 4px 10px; }
+    .status-chip { font-size: .85rem; border-radius: 999px; padding: 4px 12px; display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; }
     .status-submitted { background: #ffe8b3; color: #8a5c00; }
     .status-under_review { background: #d6edff; color: #0b5ed7; }
     .status-approved { background: #d1f3dd; color: #0f6b31; }
@@ -66,6 +66,7 @@
     #applicationsTable tbody tr { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
     #applicationsTable tbody tr:hover { background: #f8fbff; box-shadow: inset 0 0 0 9999px rgba(47, 128, 237, .05); }
     #applicationsTable td:nth-child(2) { min-width: 230px; }
+    #applicationsTable th:nth-child(5), #applicationsTable td:nth-child(5) { min-width: 160px; }
     #applicationsTable td:nth-child(7) { min-width: 280px; color: #3f4b5a; }
     #applicationsTable td:last-child { min-width: 190px; }
     .action-btns .btn { border-radius: 10px; font-weight: 500; }
