@@ -2439,13 +2439,37 @@ html {
 
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  filter: blur(3px);
+  --reveal-delay: 0ms;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+  transition-delay: var(--reveal-delay);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.reveal-slide-up {
+  transform: translate3d(0, 28px, 0);
+}
+
+.scroll-reveal.reveal-slide-left {
+  transform: translate3d(32px, 0, 0);
+}
+
+.scroll-reveal.reveal-slide-right {
+  transform: translate3d(-32px, 0, 0);
 }
 
 .scroll-reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    transition: none;
+    transform: none;
+    filter: none;
+  }
 }
 
 .au-requirements {

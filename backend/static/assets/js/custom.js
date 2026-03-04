@@ -241,15 +241,25 @@
 	}
 
 	var revealSections = document.querySelectorAll('.scroll-reveal');
+	var revealEffects = ['reveal-slide-up', 'reveal-slide-left', 'reveal-slide-right'];
+
+	revealSections.forEach(function (section, index) {
+		var effectClass = revealEffects[index % revealEffects.length];
+		section.classList.add(effectClass);
+		section.style.setProperty('--reveal-delay', Math.min(index * 80, 320) + 'ms');
+	});
+
 	if (revealSections.length && 'IntersectionObserver' in window) {
-		var sectionObserver = new IntersectionObserver(function (entries) {
+		var sectionObserver = new IntersectionObserver(function (entries, observer) {
 			entries.forEach(function (entry) {
 				if (entry.isIntersecting) {
 					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
 				}
 			});
 		}, {
-			threshold: 0.2
+			threshold: 0.2,
+			rootMargin: '0px 0px -10% 0px'
 		});
 
 		revealSections.forEach(function (section) {
