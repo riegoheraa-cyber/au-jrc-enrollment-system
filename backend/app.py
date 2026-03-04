@@ -420,7 +420,7 @@ def requirements():
 @app.get("/admin/login")
 def admin_login():
     if session.get("admin_logged_in"):
-        return redirect(url_for("admin_dashboard"))
+        return redirect(url_for("admin_applications"))
     return render_template("admin_login.html", error=None)
 
 
@@ -431,9 +431,9 @@ def admin_login_submit():
 
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         session["admin_logged_in"] = True
-        next_url = (request.form.get("next") or request.args.get("next") or url_for("admin_dashboard")).strip()
+        next_url = (request.form.get("next") or request.args.get("next") or url_for("admin_applications")).strip()
         if not next_url.startswith("/"):
-            next_url = url_for("admin_dashboard")
+            next_url = url_for("admin_applications")
         return redirect(next_url)
 
     return render_template("admin_login.html", error="Invalid admin username or password."), 401
@@ -448,7 +448,19 @@ def admin_logout():
 @app.get("/admin")
 @login_required
 def admin_dashboard():
-    return render_template("admin.html")
+    return redirect(url_for("admin_applications"))
+
+
+@app.get("/admin/applications")
+@login_required
+def admin_applications():
+    return render_template("admin.html", page="applications")
+
+
+@app.get("/admin/content-manager")
+@login_required
+def admin_content_manager():
+    return render_template("admin.html", page="content")
 
 
 @app.get("/api/site-content")
