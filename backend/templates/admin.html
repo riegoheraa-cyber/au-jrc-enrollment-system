@@ -42,12 +42,12 @@
       <ul class="nav">
         <li><a href="/">Home</a></li><li><a href="/enroll">Online Application</a></li>
         <li class="nav-item dropdown scroll-to-section">
-          <a class="nav-link dropdown-toggle admissions-link active" href="/admin/applications" id="admissionsDropdown" data-toggle="dropdown">Admin</a>
+          <a class="nav-link dropdown-toggle admissions-link active" href="{{ url_for('admin_applications') }}" id="admissionsDropdown" data-toggle="dropdown">Admin</a>
           <div class="dropdown-menu admissions-menu" aria-labelledby="admissionsDropdown">
-            <a href="/admin/applications" class="dropdown-item" style="color:#fff; text-decoration:none;">Manage Applications</a>
-            <a href="/admin/content-manager" class="dropdown-item" style="color:#fff; text-decoration:none;">Website Content Manager</a>
+            <a href="{{ url_for('admin_applications') }}" class="dropdown-item" style="color:#fff; text-decoration:none;">Manage Applications</a>
+            <a href="{{ url_for('admin_content_manager') }}" class="dropdown-item" style="color:#fff; text-decoration:none;">Website Content Manager</a>
             <a href="#" class="dropdown-item" style="color:#fff; text-decoration:none;" onclick="event.preventDefault(); document.getElementById('adminLogoutForm').submit();">Logout</a>
-            <form id="adminLogoutForm" class="logout-form" action="/admin/logout" method="post"></form>
+            <form id="adminLogoutForm" class="logout-form" action="{{ url_for('admin_logout') }}" method="post"></form>
           </div>
         </li>
       </ul>
