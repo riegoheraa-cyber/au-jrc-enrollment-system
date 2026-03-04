@@ -12,6 +12,109 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-admin-secret-change-me"
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
+DEFAULT_SITE_CONTENT = {
+    "hero_slides": [
+        {
+            "category": "Arellano University Jose Rizal Campus",
+            "title": "Championing Academic Excellence Since 1938",
+            "description": "Join a community rooted in tradition, service, and student-centered learning for every Arellanista.",
+            "button_text": "",
+            "button_link": "",
+        },
+        {
+            "category": "University Updates",
+            "title": "Admissions Open for Senior High School",
+            "description": "We welcome incoming Grade 11 students and transferees with flexible learning options and student support.",
+            "button_text": "View Admission Requirements",
+            "button_link": "#requirements",
+        },
+        {
+            "category": "Tatak Arellano",
+            "title": "Affordable and Accessible Quality Education",
+            "description": "Experience AU's commitment to holistic development through values formation, leadership, and innovation.",
+            "button_text": "Learn More About AU",
+            "button_link": "#about-us",
+        },
+    ],
+    "highlights": [
+        {
+            "title": "Admissions & Enrollment",
+            "description": "Complete your application, submit requirements, and track your enrollment journey in one place.",
+            "link_text": "Requirements",
+            "link": "#requirements",
+        },
+        {
+            "title": "Academic Programs",
+            "description": "Explore tracks and strands designed to prepare learners for college, careers, and lifelong success.",
+            "link_text": "View Programs",
+            "link": "#programs",
+        },
+        {
+            "title": "Campus Community",
+            "description": "Stay connected with AU culture, student life, and opportunities that nurture leadership and service.",
+            "link_text": "Campus Updates",
+            "link": "https://www.facebook.com/aujoserizal",
+        },
+    ],
+    "enrollment_banner": {
+        "title": "ENROLLMENT ONGOING FOR SENIOR HIGH",
+        "subtitle": "2ND SEMESTER | S.Y. 2025-2026",
+        "bullets": [
+            "New students and transferees accepted.",
+            "No Tuition Fee / No Top-Up (For eligible voucher holders)",
+            "No Entrance Exam",
+            "No Minimum Grade Requirement",
+            "Flexible Learning Modality",
+        ],
+        "offer_title": "Easy Crediting of Subjects for",
+        "offer_emphasis": "Transferees",
+        "offer_subtitle": "No Tuition Fee Increase",
+    },
+    "requirements": {
+        "title": "Admission Requirements",
+        "intro": "Please prepare the following documents for Senior High School admission.",
+        "items": [
+            "PSA Birth Certificate",
+            "ESC Certificate (For Completers from Private Schools)",
+            "Certificate of Completion (For Completers from Public Schools)",
+            "2x2 picture",
+            "Form 138/Report Card",
+        ],
+    },
+    "programs": [
+        {"name": "STEM (Science, Technology, Engineering, and Mathematics)", "category": "Academic Track", "description": "The STEM strand is ideal for students who enjoy science and math. It builds a strong foundation for careers in engineering, medicine, and technology.", "image": "../static/assets/images/STEM.jpg"},
+        {"name": "HUMSS (Humanities and Social Sciences)", "category": "Academic Track", "description": "The HUMSS strand is for students interested in people, culture, and society. It prepares learners for careers in law, education, communication, and public service.", "image": "../static/assets/images/HUMSS.jpg"},
+        {"name": "GAS (General Academic Strand)", "category": "Academic Track", "description": "The GAS strand offers a balanced mix of subjects from different disciplines. It is best for students exploring their interests before choosing a specific college path.", "image": "../static/assets/images/GAS.jpg"},
+        {"name": "ABM (Accountancy, Business, and Management)", "category": "Academic Track", "description": "The ABM strand focuses on business, finance, and entrepreneurship. It prepares students for college programs and careers in management, marketing, and accounting.", "image": "../static/assets/images/ABM.jpg"},
+        {"name": "ICT (Information and Communications Technology)", "category": "Technical-Vocational-Livelihood (TVL)", "description": "The ICT strand develops skills in programming, web development, and networking. It prepares students for careers in IT, software development, and digital technology.", "image": "../static/assets/images/ICT.jpg"},
+        {"name": "HE (Home Economics)", "category": "Technical-Vocational-Livelihood (TVL)", "description": "The HE strand builds practical skills in hospitality, cookery, and home management. It supports career paths in culinary arts, tourism, fashion, and small business.", "image": "../static/assets/images/HE.jpg"},
+    ],
+    "announcements": [
+        {"title": "Enrollment for S.Y. 2025-2026", "description": "Application is now open for Senior High School with support for new students and transferees."},
+        {"title": "No Entrance Examination", "description": "Qualified learners may proceed directly with admission requirements and online application."},
+        {"title": "Flexible Learning Modality", "description": "AU supports learners through adaptable delivery and guidance to help students thrive."},
+    ],
+    "about": {
+        "title": "About Arellano University",
+        "paragraphs": [
+            "Arellano University was founded in 1938, and its Jose Rizal Campus in Malabon was established to provide accessible and quality education to students in the northern part of Metro Manila.",
+            "The campus is named after José Rizal, the national hero of the Philippines, in honor of his contributions to education and the nation.",
+            "Since its establishment, the campus has been committed to promoting academic excellence and offering opportunities for personal and intellectual growth.",
+        ],
+    },
+    "footer": {
+        "logo": "https://www.arellano.edu.ph/images/Arellano_University_New_Logo.png",
+        "address_lines": [
+            "ARELLANO UNIVERSITY",
+            "Gov. Pascual Avenue, Concepcion,",
+            "Malabon City, Metro Manila",
+            "8-579-3635 or 8-921-2744",
+        ],
+        "facebook": "https://www.facebook.com/aujoserizal",
+        "instagram": "https://www.instagram.com/tatakarellano",
+    },
+}
+
 
 
 UPLOAD_DIR = Path(__file__).resolve().parent / "static" / "uploads" / "site-content"

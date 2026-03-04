@@ -163,7 +163,7 @@
       let html = '';
 
       if (key === 'hero_slides') {
-        draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Slide ${i+1}</h6>${inputField('Category',`${i}.category`,item.category)}${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Button Text',`${i}.button_text`,item.button_text)}${inputField('Button Link',`${i}.button_link`,item.button_link)}${imageField('Slide Image',`${i}.image`,item.image,'slide')}</div>`);
+        draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Slide ${i+1}</h6>${inputField('Category',`${i}.category`,item.category)}${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Button Text',`${i}.button_text`,item.button_text)}${inputField('Button Link',`${i}.button_link`,item.button_link)}</div>`);
       } else if (key === 'highlights') {
         draftContent.forEach((item, i) => html += `<div class="block-card"><h6>Highlight ${i+1}</h6>${inputField('Title',`${i}.title`,item.title)}${richField('Description',`${i}.description`,item.description)}${inputField('Link Text',`${i}.link_text`,item.link_text)}${inputField('Link URL',`${i}.link`,item.link)}</div>`);
       } else if (key === 'enrollment_banner') {
