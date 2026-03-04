@@ -2432,3 +2432,83 @@ body {
     font-size: 16px;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.au-requirements {
+  background: linear-gradient(135deg, #7a6ad8 0%, #5b42cf 100%);
+}
+
+.requirements-panel {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 34px;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 18px 35px rgba(26, 18, 80, 0.25);
+}
+
+.requirements-panel h4 {
+  color: #fff;
+  margin-bottom: 22px;
+}
+
+.requirements-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.requirements-list li {
+  position: relative;
+  color: #fff;
+  padding-left: 28px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.requirements-list li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: #ffd564;
+}
+
+.requirements-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.requirements-actions .btn {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 10px 22px;
+}
+
+@media (max-width: 767px) {
+  .requirements-panel {
+    padding: 26px 20px;
+  }
+
+  .requirements-actions .btn {
+    width: 100%;
+  }
+}
