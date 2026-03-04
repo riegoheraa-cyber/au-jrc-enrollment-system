@@ -178,12 +178,12 @@ p {
   padding-left: 20px;
 }
 
-.rich-text ul {
-  list-style: disc;
+.rich-text ul li {
+  list-style-type: disc;
 }
 
-.rich-text ol {
-  list-style: decimal;
+.rich-text ol li {
+  list-style-type: decimal;
 }
 
 .rich-text li {
