@@ -1,4 +1,6 @@
 import os
+import secrets
+import time
 from functools import wraps
 from pathlib import Path
 from uuid import uuid4
@@ -9,8 +11,19 @@ from db import DB_PATH, get_conn, init_db
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-admin-secret-change-me")
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "false").lower() == "true"
+app.config["PERMANENT_SESSION_LIFETIME"] = int(os.environ.get("ADMIN_SESSION_TIMEOUT_SECONDS", "3600"))
+
+_configured_admin_path = (os.environ.get("ADMIN_PATH") or "internal-portal").strip().strip("/")
+ADMIN_PATH = f"/{_configured_admin_path or 'internal-portal'}"
+
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS = int(os.environ.get("ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS", "300"))
+ADMIN_LOGIN_RATE_LIMIT_MAX_ATTEMPTS = int(os.environ.get("ADMIN_LOGIN_RATE_LIMIT_MAX_ATTEMPTS", "5"))
+_admin_login_attempts = {}
 
 DEFAULT_SITE_CONTENT = {
     "hero_slides": [
@@ -350,6 +363,38 @@ def login_required(view):
     return wrapped_view
 
 
+def _client_identifier() -> str:
+    forwarded_for = (request.headers.get("X-Forwarded-For") or "").split(",")[0].strip()
+    return forwarded_for or request.remote_addr or "unknown"
+
+
+def _is_rate_limited(login_identifier: str) -> bool:
+    now = time.time()
+    attempts = _admin_login_attempts.get(login_identifier, [])
+    attempts = [attempt_ts for attempt_ts in attempts if now - attempt_ts < ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS]
+    _admin_login_attempts[login_identifier] = attempts
+    return len(attempts) >= ADMIN_LOGIN_RATE_LIMIT_MAX_ATTEMPTS
+
+
+def _record_failed_login(login_identifier: str) -> None:
+    now = time.time()
+    attempts = _admin_login_attempts.setdefault(login_identifier, [])
+    attempts.append(now)
+
+
+def _new_csrf_token() -> str:
+    token = secrets.token_urlsafe(32)
+    session["admin_login_csrf"] = token
+    return token
+
+
+def _validate_csrf_token(submitted_token: str) -> bool:
+    expected_token = session.get("admin_login_csrf")
+    if not expected_token or not submitted_token:
+        return False
+    return secrets.compare_digest(expected_token, submitted_token)
+
+
 init_db()
 
 
@@ -417,50 +462,78 @@ def enroll_now():
 def requirements():
     return redirect(url_for("home") + "#requirements")
 
-@app.get("/admin/login")
+@app.get(f"{ADMIN_PATH}/login")
 def admin_login():
     if session.get("admin_logged_in"):
         return redirect(url_for("admin_applications"))
-    return render_template("admin_login.html", error=None)
+    csrf_token = _new_csrf_token()
+    return render_template("admin_login.html", error=None, csrf_token=csrf_token)
 
 
-@app.post("/admin/login")
+@app.post(f"{ADMIN_PATH}/login")
 def admin_login_submit():
+    login_identifier = f"{_client_identifier()}:{(request.form.get('username') or '').strip().lower()}"
+    if _is_rate_limited(login_identifier):
+        csrf_token = _new_csrf_token()
+        return render_template("admin_login.html", error="Invalid credentials or request.", csrf_token=csrf_token), 429
+
+    submitted_csrf = request.form.get("csrf_token") or ""
+    if not _validate_csrf_token(submitted_csrf):
+        _record_failed_login(login_identifier)
+        csrf_token = _new_csrf_token()
+        return render_template("admin_login.html", error="Invalid credentials or request.", csrf_token=csrf_token), 400
+
     username = (request.form.get("username") or "").strip()
     password = request.form.get("password") or ""
 
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        session.clear()
         session["admin_logged_in"] = True
+        session.permanent = True
         next_url = (request.form.get("next") or request.args.get("next") or url_for("admin_applications")).strip()
-        if not next_url.startswith("/"):
+        if not next_url.startswith(ADMIN_PATH):
             next_url = url_for("admin_applications")
         return redirect(next_url)
 
-    return render_template("admin_login.html", error="Invalid admin username or password."), 401
+    _record_failed_login(login_identifier)
+    csrf_token = _new_csrf_token()
+    return render_template("admin_login.html", error="Invalid credentials or request.", csrf_token=csrf_token), 401
 
 
-@app.post("/admin/logout")
+@app.post(f"{ADMIN_PATH}/logout")
+@login_required
 def admin_logout():
     session.clear()
     return redirect(url_for("admin_login"))
 
 
-@app.get("/admin")
+@app.get(f"{ADMIN_PATH}")
 @login_required
 def admin_dashboard():
     return redirect(url_for("admin_applications"))
 
 
-@app.get("/admin/applications")
+@app.get(f"{ADMIN_PATH}/applications")
 @login_required
 def admin_applications():
     return render_template("admin.html", page="applications")
 
 
-@app.get("/admin/content-manager")
+@app.get(f"{ADMIN_PATH}/content-manager")
 @login_required
 def admin_content_manager():
     return render_template("admin.html", page="content")
+
+
+@app.get("/admin")
+def legacy_admin_route_not_found():
+    return jsonify({"ok": False, "error": "Not found"}), 404
+
+
+@app.get("/admin/login")
+@app.get("/admin-login")
+def legacy_admin_login_route_not_found():
+    return jsonify({"ok": False, "error": "Not found"}), 404
 
 
 @app.get("/api/site-content")
