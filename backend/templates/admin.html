@@ -138,9 +138,29 @@
     let siteContent = {};
     let draftContent = null;
     let editorInstances = [];
+    let messageTimeoutId = null;
 
-    const showMessage=(text,level='info')=>{messageBox.textContent=text;messageBox.className=`alert alert-${level}`;messageBox.classList.remove('d-none');};
-    const hideMessage=()=>messageBox.classList.add('d-none');
+    const showMessage=(text,level='info',scrollToMessage=false)=>{
+      if (messageTimeoutId) {
+        clearTimeout(messageTimeoutId);
+      }
+      messageBox.textContent=text;
+      messageBox.className=`alert alert-${level}`;
+      messageBox.classList.remove('d-none');
+      if (scrollToMessage) {
+        messageBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      messageTimeoutId = setTimeout(() => {
+        hideMessage();
+      }, 5000);
+    };
+    const hideMessage=()=>{
+      if (messageTimeoutId) {
+        clearTimeout(messageTimeoutId);
+      }
+      messageBox.classList.add('d-none');
+      messageTimeoutId = null;
+    };
     const escapeHtml=v=>String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     const valueOrDash=v=>String(v ?? '').trim() || '—';
     const statusChip=s=>`<span class="status-chip status-${escapeHtml(s||'submitted')}">${escapeHtml((s||'submitted').replace('_',' '))}</span>`;
@@ -275,7 +295,7 @@
       const payload = await res.json();
       if (!res.ok || !payload.ok) return showMessage(payload.error || 'Failed to save section.', 'danger');
       siteContent[key] = JSON.parse(JSON.stringify(draftContent));
-      showMessage(`Saved section: ${key}`, 'success');
+      showMessage(`Saved section: ${key}`, 'success', true);
     }
 
     async function loadSiteContent() {
