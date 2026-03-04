@@ -40,6 +40,28 @@
     .ck-content ol li { list-style-type: decimal; }
     .image-preview { max-width: 180px; border-radius: 6px; display:block; margin-top:8px; border:1px solid #dfe3e8; }
     .admissions-menu .logout-form { margin: 0; }
+    .app-toolbar { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .summary-card { border: 1px solid #e7ebf0; background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 6px 18px rgba(17,24,39,.06); position: relative; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; }
+    .summary-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: #6c757d; opacity: .9; }
+    .summary-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(17,24,39,.12); }
+    .summary-total { background: linear-gradient(135deg, #f8f9ff 0%, #edf2ff 100%); }
+    .summary-total::before { background: #4f46e5; }
+    .summary-submitted { background: linear-gradient(135deg, #fff9eb 0%, #fff3cc 100%); }
+    .summary-submitted::before { background: #d97706; }
+    .summary-under-review { background: linear-gradient(135deg, #ecf7ff 0%, #dff0ff 100%); }
+    .summary-under-review::before { background: #0d6efd; }
+    .summary-approved { background: linear-gradient(135deg, #ebfff2 0%, #d9f7e4 100%); }
+    .summary-approved::before { background: #198754; }
+    .summary-rejected { background: linear-gradient(135deg, #fff1f3 0%, #ffdce1 100%); }
+    .summary-rejected::before { background: #dc3545; }
+    .summary-label { color: #6c757d; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+    .summary-value { font-size: 1.35rem; font-weight: 700; color: #212529; }
+    .datatable-controls { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 4px 8px; color: #5e6670; }
+    .sortable-col { cursor: pointer; user-select: none; white-space: nowrap; }
+    .sort-arrow { font-size: .75rem; margin-left: 5px; opacity: .6; }
+    .table-footer-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 4px 4px; flex-wrap: wrap; }
+    .table-footer-controls .btn-group .btn { min-width: 36px; }
   </style>
 </head>
 <body>
@@ -68,9 +90,11 @@
         <p class="mb-0 text-muted">{{ 'Review student applications, documents, and statuses.' if page == 'applications' else 'Edit website content' }}</p>
       </div>
       {% if page == 'applications' %}
-      <div class="d-flex" style="gap:10px;">
+      <div class="app-toolbar">
         <select id="statusFilter" class="form-control"><option value="">All statuses</option><option value="submitted">Submitted</option><option value="under_review">Under review</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
         <select id="strandFilter" class="form-control"><option value="">All strands</option><option value="STEM">STEM</option><option value="ABM">ABM</option><option value="HUMSS">HUMSS</option><option value="GAS">GAS</option><option value="TVL">TVL</option><option value="ICT">ICT</option><option value="HE">HE</option></select>
+        <input id="searchInput" class="form-control" type="search" placeholder="Search student, LRN, or documents">
+        <select id="rowsPerPage" class="form-control"><option value="5">5 per page</option><option value="10" selected>10 per page</option><option value="25">25 per page</option><option value="50">50 per page</option></select>
         <button id="refreshBtn" class="btn btn-primary">Refresh</button>
       </div>
       {% endif %}
@@ -79,11 +103,30 @@
     <div class="alert alert-info d-none" id="messageBox"></div>
 
     {% if page == 'applications' %}
+    <div class="summary-grid" id="summaryGrid">
+      <article class="summary-card summary-total"><div class="summary-label">Total Records</div><div class="summary-value" data-summary="total">0</div></article>
+      <article class="summary-card summary-submitted"><div class="summary-label">Submitted</div><div class="summary-value" data-summary="submitted">0</div></article>
+      <article class="summary-card summary-under-review"><div class="summary-label">Under Review</div><div class="summary-value" data-summary="under_review">0</div></article>
+      <article class="summary-card summary-approved"><div class="summary-label">Approved</div><div class="summary-value" data-summary="approved">0</div></article>
+      <article class="summary-card summary-rejected"><div class="summary-label">Rejected</div><div class="summary-value" data-summary="rejected">0</div></article>
+    </div>
+
     <div class="table-responsive bg-white rounded shadow-sm p-2">
+      <div class="datatable-controls">
+        <div id="recordInfo">Showing 0 to 0 of 0 entries</div>
+        <div id="filterInfo">No filters applied</div>
+      </div>
       <table class="table table-striped table-hover mb-0" id="applicationsTable">
-        <thead><tr><th>ID</th><th>Student</th><th>LRN</th><th>Strand</th><th>Status</th><th>Submitted</th><th>Documents</th><th>Actions</th></tr></thead>
+        <thead><tr><th class="sortable-col" data-sort="id">ID <span class="sort-arrow">↕</span></th><th class="sortable-col" data-sort="fullName">Student <span class="sort-arrow">↕</span></th><th class="sortable-col" data-sort="lrn">LRN <span class="sort-arrow">↕</span></th><th class="sortable-col" data-sort="strand">Strand <span class="sort-arrow">↕</span></th><th class="sortable-col" data-sort="status">Status <span class="sort-arrow">↕</span></th><th class="sortable-col" data-sort="submitted_at">Submitted <span class="sort-arrow">↕</span></th><th>Documents</th><th>Actions</th></tr></thead>
         <tbody></tbody>
       </table>
+      <div class="table-footer-controls">
+        <small class="text-muted" id="pageInfo">Page 1 of 1</small>
+        <div class="btn-group" role="group" aria-label="Pagination">
+          <button id="prevPageBtn" type="button" class="btn btn-outline-secondary btn-sm">Prev</button>
+          <button id="nextPageBtn" type="button" class="btn btn-outline-secondary btn-sm">Next</button>
+        </div>
+      </div>
     </div>
     {% endif %}
 
@@ -127,6 +170,13 @@
     const messageBox = document.getElementById('messageBox');
     const statusFilter = document.getElementById('statusFilter');
     const strandFilter = document.getElementById('strandFilter');
+    const searchInput = document.getElementById('searchInput');
+    const rowsPerPageSelect = document.getElementById('rowsPerPage');
+    const recordInfo = document.getElementById('recordInfo');
+    const filterInfo = document.getElementById('filterInfo');
+    const pageInfo = document.getElementById('pageInfo');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
     const detailsModal = document.getElementById('detailsModal');
     const detailsSubtitle = document.getElementById('detailsSubtitle');
     const completeAnswersList = document.getElementById('completeAnswersList');
@@ -139,6 +189,10 @@
     let draftContent = null;
     let editorInstances = [];
     let messageTimeoutId = null;
+    let allApplications = [];
+    let filteredApplications = [];
+    let currentPage = 1;
+    let sortConfig = { key: 'id', direction: 'desc' };
 
     const showMessage=(text,level='info',scrollToMessage=false)=>{
       if (messageTimeoutId) {
@@ -165,6 +219,102 @@
     const valueOrDash=v=>String(v ?? '').trim() || '—';
     const statusChip=s=>`<span class="status-chip status-${escapeHtml(s||'submitted')}">${escapeHtml((s||'submitted').replace('_',' '))}</span>`;
     const parseSubmittedRequirements=csv=>String(csv||'').split(',').map(i=>i.trim()).filter(Boolean);
+    const formatStatus=s=>String(s||'submitted').replace(/_/g,' ');
+
+    function applySort(items) {
+      const factor = sortConfig.direction === 'asc' ? 1 : -1;
+      return [...items].sort((a, b) => {
+        let left = a[sortConfig.key];
+        let right = b[sortConfig.key];
+        if (sortConfig.key === 'submitted_at') {
+          left = new Date(left || 0).getTime();
+          right = new Date(right || 0).getTime();
+        }
+        if (sortConfig.key === 'id') {
+          left = Number(left || 0);
+          right = Number(right || 0);
+        }
+        left = typeof left === 'string' ? left.toLowerCase() : left;
+        right = typeof right === 'string' ? right.toLowerCase() : right;
+        if (left > right) return 1 * factor;
+        if (left < right) return -1 * factor;
+        return 0;
+      });
+    }
+
+    function updateSortIndicators() {
+      document.querySelectorAll('.sortable-col').forEach((header) => {
+        const arrow = header.querySelector('.sort-arrow');
+        if (!arrow) return;
+        if (header.dataset.sort === sortConfig.key) {
+          arrow.textContent = sortConfig.direction === 'asc' ? '▲' : '▼';
+          arrow.style.opacity = '1';
+        } else {
+          arrow.textContent = '↕';
+          arrow.style.opacity = '.6';
+        }
+      });
+    }
+
+    function updateSummary(items) {
+      const counts = { total: items.length, submitted: 0, under_review: 0, approved: 0, rejected: 0 };
+      items.forEach((item) => {
+        if (Object.prototype.hasOwnProperty.call(counts, item.status)) counts[item.status] += 1;
+      });
+      document.querySelectorAll('[data-summary]').forEach((el) => {
+        const key = el.dataset.summary;
+        el.textContent = String(counts[key] ?? 0);
+      });
+    }
+
+    function renderApplicationsTable(items) {
+      const pageSize = Number(rowsPerPageSelect?.value || 10);
+      const total = items.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      currentPage = Math.min(currentPage, totalPages);
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, total);
+      const pageItems = items.slice(startIndex, endIndex);
+
+      if (!pageItems.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No applications found.</td></tr>';
+      } else {
+        tbody.innerHTML = pageItems.map(item => `<tr><td>${item.id}</td><td><button type="button" class="name-link" data-view="details" data-id="${item.id}">${escapeHtml(item.fullName)}</button></td><td>${escapeHtml(item.lrn)}</td><td>${escapeHtml(item.strand || '-')}</td><td>${statusChip(item.status)}</td><td>${escapeHtml(item.submitted_at || '-')}</td><td>${escapeHtml(item.credentialsSubmitted || '-')}</td><td><div class="action-btns">${item.status !== 'under_review' ? `<button class="btn btn-sm btn-outline-primary" data-action="under_review" data-id="${item.id}">Mark Under Review</button>` : ''}${item.status !== 'approved' ? `<button class="btn btn-sm btn-success" data-action="approved" data-id="${item.id}">Approve</button>` : ''}${item.status !== 'rejected' ? `<button class="btn btn-sm btn-danger" data-action="rejected" data-id="${item.id}">Reject</button>` : ''}</div></td></tr>`).join('');
+      }
+
+      if (recordInfo) recordInfo.textContent = `Showing ${total ? startIndex + 1 : 0} to ${endIndex} of ${total} entries`;
+      if (pageInfo) pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      if (prevPageBtn) prevPageBtn.disabled = currentPage <= 1;
+      if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages;
+    }
+
+    function applyClientFilters() {
+      const status = (statusFilter?.value || '').trim();
+      const strand = (strandFilter?.value || '').trim();
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const activeFilters = [];
+
+      filteredApplications = allApplications.filter((item) => {
+        if (status && item.status !== status) return false;
+        if (strand && item.strand !== strand) return false;
+        if (query) {
+          const haystack = [item.fullName, item.lrn, item.strand, formatStatus(item.status), item.credentialsSubmitted, item.email]
+            .map(value => String(value || '').toLowerCase())
+            .join(' ');
+          if (!haystack.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (status) activeFilters.push(`Status: ${formatStatus(status)}`);
+      if (strand) activeFilters.push(`Strand: ${strand}`);
+      if (query) activeFilters.push(`Search: "${query}"`);
+      if (filterInfo) filterInfo.textContent = activeFilters.length ? activeFilters.join(' • ') : 'No filters applied';
+
+      updateSummary(filteredApplications);
+      updateSortIndicators();
+      renderApplicationsTable(applySort(filteredApplications));
+    }
 
     function updateAtPath(path, value) {
       const keys = path.split('.');
@@ -339,14 +489,18 @@
     }
 
     async function loadApplications() {
-      const params = new URLSearchParams();
-      if (statusFilter.value) params.set('status', statusFilter.value);
-      if (strandFilter.value) params.set('strand', strandFilter.value);
       tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">Loading...</td></tr>';
-      const res = await fetch(`/api/applications?${params.toString()}`); const payload = await res.json();
-      if (!res.ok || !payload.ok) return tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${escapeHtml(payload.error || 'Failed')}</td></tr>`;
-      if (!payload.items.length) return tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No applications found.</td></tr>';
-      tbody.innerHTML = payload.items.map(item => `<tr><td>${item.id}</td><td><button type="button" class="name-link" data-view="details" data-id="${item.id}">${escapeHtml(item.fullName)}</button></td><td>${escapeHtml(item.lrn)}</td><td>${escapeHtml(item.strand || '-')}</td><td>${statusChip(item.status)}</td><td>${escapeHtml(item.submitted_at || '-')}</td><td>${escapeHtml(item.credentialsSubmitted || '-')}</td><td><div class="action-btns">${item.status !== 'under_review' ? `<button class="btn btn-sm btn-outline-primary" data-action="under_review" data-id="${item.id}">Mark Under Review</button>` : ''}${item.status !== 'approved' ? `<button class="btn btn-sm btn-success" data-action="approved" data-id="${item.id}">Approve</button>` : ''}${item.status !== 'rejected' ? `<button class="btn btn-sm btn-danger" data-action="rejected" data-id="${item.id}">Reject</button>` : ''}</div></td></tr>`).join('');
+      const res = await fetch('/api/applications');
+      const payload = await res.json();
+      if (!res.ok || !payload.ok) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">${escapeHtml(payload.error || 'Failed')}</td></tr>`;
+        if (recordInfo) recordInfo.textContent = 'Showing 0 to 0 of 0 entries';
+        if (pageInfo) pageInfo.textContent = 'Page 1 of 1';
+        return;
+      }
+      allApplications = payload.items || [];
+      currentPage = 1;
+      applyClientFilters();
     }
 
     if (adminPage === 'applications') {
@@ -362,8 +516,37 @@
       document.getElementById('detailsCloseBtn').addEventListener('click', () => detailsModal.classList.remove('is-open'));
       detailsModal.addEventListener('click', (event) => event.target.matches('[data-close-modal="true"]') && detailsModal.classList.remove('is-open'));
       document.getElementById('refreshBtn').addEventListener('click', loadApplications);
-      statusFilter.addEventListener('change', loadApplications);
-      strandFilter.addEventListener('change', loadApplications);
+      statusFilter.addEventListener('change', () => { currentPage = 1; applyClientFilters(); });
+      strandFilter.addEventListener('change', () => { currentPage = 1; applyClientFilters(); });
+      searchInput.addEventListener('input', () => { currentPage = 1; applyClientFilters(); });
+      rowsPerPageSelect.addEventListener('change', () => { currentPage = 1; applyClientFilters(); });
+      prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          renderApplicationsTable(applySort(filteredApplications));
+        }
+      });
+      nextPageBtn.addEventListener('click', () => {
+        const pageSize = Number(rowsPerPageSelect.value || 10);
+        const maxPage = Math.max(1, Math.ceil(filteredApplications.length / pageSize));
+        if (currentPage < maxPage) {
+          currentPage += 1;
+          renderApplicationsTable(applySort(filteredApplications));
+        }
+      });
+      document.querySelectorAll('.sortable-col').forEach((header) => {
+        header.addEventListener('click', () => {
+          const key = header.dataset.sort;
+          if (!key) return;
+          if (sortConfig.key === key) {
+            sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            sortConfig.key = key;
+            sortConfig.direction = key === 'id' || key === 'submitted_at' ? 'desc' : 'asc';
+          }
+          applyClientFilters();
+        });
+      });
 
       (async function initApplications(){ await loadApplications(); })().catch(err => showMessage(err.message, 'danger'));
     }
