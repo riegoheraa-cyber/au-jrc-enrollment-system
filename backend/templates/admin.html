@@ -138,9 +138,23 @@
     let siteContent = {};
     let draftContent = null;
     let editorInstances = [];
+    let messageTimeoutId = null;
 
-    const showMessage=(text,level='info')=>{messageBox.textContent=text;messageBox.className=`alert alert-${level}`;messageBox.classList.remove('d-none');};
-    const hideMessage=()=>messageBox.classList.add('d-none');
+    const showMessage=(text,level='info')=>{
+      if (messageTimeoutId) {
+        clearTimeout(messageTimeoutId);
+      }
+      messageBox.textContent=text;
+      messageBox.className=`alert alert-${level}`;
+      messageBox.classList.remove('d-none');
+      messageTimeoutId = setTimeout(() => {
+        hideMessage();
+      }, 5000);
+    };
+    const hideMessage=()=>{
+      messageBox.classList.add('d-none');
+      messageTimeoutId = null;
+    };
     const escapeHtml=v=>String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     const valueOrDash=v=>String(v ?? '').trim() || '—';
     const statusChip=s=>`<span class="status-chip status-${escapeHtml(s||'submitted')}">${escapeHtml((s||'submitted').replace('_',' '))}</span>`;
