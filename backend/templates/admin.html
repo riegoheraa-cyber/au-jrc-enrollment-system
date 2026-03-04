@@ -42,7 +42,19 @@
     .admissions-menu .logout-form { margin: 0; }
     .app-toolbar { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
     .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 14px; }
-    .summary-card { border: 1px solid #e7ebf0; background: #fff; border-radius: 10px; padding: 12px; }
+    .summary-card { border: 1px solid #e7ebf0; background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 6px 18px rgba(17,24,39,.06); position: relative; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; }
+    .summary-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: #6c757d; opacity: .9; }
+    .summary-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(17,24,39,.12); }
+    .summary-total { background: linear-gradient(135deg, #f8f9ff 0%, #edf2ff 100%); }
+    .summary-total::before { background: #4f46e5; }
+    .summary-submitted { background: linear-gradient(135deg, #fff9eb 0%, #fff3cc 100%); }
+    .summary-submitted::before { background: #d97706; }
+    .summary-under-review { background: linear-gradient(135deg, #ecf7ff 0%, #dff0ff 100%); }
+    .summary-under-review::before { background: #0d6efd; }
+    .summary-approved { background: linear-gradient(135deg, #ebfff2 0%, #d9f7e4 100%); }
+    .summary-approved::before { background: #198754; }
+    .summary-rejected { background: linear-gradient(135deg, #fff1f3 0%, #ffdce1 100%); }
+    .summary-rejected::before { background: #dc3545; }
     .summary-label { color: #6c757d; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
     .summary-value { font-size: 1.35rem; font-weight: 700; color: #212529; }
     .datatable-controls { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 4px 8px; color: #5e6670; }
@@ -92,11 +104,11 @@
 
     {% if page == 'applications' %}
     <div class="summary-grid" id="summaryGrid">
-      <article class="summary-card"><div class="summary-label">Total Records</div><div class="summary-value" data-summary="total">0</div></article>
-      <article class="summary-card"><div class="summary-label">Submitted</div><div class="summary-value" data-summary="submitted">0</div></article>
-      <article class="summary-card"><div class="summary-label">Under Review</div><div class="summary-value" data-summary="under_review">0</div></article>
-      <article class="summary-card"><div class="summary-label">Approved</div><div class="summary-value" data-summary="approved">0</div></article>
-      <article class="summary-card"><div class="summary-label">Rejected</div><div class="summary-value" data-summary="rejected">0</div></article>
+      <article class="summary-card summary-total"><div class="summary-label">Total Records</div><div class="summary-value" data-summary="total">0</div></article>
+      <article class="summary-card summary-submitted"><div class="summary-label">Submitted</div><div class="summary-value" data-summary="submitted">0</div></article>
+      <article class="summary-card summary-under-review"><div class="summary-label">Under Review</div><div class="summary-value" data-summary="under_review">0</div></article>
+      <article class="summary-card summary-approved"><div class="summary-label">Approved</div><div class="summary-value" data-summary="approved">0</div></article>
+      <article class="summary-card summary-rejected"><div class="summary-label">Rejected</div><div class="summary-value" data-summary="rejected">0</div></article>
     </div>
 
     <div class="table-responsive bg-white rounded shadow-sm p-2">
