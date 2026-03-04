@@ -115,9 +115,9 @@
 					$('.menu-trigger').removeClass('active');
 					$('.header-area .nav').slideUp(200);
 				}
-				$('html,body').stop().animate({
+				$('html,body').animate({
 					scrollTop: (target.offset().top) - 80
-				}, 550, 'swing');
+				}, 700);
 				return false;
 			}
 		}
@@ -136,18 +136,13 @@
 			})
 			$(this).addClass('active');
 
+			var target = this.hash,
+				menu = target;
 			var target = $(this.hash);
-			if (!target.length) {
-				$(document).on("scroll", onScroll);
-				return;
-			}
-
 			$('html, body').stop().animate({
 				scrollTop: (target.offset().top) - 79
-			}, 550, 'swing', function () {
-				if (history.replaceState) {
-					history.replaceState(null, '', '#' + target.prop('id'));
-				}
+			}, 500, 'swing', function () {
+				window.location.hash = target.prop('id');
 				$(document).on("scroll", onScroll);
 			});
 		});
@@ -228,6 +223,11 @@
 	function revealSection(section) {
 		if (!section) return;
 		section.classList.add('is-visible');
+		setTimeout(function () {
+			section.classList.remove('is-visible');
+			void section.offsetWidth;
+			section.classList.add('is-visible');
+		}, 10);
 	}
 
 	function scrollToHashSection(hash) {
@@ -241,32 +241,15 @@
 	}
 
 	var revealSections = document.querySelectorAll('.scroll-reveal');
-	var revealEffects = ['reveal-slide-up', 'reveal-slide-left', 'reveal-slide-right'];
-
-	revealSections.forEach(function (section, index) {
-		var hasPresetEffect = revealEffects.some(function (effect) {
-			return section.classList.contains(effect);
-		});
-
-		if (!hasPresetEffect) {
-			var effectClass = revealEffects[index % revealEffects.length];
-			section.classList.add(effectClass);
-		}
-
-		section.style.setProperty('--reveal-delay', Math.min(index * 80, 320) + 'ms');
-	});
-
 	if (revealSections.length && 'IntersectionObserver' in window) {
-		var sectionObserver = new IntersectionObserver(function (entries, observer) {
+		var sectionObserver = new IntersectionObserver(function (entries) {
 			entries.forEach(function (entry) {
 				if (entry.isIntersecting) {
 					entry.target.classList.add('is-visible');
-					observer.unobserve(entry.target);
 				}
 			});
 		}, {
-			threshold: 0.2,
-			rootMargin: '0px 0px -10% 0px'
+			threshold: 0.2
 		});
 
 		revealSections.forEach(function (section) {
@@ -277,6 +260,10 @@
 			section.classList.add('is-visible');
 		});
 	}
+
+	window.addEventListener('hashchange', function () {
+		scrollToHashSection(window.location.hash);
+	});
 
 	window.addEventListener('load', function () {
 		scrollToHashSection(window.location.hash);
