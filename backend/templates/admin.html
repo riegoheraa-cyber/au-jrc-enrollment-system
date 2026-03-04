@@ -140,18 +140,24 @@
     let editorInstances = [];
     let messageTimeoutId = null;
 
-    const showMessage=(text,level='info')=>{
+    const showMessage=(text,level='info',scrollToMessage=false)=>{
       if (messageTimeoutId) {
         clearTimeout(messageTimeoutId);
       }
       messageBox.textContent=text;
       messageBox.className=`alert alert-${level}`;
       messageBox.classList.remove('d-none');
+      if (scrollToMessage) {
+        messageBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       messageTimeoutId = setTimeout(() => {
         hideMessage();
       }, 5000);
     };
     const hideMessage=()=>{
+      if (messageTimeoutId) {
+        clearTimeout(messageTimeoutId);
+      }
       messageBox.classList.add('d-none');
       messageTimeoutId = null;
     };
@@ -289,7 +295,7 @@
       const payload = await res.json();
       if (!res.ok || !payload.ok) return showMessage(payload.error || 'Failed to save section.', 'danger');
       siteContent[key] = JSON.parse(JSON.stringify(draftContent));
-      showMessage(`Saved section: ${key}`, 'success');
+      showMessage(`Saved section: ${key}`, 'success', true);
     }
 
     async function loadSiteContent() {
