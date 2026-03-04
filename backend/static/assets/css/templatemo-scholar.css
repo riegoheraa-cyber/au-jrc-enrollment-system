@@ -172,6 +172,28 @@ p {
   color: #4a4a4a;
 }
 
+.rich-text ul,
+.rich-text ol {
+  margin: 0 0 16px 20px;
+  padding-left: 20px;
+}
+
+.rich-text ul {
+  list-style: disc;
+}
+
+.rich-text ol {
+  list-style: decimal;
+}
+
+.rich-text li {
+  margin-bottom: 6px;
+}
+
+.rich-text p {
+  margin-bottom: 16px;
+}
+
 img {
   width: 100%;
   overflow: hidden;
