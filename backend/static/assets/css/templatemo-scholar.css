@@ -2219,7 +2219,7 @@ body {
 
 .header-area .main-nav .nav li:hover a:hover {
   background: #fff;
-  color: #2d3d9d;
+  color: #2d3d9d !important;
 }
 
 /* Admissions dropdown styling */
